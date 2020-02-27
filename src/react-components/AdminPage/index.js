@@ -26,12 +26,13 @@ class AdminPage extends React.Component {
     this.setState({redirect: "/admin"})
   }
 
-  handleUser = e => {
-    if (e.target.className === "edit") {
+  editUser = e => {
 
-    } else if (e.target.className === "remove") {
+  }
 
-    }
+  removeUser = i => {
+    this.props.users.splice(i, 1);
+    this.setState({redirect: "/admin"})
   }
 
   handleTextFieldChange = e => {
@@ -86,15 +87,15 @@ class AdminPage extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.users.map(row => (
-                <TableRow onClick={this.handleUser} key={row.name}>
+              {this.props.users.map((row, i) => (
+                <TableRow key={row.name}>
                   <TableCell align="right">{row.type}</TableCell>
                   <TableCell align="right">{row.name}</TableCell>
                   <TableCell align="right">{row.email}</TableCell>
                   <TableCell align="right">{row.username}</TableCell>
                   <TableCell align="right">{row.password}</TableCell>
-                  <TableCell align="right"><Button className="edit">Edit</Button></TableCell>
-                  <TableCell align="right"><Button className="remove">Remove</Button></TableCell>
+                  <TableCell align="right"><Button onClick={this.editUser}>Edit</Button></TableCell>
+                  <TableCell align="right"><Button onClick={this.removeUser.bind(this, i)}>Remove</Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
