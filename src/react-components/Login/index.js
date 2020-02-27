@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Redirect} from "react-router-dom"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
 
@@ -10,7 +9,42 @@ import "./styles.css";
 
 /* Component for the Home page */
 class Login extends React.Component {
+  state = {
+    redirect: null,
+    err: false
+  };
+  login = e => {
+    const filtered_user = this.props.users.filter(user => user.username === this.state.username)
+    console.log(filtered_user)
+    if (filtered_user.length === 1) {
+      if (filtered_user[0].password === this.state.password) {
+        this.setState({redirect: "/"+filtered_user[0].type})
+      }
+      else {
+        this.setState({err: true})
+      }
+    } else if (filtered_user.length === 0) {
+      this.setState({err: true})
+    }
+  }
+
+  handleUsernameChange = e => {
+    this.setState({
+      username: e.target.value
+    });
+  }
+
+  handlePasswordChange = e => {
+    this.setState({
+      password: e.target.value
+    });
+  }
+
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
+
     return (
       <div className="loginForm">
         <Grid container spacing={1} alignItems="flex-end">
@@ -18,10 +52,13 @@ class Login extends React.Component {
             <AccountCircle />
           </Grid>
           <Grid item>
-          <TextField
-            id="username"
-            label="Username"
-          />
+            <TextField
+              id="username"
+              label="Username"
+              onChange={this.handleUsernameChange}
+              error={this.state.err}
+              helperText={this.state.err ? "Incorrect username or password" : ''}
+            />
           </Grid>
         </Grid>
 
@@ -29,10 +66,13 @@ class Login extends React.Component {
           <TextField
             id="password"
             label="Password"
+            onChange={this.handlePasswordChange}
+            error={this.state.err}
+            helperText={this.state.err ? "Incorrect username or password" : ''}
           />
         </div>
         <div className="loginButton">
-          <Button>Login</Button>
+          <Button onClick={this.login}>Login</Button>
         </div>
       </div>
     );

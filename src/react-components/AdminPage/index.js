@@ -11,12 +11,6 @@ import Paper from '@material-ui/core/Paper';
 import "./styles.css";
 
 class AdminPage extends React.Component {
-  rows = [
-    {type: "Professor", name: "David", email: "david@gmail.com"},
-    {type: "Student", name: "Josh", email: "joshhan619@gmail.com"},
-    {type: "Student", name: "Adrian", email: "adrian@gmail.com"},
-    {type: "Student", name: "Youhai", email: "youhai@gmail.com"}
-  ];
 
   render() {
     return (
@@ -37,7 +31,7 @@ class AdminPage extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.rows.map(row => (
+              {this.props.rows.map(row => (
                 <TableRow key={row.name}>
                   <TableCell align="right">{row.type}</TableCell>
                   <TableCell align="right">{row.name}</TableCell>
