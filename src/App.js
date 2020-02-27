@@ -26,7 +26,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route exact path='/' render={() => (<Login users={this.users}/>)}/>
-            <Route exact path='/admin' render={() => (<AdminPage rows={this.users}/>)}/>
+            <Route exact path='/admin' render={() => (<AdminPage users={this.users}/>)}/>
             <Route exact path='/professor/' render={() => (<AdvancedGenerator />)}/>
             <Route exact path='/professor/groups' render={() => (<GroupsPage />)}/>
             <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
