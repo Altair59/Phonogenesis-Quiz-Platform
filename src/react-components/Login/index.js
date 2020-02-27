@@ -28,15 +28,9 @@ class Login extends React.Component {
     }
   }
 
-  handleUsernameChange = e => {
+  handleTextFieldChange = e => {
     this.setState({
-      username: e.target.value
-    });
-  }
-
-  handlePasswordChange = e => {
-    this.setState({
-      password: e.target.value
+      [e.target.id]: e.target.value
     });
   }
 
@@ -55,7 +49,7 @@ class Login extends React.Component {
             <TextField
               id="username"
               label="Username"
-              onChange={this.handleUsernameChange}
+              onChange={this.handleTextFieldChange}
               error={this.state.err}
               helperText={this.state.err ? "Incorrect username or password" : ''}
             />
@@ -66,7 +60,7 @@ class Login extends React.Component {
           <TextField
             id="password"
             label="Password"
-            onChange={this.handlePasswordChange}
+            onChange={this.handleTextFieldChange}
             error={this.state.err}
             helperText={this.state.err ? "Incorrect username or password" : ''}
           />
