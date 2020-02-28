@@ -28,12 +28,16 @@ class QuizTaker extends React.Component {
 		this.setState({showUR: true});
 	};
 
+	clickGetQuestion = e => {
+
+	};
+
 	render() {
 		return (
 			<div>
 				<h1>Templates:</h1>
 				<ul>{templateItems}</ul>
-				<button onClick={this.clickShowUR}>Get Question!</button>
+				<button onClick={this.clickGetQuestion}>Get Question!</button>
 				<button onClick={this.clickShowAnswer}>Show Answer!</button>
 				{this.state.showAns ? (<p>{this.state.question.answer}</p>) : null}
 			</div>
