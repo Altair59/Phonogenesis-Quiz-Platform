@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./styles.css";
+import "./AdvancedGenerator.css";
 
 class AdvancedGenerator extends React.Component {
   render() {

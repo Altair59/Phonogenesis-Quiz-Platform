@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./styles.css";
+import "./QuizTaker.css";
 
 const templates = ["Template 1", "Template 2", "Template 3"];
 const templateItems = templates.map((templates) => <li>{templates}</li>);

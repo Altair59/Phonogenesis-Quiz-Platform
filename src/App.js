@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import './App.css';
 
-import Login from './react-components/Login';
+import LoginPage from './react-components/LoginPage';
 import AdminPage from './react-components/AdminPage';
 import AdvancedGenerator from './react-components/AdvancedGenerator';
 import GroupsPage from './react-components/GroupsPage';
@@ -25,7 +25,7 @@ class App extends React.Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path='/' render={() => (<Login users={this.users}/>)}/>
+            <Route exact path='/' render={() => (<LoginPage users={this.users}/>)}/>
             <Route exact path='/admin' render={() => (<AdminPage users={this.users}/>)}/>
             <Route exact path='/professor' render={() => (<AdvancedGenerator />)}/>
             <Route exact path='/professor/groups' render={() => (<GroupsPage />)}/>
