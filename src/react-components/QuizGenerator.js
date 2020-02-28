@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./styles.css";
+import "./QuizGenerator.css";
 
 class QuizGenerator extends React.Component {
   render() {

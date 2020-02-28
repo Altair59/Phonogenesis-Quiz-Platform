@@ -9,12 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
 
-import "./styles.css";
+import "./AdminPage.css";
 
 class AdminPage extends React.Component {
   state = {
     redirect: null
-  }
+  };
   addUser = e => {
     this.props.users.push({
       type: this.state.type,
@@ -22,24 +22,24 @@ class AdminPage extends React.Component {
       email: this.state.email,
       username: this.state.username,
       password: this.state.password
-    })
+    });
     this.setState({redirect: "/admin"})
-  }
+  };
 
   editUser = e => {
 
-  }
+  };
 
   removeUser = i => {
     this.props.users.splice(i, 1);
     this.setState({redirect: "/admin"})
-  }
+  };
 
   handleTextFieldChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
-  }
+  };
 
   render() {
     return (

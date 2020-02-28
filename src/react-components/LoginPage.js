@@ -5,10 +5,10 @@ import TextField from "@material-ui/core/TextField";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
 
-import "./styles.css";
+import "./LoginPage.css";
 
 /* Component for the Home page */
-class Login extends React.Component {
+class LoginPage extends React.Component {
     state = {
         redirect: null,
         err: false
@@ -31,13 +31,13 @@ class Login extends React.Component {
         } else if (filtered_user.length === 0) {
             this.setState({err: true})
         }
-    }
+    };
 
     handleTextFieldChange = e => {
         this.setState({
             [e.target.id]: e.target.value
         });
-    }
+    };
 
     render() {
         if (this.state.redirect) {
@@ -87,4 +87,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default LoginPage;

@@ -1,0 +1,23 @@
+
+#helpBlock {
+    border: 1px solid grey;
+    width: 400px;
+}
+
+#helpTitle {
+    color: blue;
+    font-weight: bolder;
+}
+
+button {
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+#hintBlock {
+    float: left;
+}
+
+#genMore {
+    float: right;
+}

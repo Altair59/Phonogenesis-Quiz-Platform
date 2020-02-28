@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./styles.css";
+import "./QuizTaker.css";
 
 class QuizTaker extends React.Component {
   render() {

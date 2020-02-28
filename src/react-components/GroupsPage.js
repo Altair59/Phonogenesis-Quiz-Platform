@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./styles.css";
+import "./GroupsPage.css";
 
 class GroupsPage extends React.Component {
   render() {

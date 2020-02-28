@@ -2,7 +2,7 @@ import React from "react";
 import {useLocation} from "react-router-dom"
 import Grid from '@material-ui/core/Grid';
 
-import "./styles.css";
+import "./Statistics.css";
 
 const Statistics = () => {
 

@@ -1,5 +1,5 @@
 .formElement {
-    padding: 20px;
+    margin: 20px;
 }
 
 .inputBlock {
@@ -14,6 +14,6 @@
     font-weight: bold;
 }
 
-.titleText {
+.labelText {
     font-weight: bold;
 }
