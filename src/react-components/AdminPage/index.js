@@ -44,7 +44,7 @@ class AdminPage extends React.Component {
   render() {
     return (
       <div>
-        <h3> Total User Count: <span id="userCount"></span></h3>
+        <h3> Total User Count: <span id="userCount">{this.props.users.length}</span></h3>
         <div className="addButton">
           <TextField
             id="type"

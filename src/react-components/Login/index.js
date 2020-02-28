@@ -15,10 +15,16 @@ class Login extends React.Component {
   };
   login = e => {
     const filtered_user = this.props.users.filter(user => user.username === this.state.username)
-    console.log(filtered_user)
     if (filtered_user.length === 1) {
       if (filtered_user[0].password === this.state.password) {
-        this.setState({redirect: "/"+filtered_user[0].type})
+        this.setState({
+          type: filtered_user[0].type,
+          name: filtered_user[0].name,
+          email: filtered_user[0].email,
+          username: filtered_user[0].username,
+          password: filtered_user[0].password
+        });
+        this.setState({redirect: "/"+filtered_user[0].type});
       }
       else {
         this.setState({err: true})
@@ -36,7 +42,16 @@ class Login extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={{
+        pathname: this.state.redirect,
+        state: {
+          type: this.state.type,
+          name: this.state.name,
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.password
+        }
+      }} />
     }
 
     return (
