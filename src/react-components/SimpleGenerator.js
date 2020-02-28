@@ -19,16 +19,22 @@ class SimpleGenerator extends React.Component {
 
 	render() {
 		return (
-			<form>
-				<RangeSelectionBlock rangeMax={RULE_SELECTION_MAX} rangeMin={RULE_SELECTION_MIN} allowEmpty={true}
-				                     default={''} title={"Rule NO. (range 1-3, blank for random)"}/>
-				<RangeSelectionBlock rangeMax={QUESTION_SIZE_MAX} rangeMin={QUESTION_SIZE_MIN} allowEmpty={true}
-				                     default={''} title={"Question Size (range 15-40)"}/>
-				<DropdownBlock options={["Random", "Alternating", "Neutralizing", "Mixed - Alternating & Neutralizing"]}
-				               default={"Random"} title={"Question Type"}/>
-				<HelpBlock/>
-				<CheckboxBlock title={"Shuffle Result"}/>
-				<CheckboxBlock title={"Use IPA [ɡ]"}/>
+			<form id={"simpleGenForm"}>
+				<div id={"genSpecForm"}>
+					<RangeSelectionBlock rangeMax={RULE_SELECTION_MAX} rangeMin={RULE_SELECTION_MIN} allowEmpty={true}
+					                     default={''} title={"Rule NO. (range 1-3, blank for random)"}/>
+					<RangeSelectionBlock rangeMax={QUESTION_SIZE_MAX} rangeMin={QUESTION_SIZE_MIN} allowEmpty={true}
+					                     default={''} title={"Question Size (range 15-40)"}/>
+					<DropdownBlock
+						options={["Random", "Alternating", "Neutralizing", "Mixed - Alternating & Neutralizing"]}
+						default={"Random"} title={"Question Type"}/>
+					<CheckboxBlock title={"Shuffle Result"}/>
+					<CheckboxBlock title={"Use IPA [ɡ]"}/>
+				</div>
+
+				<div id={"helpForm"}>
+					<HelpBlock/>
+				</div>
 			</form>
 		);
 	};
