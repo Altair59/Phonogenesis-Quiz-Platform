@@ -1,7 +1,7 @@
 import React from "react";
 import "./GenComp.css"
 
-//  options, title, default
+//  options, title, default, onChange
 export default class DropdownBlock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -10,7 +10,8 @@ export default class DropdownBlock extends React.Component {
 	}
 
 	onChange = (e) => {
-		this.setState({selection: e.target.value})
+		this.setState({selection: e.target.value});
+		this.props.onChange(e);
 	};
 
 	render() {

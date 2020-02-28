@@ -1,11 +1,8 @@
 #genSpecForm {
-    float: left;
+    display: inline-block;
+    vertical-align: top;
 }
 
-#helpForm {
-    float: right;
-}
-
-#simpleGenForm {
-    width: 900px;
+#questionForm {
+    display: inline-block;
 }
