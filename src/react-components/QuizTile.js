@@ -19,8 +19,6 @@ class QuizTile extends React.Component {
         <ExpansionPanel>
          <ExpansionPanelSummary
            expandIcon={<ExpandMoreIcon />}
-           aria-controls="panel1a-content"
-           id="panel1a-header"
          >
            More details
          </ExpansionPanelSummary>
