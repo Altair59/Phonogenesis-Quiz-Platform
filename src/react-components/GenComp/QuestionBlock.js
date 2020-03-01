@@ -1,11 +1,24 @@
 import React from "react";
-import "./QuestionBlock.css"
-import DropdownBlock from "./DropdownBlock";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Box from '@material-ui/core/Box';
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
-const DEFAULT_HINT = "Full Phonemes";
-const DEFAULT_GEN_TYPE = "CADT";
 
-//  instTxt, question, submitAction, carryBlock (null)
+//  instTxt, question, nextQuestion (null), genBlock (null)
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -14,63 +27,31 @@ export default class QuestionBlock extends React.Component {
 			showAns: false,
 			showUR: false,
 			showPhoneme: false,
-			hintMode: DEFAULT_HINT,
-			genType: DEFAULT_GEN_TYPE,
+			isQuiz: typeof props === "undefined" || props.genBlock === null,
 			qCount: props.qCount
 		};
 	}
 
-	clickShowAnswer = (e) => {
+	onShowAnswer = (e) => {
 		this.setState({showAns: true});
 		this.setState({showUR: true});
 		this.setState({showPhoneme: true});
 		e.preventDefault();
 	};
 
-	onGetHint = (e) => {
-		switch (this.state.hintMode) {
-			case "Full Phonemes":
-				this.setState({showPhoneme: true});
-				break;
-
-			case "UR":
-				this.setState({showUR: true});
-				break;
-
-			default:
-				break;
-		}
-
+	onGetPhonemes = (e) => {
+		this.setState({showPhoneme: true});
 		e.preventDefault();
 	};
 
-	onGenMore = (e) => {
-		switch (this.state.genType) {
-			case "CADT":
-				this.setState({qCount: this.state.qCount + 5});
-				break;
-
-			case "CAND":
-
-				break;
-
-			case "NCAD":
-
-				break;
-
-			default:
-				break;
-		}
-
+	onGetUR = (e) => {
+		this.setState({showUR: true});
 		e.preventDefault();
 	};
 
-	onHintChange = (e) => {
-		this.setState({hintMode: e.target.value})
-	};
-
-	onGenTypeChange = (e) => {
-		this.setState({genType: e.target.value})
+	onMoreCADT = (e) => {
+		this.setState({qCount: this.state.qCount + 5});
+		e.preventDefault();
 	};
 
 	render() {
@@ -88,118 +69,120 @@ export default class QuestionBlock extends React.Component {
 			question.gloss.slice(sp2, question.gloss.length)];
 
 		return (
-			<div>
-				<table id={"infoTable"}>
-					<tbody>
-					<tr>
-						{
-							typeof this.props.carryBlock !== 'undefined' && this.props.carryBlock !== null ?
-								(<td id={"carryBlock"}>{this.props.carryBlock}</td>) : null
-						}
+			<Grid container direction="column" justify="flex-start" alignItems="center" spacing={7}>
+				<Grid item>
+					<Grid container direction="row" justify="flex-start" alignItems="center" spacing={7}>
 
-						<td id={"helpForm"}>
-							<fieldset className={"formElement"} id={"helpBlock"}>
-								<legend id={"helpTitle"}>Extra Help</legend>
-								<div id={"hintBlock"}>
-									<DropdownBlock options={["Full Phonemes", "UR"]} default={DEFAULT_HINT}
-									               title={"More Hints"} onChange={this.onHintChange}/>
-									<button onClick={this.onGetHint}>Get Hint!</button>
-								</div>
+						<Grid item>
+							<Grid container direction="column" justify="space-evenly" alignItems="center"
+							      spacing={2}>
+								{
+									typeof this.props.genBlock !== 'undefined' && this.props.genBlock !== null ?
+										(<Grid item>{this.props.genBlock}</Grid>) : null
+								}
+							</Grid>
+						</Grid>
 
-								<div id={"genMore"}>
-									<DropdownBlock options={["CADT", "CAND", "NCAD"]} default={DEFAULT_GEN_TYPE}
-									               title={"Generate More"} onChange={this.onGenTypeChange}/>
-									<button onClick={this.onGenMore}>Get More!</button>
-								</div>
-							</fieldset>
-						</td>
-
-						<td id={"templateData"}>
-							<h3>Templates:</h3>
+						<Grid item>
+							<Typography variant="h5">Templates: </Typography>
 							<ul>
 								{
-									templates.map((template) => (<li key={template}>{template}</li>))
+									templates.map((template) => (
+										<li key={template}>{template}</li>))
 								}
 							</ul>
-						</td>
-					</tr>
-					</tbody>
-				</table>
+						</Grid>
+					</Grid>
+				</Grid>
 
-				<div id={"buttonField"}>
-					<button onClick={this.props.submitAction}>{this.props.instTxt}</button>
-					<button onClick={this.clickShowAnswer}>Get Answer</button>
-				</div>
-				<hr/>
-				<div id={"hintField"}>
-					{showAns ? (<p id={"answerText"}><span>{question.answer}</span></p>) : null}
-					{showPhoneme ? (<p><span className={"hintTitle"}>Phonemes: </span>{question.phoneme}</p>) : null}
-					<p><span className={"hintTitle"}>Phones of Interest: </span>{question.poi}
-						<span className={"hintTitle"}>Rule Type: </span>{question.ruleType}
-						<span className={"hintTitle"}>Count: </span>{this.state.qCount}</p>
-				</div>
+				<Grid item>
+					<Grid container direction="row" justify="flex-start" alignItems="center" spacing={7}>
+						<Grid item>
+							<Grid container direction={"column"} justify={"flex-start"} alignItems={"center"}
+							      spacing={2}>
+								<Grid item>
+									<Grid container direction={"row"} justify="flex-start" alignItems={"center"} spacing={7}>
+										<Grid item>
+											<Grid container direction="column" justify="space-evenly" alignItems="center"
+											      spacing={3}>
+												<Grid item>
+													<ButtonGroup variant="contained" color="primary"
+													             aria-label={"contained primary hint button group"}>
+														<Button onClick={this.onGetPhonemes}>Get Phonemes</Button>
+														<Button onClick={this.onGetUR}>Get UR</Button>
+													</ButtonGroup>
+												</Grid>
 
-				<table className={"qusTable"} id={"qusT1"}>
-					<tbody>
-					<tr className={"headerRow"}>
-						{showUR ? <th className={"headerRow"}>UR</th> : null}
-						<th className={"headerRow"}>SR</th>
-						<th className={"headerRow"}>Gloss</th>
-					</tr>
+												<Grid item>
+													<ButtonGroup variant="contained" color="primary"
+													             aria-label={"contained primary hint button group"}>
+														<Button onClick={this.onMoreCADT}>More CADT</Button>
+														<Button>More CAND</Button>
+														<Button>More NCAD</Button>
+													</ButtonGroup>
+												</Grid>
+											</Grid>
+										</Grid>
 
-					{
-						urs[0].map((urWord, i) => (
-							<tr key={urWord}>
-								{showUR ? <td>{urWord}</td> : null}
-								<td className={"srCol"}>{srs[0][i]}</td>
-								<td>{gls[0][i]}</td>
-							</tr>
-						))
-					}
-					</tbody>
-				</table>
+										{this.state.isQuiz ? (
+											<Grid item>[
+												<Button vraiant="contained" color="primary" onClick={this.props.nextQuestion}>Next
+													Question</Button>
+											</Grid>
+										) : (
+											<Grid item>
+												<Button vraiant="contained" color="primary" onClick={this.onShowAnswer}>Show
+													Answer</Button>
+											</Grid>
+										)}
+									</Grid>
+								</Grid>
 
-				<table className={"qusTable"} id={"qusT2"}>
-					<tbody>
-					<tr className={"headerRow"}>
-						{showUR ? <th className={"headerRow"}>UR</th> : null}
-						<th className={"headerRow"}>SR</th>
-						<th className={"headerRow"}>Gloss</th>
-					</tr>
+								{showAns ? (<Grid item>Rule: {question.answer}</Grid>) : null}
+								{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
+								<Grid item>Phones of Interest: {question.poi}</Grid>
+								<Grid item>Rule Type: {question.ruleType}</Grid>
+								<Grid item>Count: {this.state.qCount}</Grid>
+							</Grid>
+						</Grid>
 
-					{
-						urs[1].map((urWord, i) => (
-							<tr key={urWord}>
-								{showUR ? <td>{urWord}</td> : null}
-								<td className={"srCol"}>{srs[1][i]}</td>
-								<td>{gls[1][i]}</td>
-							</tr>
-						))
-					}
-					</tbody>
-				</table>
+						<Grid item>
+							<Grid container direction={"row"} justify="space-evenly" alignItems={"center"}>
 
-				<table className={"qusTable"}>
-					<tbody>
-					<tr className={"headerRow"}>
-						{showUR ? <th className={"headerRow"}>UR</th> : null}
-						<th className={"headerRow"}>SR</th>
-						<th className={"headerRow"}>Gloss</th>
-					</tr>
+								{[0, 1, 2].map((index) => (
+									<Grid item>
+										<TableContainer component={Paper}>
+											<Table aria-label="question data table">
+												<TableHead>
+													<TableRow>
+														{showUR ? <TableCell align="center">UR</TableCell> : null}
+														<TableCell align="center">SR</TableCell>
+														<TableCell align="center">Gloss</TableCell>
+													</TableRow>
+												</TableHead>
+												<TableBody>
+													{
+														urs[index].map((urWord, i) => (
+															<TableRow key={urWord}>
+																{showUR ?
+																	<TableCell align="center">{urWord}</TableCell> : null}
+																<TableCell align="center">{srs[index][i]}</TableCell>
+																<TableCell align="center">{gls[index][i]}</TableCell>
+															</TableRow>
+														))
+													}
+												</TableBody>
+											</Table>
+										</TableContainer>
+									</Grid>
+								))}
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
 
-					{
-						urs[2].map((urWord, i) => (
-							<tr key={urWord}>
-								{showUR ? <td>{urWord}</td> : null}
-								<td className={"srCol"}>{srs[2][i]}</td>
-								<td>{gls[2][i]}</td>
-							</tr>
-						))
-					}
-					</tbody>
-				</table>
 
-			</div>
+			</Grid>
 		);
 	}
 }

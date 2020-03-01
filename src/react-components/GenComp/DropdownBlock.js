@@ -1,5 +1,6 @@
 import React from "react";
-import "./GenComp.css"
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 //  options, title, default, onChange
 export default class DropdownBlock extends React.Component {
@@ -20,11 +21,11 @@ export default class DropdownBlock extends React.Component {
 		return (
 			<div className={"formElement"}>
 				<legend className={"labelText"}> {this.props.title}</legend>
-				<select className={"inputBlock"} onChange={this.onChange} value={selection}>
+				<Select className={"inputBlock"} onChange={this.onChange} value={selection}>
 					{this.props.options.map((option) =>
-						<option key={option}>{option}</option>
+						<MenuItem key={option}>{option}</MenuItem>
 					)}
-				</select>
+				</Select>
 
 			</div>
 		);

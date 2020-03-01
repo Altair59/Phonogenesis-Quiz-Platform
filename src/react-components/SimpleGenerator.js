@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./SimpleGenerator.css";
 import DropdownBlock from "./GenComp/DropdownBlock";
 import CheckboxBlock from "./GenComp/CheckboxBlock";
 import RangeSelectionBlock from "./GenComp/RangeSelectionBlock";
@@ -12,7 +11,7 @@ const question1 = {
 	poi: "['c', 'ɟ', 'ç', 'ʝ', 'ɲ', 'k', 'g', 'x', 'ɣ', 'ŋ']",
 	ruleType: "Alternating",
 	phoneme: "p b t d k g ʔ t͡ʃ d͡ʒ f v θ ð s z ʃ ʒ x ɣ m n ŋ l w j i e ɔ o æ ɑ",
-	answer: "Rule: palatalization of velars after high front vowels ===== [velar,consonant] -> [palatal,front,posterior,laminal],['secondary POA', 'stridency'] / [high,front,vowel] _",
+	answer: "palatalization of velars after high front vowels",
 	gloss: ['\'bounce\'', '\'wheat\'', '\'mosquito\'', '\'awaken\'', '\'two\'', '\'coastline\'', '\'rain\'', '\'lose\'', '\'we (incl)\'', '\'bring\'', '\'you (dual)\'', '\'what\'', '\'ketchup\'', '\'sun\'', '\'build\'', '\'lake\'', '\'west\'', '\'fight\'', '\'destroy\'', '\'thumb\'', '\'kneel\'', '\'few\'', '\'then\'', '\'black\'', '\'pretend\'', '\'food\'', '\'apple\'', '\'onion\'', '\'horn\'', '\'soybean\''],
 	SR: ['diɲxɑ', 'ʃiɟe', 'ɣiçseɣ', 'ŋoʒziç', 'kicɑθ', 'ŋictog', 'xiɲʔo', 'lɔmiɟ', 'kiɲd͡ʒɑt͡ʃ', 'ʔicʃɑ', 'giʝneɣ', 'kɔfxiʝ', 'ʃiçɔ', 'liɲvoŋ', 'θiɲ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin'],
 	UR: ['diŋxɑ', 'ʃige', 'ɣixseɣ', 'ŋoʒzix', 'kikɑθ', 'ŋiktog', 'xiŋʔo', 'lɔmig', 'kiŋd͡ʒɑt͡ʃ', 'ʔikʃɑ', 'giɣneɣ', 'kɔfxiɣ', 'ʃixɔ', 'liŋvoŋ', 'θiŋ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin']
@@ -42,7 +41,7 @@ class SimpleGenerator extends React.Component {
 				<div id={"questionForm"}>
 					<QuestionBlock instTxt={"Get Question"} question={questionList[0]}
 					               submitAction={this.onGetQuestion} qCount={15}
-					               carryBlock={(
+					               genBlock={(
 						               <div id={"genSpecForm"}>
 							               <RangeSelectionBlock rangeMax={RULE_SELECTION_MAX}
 							                                    rangeMin={RULE_SELECTION_MIN}

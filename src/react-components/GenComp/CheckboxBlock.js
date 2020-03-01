@@ -1,5 +1,5 @@
 import React from "react";
-import "./GenComp.css"
+
 
 //  title
 export default class CheckboxBlock extends React.Component {

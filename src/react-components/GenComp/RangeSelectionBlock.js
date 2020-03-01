@@ -1,5 +1,4 @@
 import React from "react";
-import "./GenComp.css"
 
 // rangeMax, rangeMin, allowEmpty, default, title
 export default class RangeSelectionBlock extends React.Component {
