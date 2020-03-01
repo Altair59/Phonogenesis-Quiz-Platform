@@ -24,7 +24,7 @@ class TopBar extends React.Component {
   }
 
   openDrawer = () => {
-    this.setState({isOpen: true });
+    this.setState({isOpen: true});
   }
 
   closeDrawer = () => {
@@ -33,8 +33,9 @@ class TopBar extends React.Component {
 
   navigate = (text) => {
     let newPage;
+    console.log(this.props.user)
     if (text === "Home") {
-      if (this.props.type === "student") {
+      if (this.props.user.type === "student") {
         newPage = "/student"
       }
       else {
@@ -60,13 +61,7 @@ class TopBar extends React.Component {
     if (this.state.redirect) {
         return <Redirect to={{
             pathname: this.state.redirect,
-            state: {
-                type: this.props.type,
-                name: this.props.name,
-                email: this.props.email,
-                username: this.props.username,
-                password: this.props.password
-            }
+            user: this.props.user
         }}/>
     }
 
@@ -87,7 +82,7 @@ class TopBar extends React.Component {
           </IconButton>
           <Divider />
           <List>
-            {(this.props.type === "student" ? this.state.studentNav : this.state.profNav).map((text, index) => (
+            {(this.props.user.type === "student" ? this.state.studentNav : this.state.profNav).map((text, index) => (
               <ListItem button onClick={() => this.navigate(text)} key={text}>
                 <ListItemText primary={text}/>
               </ListItem>
