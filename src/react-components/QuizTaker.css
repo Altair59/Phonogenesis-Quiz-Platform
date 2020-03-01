@@ -1,0 +1,8 @@
+.answerBut {
+    padding: 10px;
+}
+
+#selectAnswer {
+    align-content: center;
+    align-items: flex-start;
+}

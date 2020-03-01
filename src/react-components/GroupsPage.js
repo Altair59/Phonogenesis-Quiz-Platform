@@ -96,9 +96,3 @@ class GroupsPage extends React.Component {
 }
 
 export default GroupsPage;
-
-class GroupsPage extends React.Component {
-	render() {
-		return null;
-	}
-}

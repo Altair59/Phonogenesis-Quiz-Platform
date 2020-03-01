@@ -1,9 +1,9 @@
 import React from "react";
 
-import DropdownBlock from "./GenComp/DropdownBlock";
-import CheckboxBlock from "./GenComp/CheckboxBlock";
-import RangeSelectionBlock from "./GenComp/RangeSelectionBlock";
-import QuestionBlock from "./GenComp/QuestionBlock";
+import DropdownBlock from "./QuestionComp/DropdownBlock";
+import CheckboxBlock from "./QuestionComp/CheckboxBlock";
+import RangeSelectionBlock from "./QuestionComp/RangeSelectionBlock";
+import QuestionBlock from "./QuestionComp/QuestionBlock";
 
 
 const question1 = {
