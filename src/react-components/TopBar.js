@@ -12,19 +12,20 @@ import Divider from '@material-ui/core/Divider'
 
 import {Redirect} from "react-router-dom"
 
+const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
+const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Log Out'];
+
 class TopBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       redirect: null,
-      studentNav: ['Home', 'Assignments', 'Groups', 'Practice'],
-      profNav: ['Home', 'Assign Quiz', 'Generate Problems'],
       isOpen: false,
     }
   }
 
   openDrawer = () => {
-    this.setState({isOpen: true });
+    this.setState({isOpen: true});
   }
 
   closeDrawer = () => {
@@ -33,8 +34,9 @@ class TopBar extends React.Component {
 
   navigate = (text) => {
     let newPage;
+    console.log(this.props.user)
     if (text === "Home") {
-      if (this.props.type === "student") {
+      if (this.props.user.type === "student") {
         newPage = "/student"
       }
       else {
@@ -50,6 +52,8 @@ class TopBar extends React.Component {
       newPage = "/professor/quiz"
     } else if (text === "Generate Problems") {
       newPage = "/professor/gen"
+    } else if (text === "Log Out") {
+      newPage = "/"
     }
     console.log(text)
     this.setState({redirect: newPage})
@@ -60,13 +64,7 @@ class TopBar extends React.Component {
     if (this.state.redirect) {
         return <Redirect to={{
             pathname: this.state.redirect,
-            state: {
-                type: this.props.type,
-                name: this.props.name,
-                email: this.props.email,
-                username: this.props.username,
-                password: this.props.password
-            }
+            user: this.props.user
         }}/>
     }
 
@@ -87,7 +85,7 @@ class TopBar extends React.Component {
           </IconButton>
           <Divider />
           <List>
-            {(this.props.type === "student" ? this.state.studentNav : this.state.profNav).map((text, index) => (
+            {(this.props.user.type === "student" ? studentNav : profNav).map((text, index) => (
               <ListItem button onClick={() => this.navigate(text)} key={text}>
                 <ListItemText primary={text}/>
               </ListItem>

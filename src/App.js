@@ -27,8 +27,8 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' render={() => (<LoginPage users={this.users}/>)}/>
             <Route exact path='/admin' render={() => (<AdminPage users={this.users}/>)}/>
-            <Route exact path='/professor' render={() => (<AdvancedGenerator />)}/>
-            <Route exact path='/professor/groups' render={() => (<GroupsPage />)}/>
+            <Route exact path='/professor/gen' render={() => (<AdvancedGenerator />)}/>
+            <Route exact path='/professor' render={() => (<GroupsPage users={this.users}/>)}/>
             <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
             <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
             <Route exact path='/student' render={() => (<Statistics />)}/>
