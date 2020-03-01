@@ -12,13 +12,14 @@ import Divider from '@material-ui/core/Divider'
 
 import {Redirect} from "react-router-dom"
 
+const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
+const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Log Out'];
+
 class TopBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       redirect: null,
-      studentNav: ['Home', 'Assignments', 'Groups', 'Practice'],
-      profNav: ['Home', 'Assign Quiz', 'Generate Problems'],
       isOpen: false,
     }
   }
@@ -51,6 +52,8 @@ class TopBar extends React.Component {
       newPage = "/professor/quiz"
     } else if (text === "Generate Problems") {
       newPage = "/professor/gen"
+    } else if (text === "Log Out") {
+      newPage = "/"
     }
     console.log(text)
     this.setState({redirect: newPage})
@@ -82,7 +85,7 @@ class TopBar extends React.Component {
           </IconButton>
           <Divider />
           <List>
-            {(this.props.user.type === "student" ? this.state.studentNav : this.state.profNav).map((text, index) => (
+            {(this.props.user.type === "student" ? studentNav : profNav).map((text, index) => (
               <ListItem button onClick={() => this.navigate(text)} key={text}>
                 <ListItemText primary={text}/>
               </ListItem>
