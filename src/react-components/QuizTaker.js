@@ -41,7 +41,8 @@ class QuizTaker extends React.Component {
 			quizSize: 2,
 			score: 0,
 			studentAnswers: [],
-			doRedirect: false
+			doRedirect: false,
+			qKey: 0
 		};
 	}
 
@@ -77,6 +78,7 @@ class QuizTaker extends React.Component {
 
 		const newIndex = this.state.questionIndex + 1;
 		this.setState({questionIndex: newIndex});
+		this.setState({qKey: this.state.qKey + 1});
 
 		if (newIndex < this.state.quizSize) {
 			this.setState({choices: this.genChoicesFromPool(questionList[newIndex].answer, 4)});
@@ -101,12 +103,14 @@ class QuizTaker extends React.Component {
 		const score = this.state.score;
 		const choices = this.state.choices;
 		const studentAnswers = this.state.studentAnswers;
+		const genMoreLimit = this.state.maxGenMore;
+		const qKey = this.state.qKey;
 
 		if (index < size) {
 			return (
 				<div>
 					<QuestionBlock instTxt={"Get Question"} question={questionList[index]} qCount={20}
-					               isReadOnly={false} showAnswer={false}/>
+					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}/>
 					<br/>
 					<hr/>
 					<br/>
@@ -138,8 +142,8 @@ class QuizTaker extends React.Component {
 							{questionList.map((question, index) => (
 								<div key={index}>
 									<QuestionBlock instTxt={"Get Question"} question={questionList[index]}
-									               qCount={20}
-									               isReadOnly={true} showAnswer={true}/>
+									               qCount={20} isReadOnly={true} showAnswer={true}
+									               genMoreLimit={genMoreLimit}/>
 									<p id="correctAnswerTxt">Correct Answer: {question.answer}</p>
 									<p id="studentAnswerTxt">Your Answer: {studentAnswers[index]}</p>
 									<br/>

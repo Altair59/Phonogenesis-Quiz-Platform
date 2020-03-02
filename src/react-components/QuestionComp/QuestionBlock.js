@@ -16,13 +16,13 @@ import TableRow from '@material-ui/core/TableRow';
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			showAns: props.showAnswer || false,
 			showUR: false,
 			showPhoneme: false,
 			isQuiz: typeof props.genBlock === "undefined" || props.genBlock === null,
-			qCount: props.qCount
+			qCount: props.qCount,
+			genMoreCount: 0
 		};
 	}
 
@@ -44,7 +44,15 @@ export default class QuestionBlock extends React.Component {
 	};
 
 	onMoreCADT = (e) => {
-		this.setState({qCount: this.state.qCount + 5});
+		const newGenMoreCt = this.state.genMoreCount + 1;
+
+		if (newGenMoreCt > this.props.genMoreLimit){
+			alert("You've reach maximum allowance to generate more instances for this question!");
+		} else {
+			this.setState({genMoreCount: this.state.genMoreCount + 1});
+			this.setState({qCount: this.state.qCount + 5});
+		}
+
 		e.preventDefault();
 	};
 
