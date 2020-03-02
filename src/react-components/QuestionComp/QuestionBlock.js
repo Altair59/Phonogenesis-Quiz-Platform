@@ -1,12 +1,6 @@
 import React from "react";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Box from '@material-ui/core/Box';
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -18,13 +12,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 
-//  instTxt, question, genBlock (null)
+//  instTxt, question, genBlock (null), isReadOnly, showAnswer
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			showAns: false,
+			showAns: props.showAnswer || false,
 			showUR: false,
 			showPhoneme: false,
 			isQuiz: typeof props.genBlock === "undefined" || props.genBlock === null,
@@ -56,7 +50,7 @@ export default class QuestionBlock extends React.Component {
 
 	render() {
 		const showUR = this.state.showUR;
-		const showAns = this.state.showAns;
+		const showAns = this.props.showAnswer || this.state.showAns;
 		const showPhoneme = this.state.showPhoneme;
 		const question = this.props.question;
 		const endIndex = Math.min(this.state.qCount, question.UR.length);
@@ -102,7 +96,7 @@ export default class QuestionBlock extends React.Component {
 								<Grid item>Phones of Interest: {question.poi}</Grid>
 								<Grid item>Rule Type: {question.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
 
-								<Grid item>
+								{!this.props.isReadOnly ? (<Grid item>
 									<Grid container direction={"row"} justify="flex-start" alignItems={"center"}
 									      spacing={7}>
 										<Grid item>
@@ -135,7 +129,7 @@ export default class QuestionBlock extends React.Component {
 											</Grid>
 										)}
 									</Grid>
-								</Grid>
+								</Grid>) : null}
 							</Grid>
 						</Grid>
 
