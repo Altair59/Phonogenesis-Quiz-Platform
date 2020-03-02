@@ -13,19 +13,19 @@ import Divider from '@material-ui/core/Divider'
 import {withRouter} from "react-router-dom"
 
 const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
-const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Log Out'];
+const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Groups', 'Log Out'];
 
 class TopBar extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isOpen: false,
-    }
+    };
   }
 
   openDrawer = () => {
     this.setState({isOpen: true});
-  }
+  };
 
   navigate = (text) => {
     let newPage = "/";
@@ -37,9 +37,11 @@ class TopBar extends React.Component {
         newPage = "/professor"
       }
     } else if (text === "Assignments") {
-      newPage = "/student/quiz"
+      if (this.props.type === "professor"){
+        newPage = "/student/quiz"
+      }
     } else if (text === "Groups") {
-      newPage = "/"
+      newPage = "/professor/groups"
     } else if (text === "Practice") {
       newPage = "/student/gen"
     } else if (text === "Assign Quiz") {

@@ -11,6 +11,7 @@ import SimpleGenerator from './react-components/SimpleGenerator';
 import QuizGenerator from './react-components/QuizGenerator';
 import UserMain from './react-components/UserMain';
 import QuizTaker from './react-components/QuizTaker';
+import ProfessorHome from "./react-components/ProfessorHome";
 
 class App extends React.Component {
   users = [
@@ -27,8 +28,9 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' render={() => (<LoginPage users={this.users}/>)}/>
             <Route exact path='/admin' render={() => (<AdminPage users={this.users}/>)}/>
+            <Route exact path='/professor' render={() => (<ProfessorHome />)}/>
             <Route exact path='/professor/gen' render={() => (<AdvancedGenerator />)}/>
-            <Route exact path='/professor' render={() => (<GroupsPage users={this.users}/>)}/>
+            <Route exact path='/professor/groups' render={() => (<GroupsPage users={this.users}/>)}/>
             <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
             <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
             <Route exact path='/student' render={() => (<UserMain />)}/>

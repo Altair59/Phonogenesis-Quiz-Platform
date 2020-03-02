@@ -13,7 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
-import { withRouter } from "react-router-dom"
+import {withRouter} from "react-router-dom"
 
 import "./GroupsPage.css";
 
@@ -96,68 +96,74 @@ class GroupsPage extends React.Component {
 
 
 	render() {
-		let { state } = this.props.location;
+		let {state} = this.props.location;
 		return (
 			<div>
-				<TextField onChange={(e) => {
-					this.handleChange(e, 0)
-				}} label="Name">Group Name</TextField>
+				<TopBar {...state} />
+				<Grid container direction="column" justify="flex-start" alignItems="center">
+					<Grid item>
+						<h2>Create Group</h2>
+						<TextField onChange={(e) => {
+							this.handleChange(e, 0)
+						}} label="Name">Group Name</TextField>
 
-				<IconButton
-					onClick={this.createGroup}><AddShoppingCartIcon>Create Group</AddShoppingCartIcon></IconButton>
-				<TopBar {...state}></TopBar>
-				{
-					this.state.students.map((group, j) => (
-						<div key={j}>
-							<Grid container spacing={2} direction="row"
-							      justify="flex-start"
-							      alignItems="center">
-								<Grid item>
-									<h2>group {this.state.students[j].name}</h2>
+						<IconButton
+							onClick={this.createGroup}><AddShoppingCartIcon>Create
+							Group</AddShoppingCartIcon></IconButton>
+					</Grid>
+					{
+						this.state.students.map((group, j) => (
+							<Grid item key={j}>
+								<Grid container spacing={2} direction="row"
+								      justify="flex-start"
+								      alignItems="center">
+									<Grid item>
+										<h2>group {this.state.students[j].name}</h2>
+									</Grid>
+									<Grid item>
+										<IconButton
+											onClick={this.removeGroup.bind(this, j)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+									</Grid>
 								</Grid>
-								<Grid item>
-									<IconButton
-										onClick={this.removeGroup.bind(this, j)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-								</Grid>
+								<TableContainer component={Paper}>
+									<Table aria-label="student table">
+										<TableHead>
+											<TableRow>
+												<TableCell>Name</TableCell>
+												<TableCell>Email</TableCell>
+												<TableCell>Username</TableCell>
+												<TableCell>Remove Student</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{
+												this.state.students[j].students.map((row, i) => (
+													<TableRow key={row.name}>
+														<TableCell>{row.name}</TableCell>
+														<TableCell>{row.email}</TableCell>
+														<TableCell>{row.username}</TableCell>
+														<TableCell>
+															<IconButton
+																onClick={this.removeStudent.bind(this, i, j)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+														</TableCell>
+													</TableRow>
+												))
+											}
+										</TableBody>
+									</Table>
+
+									<form>
+										<TextField onChange={(e) => {
+											this.handleChange(e, j + 1)
+										}} label="Name">Name</TextField>
+										<IconButton
+											onClick={this.handleSubmit.bind(this, j)}><AddShoppingCartIcon>Invite</AddShoppingCartIcon></IconButton>
+									</form>
+								</TableContainer>
 							</Grid>
-							<TableContainer component={Paper}>
-								<Table aria-label="student table">
-									<TableHead>
-										<TableRow>
-											<TableCell>Name</TableCell>
-											<TableCell>Email</TableCell>
-											<TableCell>Username</TableCell>
-											<TableCell>Remove Student</TableCell>
-										</TableRow>
-									</TableHead>
-									<TableBody>
-										{
-											this.state.students[j].students.map((row, i) => (
-												<TableRow key={row.name}>
-													<TableCell>{row.name}</TableCell>
-													<TableCell>{row.email}</TableCell>
-													<TableCell>{row.username}</TableCell>
-													<TableCell>
-														<IconButton
-															onClick={this.removeStudent.bind(this, i, j)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-													</TableCell>
-												</TableRow>
-											))
-										}
-									</TableBody>
-								</Table>
-
-								<form>
-									<TextField onChange={(e) => {
-										this.handleChange(e, j + 1)
-									}} label="Name">Name</TextField>
-									<IconButton
-										onClick={this.handleSubmit.bind(this, j)}><AddShoppingCartIcon>Invite</AddShoppingCartIcon></IconButton>
-								</form>
-							</TableContainer>
-						</div>
-					))
-				}
+						))
+					}
+				</Grid>
 			</div>
 		)
 	}
