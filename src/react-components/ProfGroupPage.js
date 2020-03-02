@@ -15,9 +15,9 @@ import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
 
-import "./GroupsPage.css";
+import "./ProfGroupPage.css";
 
-class GroupsPage extends React.Component {
+class ProfGroupPage extends React.Component {
 	group = function (s, n) {
 		this.students = s;
 		this.name = n;
@@ -169,4 +169,4 @@ class GroupsPage extends React.Component {
 	}
 }
 
-export default withRouter(GroupsPage);
+export default withRouter(ProfGroupPage);

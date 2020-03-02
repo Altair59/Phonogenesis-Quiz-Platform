@@ -52,50 +52,50 @@ class TopBar extends React.Component {
       newPage = "/"
     }
 
-    this.props.history.push({
-      pathname: newPage,
-      state: {
-        type: this.props.type,
-        name: this.props.name,
-        email: this.props.email,
-        username: this.props.username,
-        password: this.props.password
-      }
-    })
-  }
+		this.props.history.push({
+			pathname: newPage,
+			state: {
+				type: this.props.type,
+				name: this.props.name,
+				email: this.props.email,
+				username: this.props.username,
+				password: this.props.password
+			}
+		})
+	}
 
-  closeDrawer = () => {
-    this.setState({isOpen: false});
-  };
+	closeDrawer = () => {
+		this.setState({isOpen: false});
+	};
 
-  render() {
-    return(
-      <div>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" onClick={this.openDrawer} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <h3>Phonogenesis</h3>
-          </Toolbar>
-        </AppBar>
+	render() {
+		return (
+			<div>
+				<AppBar position="static">
+					<Toolbar>
+						<IconButton edge="start" onClick={this.openDrawer} color="inherit" aria-label="menu">
+							<MenuIcon/>
+						</IconButton>
+						<h3>Phonogenesis</h3>
+					</Toolbar>
+				</AppBar>
 
-        <Drawer variant="persistent" anchor="left" open={this.state.isOpen}>
-          <IconButton onClick={this.closeDrawer}>
-            <ChevronRightIcon />
-          </IconButton>
-          <Divider />
-          <List>
-            {(this.props.type === "student" ? studentNav : profNav).map((text, index) => (
-              <ListItem button onClick={() => this.navigate(text)} key={text}>
-                <ListItemText primary={text}/>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      </div>
-    )
-  }
+				<Drawer variant="persistent" anchor="left" open={this.state.isOpen}>
+					<IconButton onClick={this.closeDrawer}>
+						<ChevronRightIcon/>
+					</IconButton>
+					<Divider/>
+					<List>
+						{(this.props.type === "student" ? studentNav : profNav).map((text, index) => (
+							<ListItem button onClick={() => this.navigate(text)} key={text}>
+								<ListItemText primary={text}/>
+							</ListItem>
+						))}
+					</List>
+				</Drawer>
+			</div>
+		)
+	}
 }
 
 export default withRouter(TopBar);

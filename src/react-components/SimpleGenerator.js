@@ -5,7 +5,7 @@ import CheckboxBlock from "./QuestionComp/CheckboxBlock";
 import RangeSelectionBlock from "./QuestionComp/RangeSelectionBlock";
 import QuestionBlock from "./QuestionComp/QuestionBlock";
 import TopBar from "./TopBar";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 
 const question1 = {
@@ -40,11 +40,12 @@ class SimpleGenerator extends React.Component {
 	render() {
 		return (
 			<div>
-				<TopBar {...this.props.location.state}></TopBar>
+				<TopBar {...this.props.location.state}/>
 				<form id={"simpleGenForm"}>
 					<div id={"questionForm"}>
 						<QuestionBlock instTxt={"Get Question"} question={questionList[0]}
-						               submitAction={this.onGetQuestion} qCount={15} isReadOnly={false} showAnswer={false}
+						               submitAction={this.onGetQuestion} qCount={15} isReadOnly={false}
+						               showAnswer={false}
 						               genBlock={(
 							               <div id={"genSpecForm"}>
 								               <RangeSelectionBlock rangeMax={RULE_SELECTION_MAX}
