@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from "react-router-dom"
+import {withRouter} from "react-router-dom"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -13,18 +13,18 @@ class LoginPage extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          redirect: null,
           err: false,
           user: null
       };
     }
 
     login = e => {
-        const filtered_user = this.props.users.filter(user => user.username === this.state.username)
+        let filtered_user = this.props.users.filter(user => user.username === this.state.username)
         if (filtered_user.length === 1) {
             if (filtered_user[0].password === this.state.password) {
-                this.setState({
-                  user: {
+                this.props.history.push({
+                  pathname: '/' + filtered_user[0].type,
+                  state: {
                     type: filtered_user[0].type,
                     name: filtered_user[0].name,
                     email: filtered_user[0].email,
@@ -32,7 +32,6 @@ class LoginPage extends React.Component {
                     password: filtered_user[0].password
                   }
                 });
-                this.setState({redirect: "/" + filtered_user[0].type});
             } else {
                 this.setState({err: true})
             }
@@ -48,13 +47,6 @@ class LoginPage extends React.Component {
     };
 
     render() {
-        if (this.state.redirect) {
-            return <Redirect to={{
-                pathname: this.state.redirect,
-                user: this.state.user
-            }}/>
-        }
-
         return (
             <div className="loginForm">
                 <Grid container spacing={1} alignItems="flex-end">
@@ -89,4 +81,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);

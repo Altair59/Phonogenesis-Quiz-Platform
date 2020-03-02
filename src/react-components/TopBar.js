@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider'
 
-import {Redirect} from "react-router-dom"
+import {withRouter} from "react-router-dom"
 
 const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
 const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Log Out'];
@@ -19,7 +19,6 @@ class TopBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      redirect: null,
       isOpen: false,
     }
   }
@@ -33,10 +32,9 @@ class TopBar extends React.Component {
   }
 
   navigate = (text) => {
-    let newPage;
-    console.log(this.props.user)
+    let newPage = "/";
     if (text === "Home") {
-      if (this.props.user.type === "student") {
+      if (this.props.type === "student") {
         newPage = "/student"
       }
       else {
@@ -55,19 +53,21 @@ class TopBar extends React.Component {
     } else if (text === "Log Out") {
       newPage = "/"
     }
-    console.log(text)
-    this.setState({redirect: newPage})
+
+    this.props.history.push({
+      pathname: newPage,
+      state: {
+        type: this.props.type,
+        name: this.props.name,
+        email: this.props.email,
+        username: this.props.username,
+        password: this.props.password
+      }
+    })
 
   }
 
   render() {
-    if (this.state.redirect) {
-        return <Redirect to={{
-            pathname: this.state.redirect,
-            user: this.props.user
-        }}/>
-    }
-
     return(
       <div>
         <AppBar position="static">
@@ -85,7 +85,7 @@ class TopBar extends React.Component {
           </IconButton>
           <Divider />
           <List>
-            {(this.props.user.type === "student" ? studentNav : profNav).map((text, index) => (
+            {(this.props.type === "student" ? studentNav : profNav).map((text, index) => (
               <ListItem button onClick={() => this.navigate(text)} key={text}>
                 <ListItemText primary={text}/>
               </ListItem>
@@ -97,4 +97,4 @@ class TopBar extends React.Component {
   }
 }
 
-export default TopBar;
+export default withRouter(TopBar);
