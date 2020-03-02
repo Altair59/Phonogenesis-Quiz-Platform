@@ -9,87 +9,91 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider'
-import {Redirect} from "react-router-dom"
+
+import {withRouter} from "react-router-dom"
 
 const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
 const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Log Out'];
 
 class TopBar extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			redirect: null,
-			isOpen: false,
-		}
-	}
+  constructor(props) {
+    super(props)
+    this.state = {
+      isOpen: false,
+    }
+  }
 
-	openDrawer = () => {
-		this.setState({isOpen: true});
-	};
+  openDrawer = () => {
+    this.setState({isOpen: true});
+  }
 
-	closeDrawer = () => {
-		this.setState({isOpen: false});
-	};
+  navigate = (text) => {
+    let newPage = "/";
+    if (text === "Home") {
+      if (this.props.type === "student") {
+        newPage = "/student"
+      }
+      else {
+        newPage = "/professor"
+      }
+    } else if (text === "Assignments") {
+      newPage = "/student/quiz"
+    } else if (text === "Groups") {
+      newPage = "/"
+    } else if (text === "Practice") {
+      newPage = "/student/gen"
+    } else if (text === "Assign Quiz") {
+      newPage = "/professor/quiz"
+    } else if (text === "Generate Problems") {
+      newPage = "/professor/gen"
+    } else if (text === "Log Out") {
+      newPage = "/"
+    }
 
-	navigate = (text) => {
-		let newPage;
-		if (text === "Home") {
-			if (this.props.user.type === "student") {
-				newPage = "/student"
-			} else {
-				newPage = "/professor"
-			}
-		} else if (text === "Assignments") {
-			newPage = "/student/quiz"
-		} else if (text === "Groups") {
-			newPage = "/"
-		} else if (text === "Practice") {
-			newPage = "/student/gen"
-		} else if (text === "Assign Quiz") {
-			newPage = "/professor/quiz"
-		} else if (text === "Generate Problems") {
-			newPage = "/professor/gen"
-		} else if (text === "Log Out") {
-			newPage = "/"
-		}
-		this.setState({redirect: newPage})
-	};
+    this.props.history.push({
+      pathname: newPage,
+      state: {
+        type: this.props.type,
+        name: this.props.name,
+        email: this.props.email,
+        username: this.props.username,
+        password: this.props.password
+      }
+    })
+  }
 
-	render() {
-		if (this.state.redirect) {
-			return <Redirect to={{
-				pathname: this.state.redirect,
-				user: this.props.user
-			}}/>
-		}
+  closeDrawer = () => {
+    this.setState({isOpen: false});
+  };
 
-		return (
-			<div>
-				<AppBar position="static">
-					<Toolbar>
-						<IconButton edge="start" onClick={this.openDrawer} color="inherit" aria-label="menu">
-							<MenuIcon/>
-						</IconButton>
-						<h3>Phonogenesis</h3>
-					</Toolbar>
-				</AppBar>
+  render() {
+    return(
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start" onClick={this.openDrawer} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <h3>Phonogenesis</h3>
+          </Toolbar>
+        </AppBar>
 
-				<Drawer variant="persistent" anchor="left" open={this.state.isOpen}>
-					<IconButton onClick={this.closeDrawer}>
-						<ChevronRightIcon/>
-					</IconButton>
-					<Divider/>
-					<List>
-						{(this.props.user.type === "student" ? studentNav : profNav).map((text) => (
-							<ListItem button onClick={() => this.navigate(text)} key={text}>
-								<ListItemText primary={text}/>
-							</ListItem>
-						))}
-					</List>
-				</Drawer>
-			</div>
-		)
-	}
+        <Drawer variant="persistent" anchor="left" open={this.state.isOpen}>
+          <IconButton onClick={this.closeDrawer}>
+            <ChevronRightIcon />
+          </IconButton>
+          <Divider />
+          <List>
+            {(this.props.type === "student" ? studentNav : profNav).map((text, index) => (
+              <ListItem button onClick={() => this.navigate(text)} key={text}>
+                <ListItemText primary={text}/>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+      </div>
+    )
+  }
 }
 
-export default TopBar;
+export default withRouter(TopBar);

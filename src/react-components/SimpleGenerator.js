@@ -4,6 +4,8 @@ import DropdownBlock from "./QuestionComp/DropdownBlock";
 import CheckboxBlock from "./QuestionComp/CheckboxBlock";
 import RangeSelectionBlock from "./QuestionComp/RangeSelectionBlock";
 import QuestionBlock from "./QuestionComp/QuestionBlock";
+import TopBar from "./TopBar";
+import { withRouter } from "react-router-dom";
 
 
 const question1 = {
@@ -37,33 +39,35 @@ class SimpleGenerator extends React.Component {
 
 	render() {
 		return (
-			<form id={"simpleGenForm"}>
-				<div id={"questionForm"}>
-					<QuestionBlock instTxt={"Get Question"} question={questionList[0]}
-					               submitAction={this.onGetQuestion} qCount={15} isReadOnly={false} showAnswer={false}
-					               genBlock={(
-						               <div id={"genSpecForm"}>
-							               <RangeSelectionBlock rangeMax={RULE_SELECTION_MAX}
-							                                    rangeMin={RULE_SELECTION_MIN}
-							                                    allowEmpty={true} default={''}
-							                                    title={"Rule NO. (range 1-3, blank for random)"}/>
-							               <RangeSelectionBlock rangeMax={QUESTION_SIZE_MAX}
-							                                    rangeMin={QUESTION_SIZE_MIN}
-							                                    allowEmpty={true} default={''}
-							                                    title={"Question Size (range 15-40)"}/>
-							               <DropdownBlock
-								               options={["Random", "Alternating", "Neutralizing", "Mixed - Alternating & Neutralizing"]}
-								               default={"Random"} title={"Question Type"}/>
-							               <CheckboxBlock title={"Shuffle Result"}/>
-							               <CheckboxBlock title={"Use IPA [ɡ]"}/>
-						               </div>
-					               )}/>
-				</div>
-
-			</form>
+			<div>
+				<TopBar {...this.props.location.state}></TopBar>
+				<form id={"simpleGenForm"}>
+					<div id={"questionForm"}>
+						<QuestionBlock instTxt={"Get Question"} question={questionList[0]}
+						               submitAction={this.onGetQuestion} qCount={15} isReadOnly={false} showAnswer={false}
+						               genBlock={(
+							               <div id={"genSpecForm"}>
+								               <RangeSelectionBlock rangeMax={RULE_SELECTION_MAX}
+								                                    rangeMin={RULE_SELECTION_MIN}
+								                                    allowEmpty={true} default={''}
+								                                    title={"Rule NO. (range 1-3, blank for random)"}/>
+								               <RangeSelectionBlock rangeMax={QUESTION_SIZE_MAX}
+								                                    rangeMin={QUESTION_SIZE_MIN}
+								                                    allowEmpty={true} default={''}
+								                                    title={"Question Size (range 15-40)"}/>
+								               <DropdownBlock
+									               options={["Random", "Alternating", "Neutralizing", "Mixed - Alternating & Neutralizing"]}
+									               default={"Random"} title={"Question Type"}/>
+								               <CheckboxBlock title={"Shuffle Result"}/>
+								               <CheckboxBlock title={"Use IPA [ɡ]"}/>
+							               </div>
+						               )}/>
+					</div>
+				</form>
+			</div>
 		);
 	};
 }
 
 
-export default SimpleGenerator;
+export default withRouter(SimpleGenerator);
