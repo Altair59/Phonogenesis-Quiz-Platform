@@ -9,7 +9,7 @@ import AdvancedGenerator from './react-components/AdvancedGenerator';
 import GroupsPage from './react-components/GroupsPage';
 import SimpleGenerator from './react-components/SimpleGenerator';
 import QuizGenerator from './react-components/QuizGenerator';
-import Statistics from './react-components/Statistics';
+import UserMain from './react-components/UserMain';
 import QuizTaker from './react-components/QuizTaker';
 
 class App extends React.Component {
@@ -31,7 +31,7 @@ class App extends React.Component {
             <Route exact path='/professor' render={() => (<GroupsPage users={this.users}/>)}/>
             <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
             <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
-            <Route exact path='/student' render={() => (<Statistics />)}/>
+            <Route exact path='/student' render={() => (<UserMain />)}/>
             <Route exact path='/student/quiz' render={() => (<QuizTaker />)}/>
           </Switch>
         </BrowserRouter>
