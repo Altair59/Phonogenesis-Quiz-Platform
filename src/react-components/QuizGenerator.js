@@ -7,7 +7,7 @@ import {withRouter} from "react-router-dom"
 
 import "./QuizGenerator.css";
 
-class QuizGenerator extends React.Component {
+class AdvancedGenerator extends React.Component {
   render() {
     return(
       <div>
@@ -19,4 +19,4 @@ class QuizGenerator extends React.Component {
   }
 }
 
-export default withRouter(QuizGenerator);
+export default withRouter(AdvancedGenerator);

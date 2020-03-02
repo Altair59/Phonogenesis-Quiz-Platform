@@ -13,11 +13,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
-import { withRouter } from "react-router-dom"
+import {withRouter} from "react-router-dom"
 
-import "./GroupsPage.css";
+import "./ProfGroupPage.css";
 
-class GroupsPage extends React.Component {
+class ProfGroupPage extends React.Component {
 	group = function (s, n) {
 		this.students = s;
 		this.name = n;
@@ -96,7 +96,7 @@ class GroupsPage extends React.Component {
 
 
 	render() {
-		let { state } = this.props.location;
+		let {state} = this.props.location;
 		return (
 			<div>
 				<TextField onChange={(e) => {
@@ -105,7 +105,7 @@ class GroupsPage extends React.Component {
 
 				<IconButton
 					onClick={this.createGroup}><AddShoppingCartIcon>Create Group</AddShoppingCartIcon></IconButton>
-				<TopBar {...state}></TopBar>
+				<TopBar {...state}/>
 				{
 					this.state.students.map((group, j) => (
 						<div key={j}>
@@ -163,4 +163,4 @@ class GroupsPage extends React.Component {
 	}
 }
 
-export default withRouter(GroupsPage);
+export default withRouter(ProfGroupPage);
