@@ -40,7 +40,7 @@ class SimpleGenerator extends React.Component {
 			<form id={"simpleGenForm"}>
 				<div id={"questionForm"}>
 					<QuestionBlock instTxt={"Get Question"} question={questionList[0]}
-					               submitAction={this.onGetQuestion} qCount={15}
+					               submitAction={this.onGetQuestion} qCount={15} isReadOnly={false} showAnswer={false}
 					               genBlock={(
 						               <div id={"genSpecForm"}>
 							               <RangeSelectionBlock rangeMax={RULE_SELECTION_MAX}

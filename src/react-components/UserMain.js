@@ -5,8 +5,6 @@ import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 
-import "./Statistics.css";
-
 class Statistics extends React.Component {
 
   render() {

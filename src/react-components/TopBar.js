@@ -27,10 +27,6 @@ class TopBar extends React.Component {
     this.setState({isOpen: true});
   }
 
-  closeDrawer = () => {
-    this.setState({isOpen: false});
-  }
-
   navigate = (text) => {
     let newPage = "/";
     if (text === "Home") {
@@ -64,8 +60,11 @@ class TopBar extends React.Component {
         password: this.props.password
       }
     })
-
   }
+
+  closeDrawer = () => {
+    this.setState({isOpen: false});
+  };
 
   render() {
     return(
