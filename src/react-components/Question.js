@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper'
 
 class Question extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {}
   }
 

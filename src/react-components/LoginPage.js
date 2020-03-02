@@ -9,20 +9,28 @@ import "./LoginPage.css";
 
 /* Component for the Home page */
 class LoginPage extends React.Component {
-    state = {
-        redirect: null,
-        err: false
-    };
+
+    constructor(props) {
+      super(props);
+      this.state = {
+          redirect: null,
+          err: false,
+          user: null
+      };
+    }
+
     login = e => {
         const filtered_user = this.props.users.filter(user => user.username === this.state.username)
         if (filtered_user.length === 1) {
             if (filtered_user[0].password === this.state.password) {
                 this.setState({
+                  user: {
                     type: filtered_user[0].type,
                     name: filtered_user[0].name,
                     email: filtered_user[0].email,
                     username: filtered_user[0].username,
                     password: filtered_user[0].password
+                  }
                 });
                 this.setState({redirect: "/" + filtered_user[0].type});
             } else {
@@ -43,13 +51,7 @@ class LoginPage extends React.Component {
         if (this.state.redirect) {
             return <Redirect to={{
                 pathname: this.state.redirect,
-                state: {
-                    type: this.state.type,
-                    name: this.state.name,
-                    email: this.state.email,
-                    username: this.state.username,
-                    password: this.state.password
-                }
+                user: this.state.user
             }}/>
         }
 

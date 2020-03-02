@@ -18,7 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 
-//  instTxt, question, nextQuestion (null), genBlock (null)
+//  instTxt, question, genBlock (null)
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -27,7 +27,7 @@ export default class QuestionBlock extends React.Component {
 			showAns: false,
 			showUR: false,
 			showPhoneme: false,
-			isQuiz: typeof props === "undefined" || props.genBlock === null,
+			isQuiz: typeof props.genBlock === "undefined" || props.genBlock === null,
 			qCount: props.qCount
 		};
 	}
@@ -71,42 +71,46 @@ export default class QuestionBlock extends React.Component {
 		return (
 			<Grid container direction="column" justify="flex-start" alignItems="center" spacing={7}>
 				<Grid item>
-					<Grid container direction="row" justify="flex-start" alignItems="center" spacing={7}>
-
-						<Grid item>
-							<Grid container direction="column" justify="space-evenly" alignItems="center"
-							      spacing={2}>
-								{
-									typeof this.props.genBlock !== 'undefined' && this.props.genBlock !== null ?
-										(<Grid item>{this.props.genBlock}</Grid>) : null
-								}
-							</Grid>
-						</Grid>
-
-						<Grid item>
-							<Typography variant="h5">Templates: </Typography>
-							<ul>
-								{
-									templates.map((template) => (
-										<li key={template}>{template}</li>))
-								}
-							</ul>
-						</Grid>
+					<Grid container direction="column" justify="space-evenly" alignItems="center"
+					      spacing={2}>
+						{
+							typeof this.props.genBlock !== 'undefined' && this.props.genBlock !== null ?
+								(<Grid item>{this.props.genBlock}</Grid>) : null
+						}
 					</Grid>
 				</Grid>
+
 
 				<Grid item>
 					<Grid container direction="row" justify="flex-start" alignItems="center" spacing={7}>
 						<Grid item>
 							<Grid container direction={"column"} justify={"flex-start"} alignItems={"center"}
 							      spacing={2}>
+
 								<Grid item>
-									<Grid container direction={"row"} justify="flex-start" alignItems={"center"} spacing={7}>
+									<Typography variant="h5">Templates: </Typography>
+									<ul>
+										{
+											templates.map((template) => (
+												<li key={template}>{template}</li>))
+										}
+									</ul>
+								</Grid>
+
+								{showAns ? (<Grid item>Rule: {question.answer}</Grid>) : null}
+								{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
+								<Grid item>Phones of Interest: {question.poi}</Grid>
+								<Grid item>Rule Type: {question.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
+
+								<Grid item>
+									<Grid container direction={"row"} justify="flex-start" alignItems={"center"}
+									      spacing={7}>
 										<Grid item>
-											<Grid container direction="column" justify="space-evenly" alignItems="center"
+											<Grid container direction="column" justify="space-evenly"
+											      alignItems="center"
 											      spacing={3}>
 												<Grid item>
-													<ButtonGroup variant="contained" color="primary"
+													<ButtonGroup variant="outlined" color="primary"
 													             aria-label={"contained primary hint button group"}>
 														<Button onClick={this.onGetPhonemes}>Get Phonemes</Button>
 														<Button onClick={this.onGetUR}>Get UR</Button>
@@ -114,50 +118,43 @@ export default class QuestionBlock extends React.Component {
 												</Grid>
 
 												<Grid item>
-													<ButtonGroup variant="contained" color="primary"
+													<ButtonGroup variant="outlined" color="primary"
 													             aria-label={"contained primary hint button group"}>
 														<Button onClick={this.onMoreCADT}>More CADT</Button>
-														<Button>More CAND</Button>
-														<Button>More NCAD</Button>
+														{/*<Button>More CAND</Button>*/}
+														{/*<Button>More NCAD</Button>*/}
 													</ButtonGroup>
 												</Grid>
 											</Grid>
 										</Grid>
 
-										{this.state.isQuiz ? (
-											<Grid item>[
-												<Button vraiant="contained" color="primary" onClick={this.props.nextQuestion}>Next
-													Question</Button>
-											</Grid>
-										) : (
+										{this.state.isQuiz ? null : (
 											<Grid item>
-												<Button vraiant="contained" color="primary" onClick={this.onShowAnswer}>Show
-													Answer</Button>
+												<Button vraiant="contained" color="primary" onClick={this.onShowAnswer}>
+													Show Answer</Button>
 											</Grid>
 										)}
 									</Grid>
 								</Grid>
-
-								{showAns ? (<Grid item>Rule: {question.answer}</Grid>) : null}
-								{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
-								<Grid item>Phones of Interest: {question.poi}</Grid>
-								<Grid item>Rule Type: {question.ruleType}</Grid>
-								<Grid item>Count: {this.state.qCount}</Grid>
 							</Grid>
 						</Grid>
 
 						<Grid item>
-							<Grid container direction={"row"} justify="space-evenly" alignItems={"center"}>
+							<Grid container direction={"row"} justify="space-evenly" spacing={4}>
 
 								{[0, 1, 2].map((index) => (
-									<Grid item>
+									<Grid item key={index}>
 										<TableContainer component={Paper}>
 											<Table aria-label="question data table">
 												<TableHead>
 													<TableRow>
-														{showUR ? <TableCell align="center">UR</TableCell> : null}
-														<TableCell align="center">SR</TableCell>
-														<TableCell align="center">Gloss</TableCell>
+														{showUR ? <TableCell align="center"
+														                     style={{fontWeight: "bolder"}}>
+															UR</TableCell> : null}
+														<TableCell align="center"
+														           style={{fontWeight: "bolder"}}>SR</TableCell>
+														<TableCell align="center"
+														           style={{fontWeight: "bolder"}}>Gloss</TableCell>
 													</TableRow>
 												</TableHead>
 												<TableBody>
@@ -165,7 +162,8 @@ export default class QuestionBlock extends React.Component {
 														urs[index].map((urWord, i) => (
 															<TableRow key={urWord}>
 																{showUR ?
-																	<TableCell align="center">{urWord}</TableCell> : null}
+																	<TableCell
+																		align="center">{urWord}</TableCell> : null}
 																<TableCell align="center">{srs[index][i]}</TableCell>
 																<TableCell align="center">{gls[index][i]}</TableCell>
 															</TableRow>

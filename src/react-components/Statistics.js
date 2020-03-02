@@ -3,26 +3,21 @@ import {useLocation} from "react-router-dom"
 import Grid from "@material-ui/core/Grid"
 import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
+import Divider from "@material-ui/core/Divider"
 
 import "./Statistics.css";
 
 const Statistics = () => {
 
-  const { state } = useLocation();
+  const { user } = useLocation();
 
   return (
     <div>
-      <TopBar
-        type={state.type}
-        name={state.name}
-        email={state.email}
-        username={state.username}
-        password={state.password}
-      />
-      <h1>{state ? state.name : "Anonymous"}</h1>
-      <h3>Email: <span>{state ? state.email : "Undefined"}</span></h3>
+      <TopBar user={user}></TopBar>
+      <h1>{user ? user.name : "Anonymous"}</h1>
+      <h3>Email: <span>{user ? user.email : "Undefined"}</span></h3>
       <h3>Enrolled: </h3>
-      <br/>
+      <Divider/>
       <h2>Activity History</h2>
       <div id="activities">
       <Grid container spacing={1} alignItems="flex-end">
