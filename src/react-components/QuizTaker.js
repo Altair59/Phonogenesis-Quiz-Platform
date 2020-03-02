@@ -33,7 +33,6 @@ const questionList = [{
 class QuizTaker extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props.user);
 		this.state = {
 			questionIndex: 0,
 			choices: this.genChoicesFromPool(questionList[0].answer, 4),
@@ -89,8 +88,13 @@ class QuizTaker extends React.Component {
 		e.preventDefault();
 	};
 
+	onTimeUp = () => {
+		alert("You've used up all your time!");
+		this.setState({questionIndex: questionList.length});
+	};
 
 	onBackToMain = (e) => {
+		console.log(this.props.location);
 		let { state } = this.props.location;
 		this.props.history.push({
 			pathname: '/student',
@@ -117,23 +121,32 @@ class QuizTaker extends React.Component {
 		if (index < size) {
 			return (
 				<div>
-					<TopBar {...this.props.location.state}></TopBar>
+					<TopBar {...this.props.location.state}/>
 					<QuestionBlock instTxt={"Get Question"} question={questionList[index]} qCount={20}
 					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}/>
 					<br/>
 					<hr/>
 					<br/>
-					<Grid id="selectAnswer" container direction="column" justify="center"
-					      alignItems="flex-start" spacing={2}>
+					<Grid container direction="row" justify="center" alignItems="center" spacing={10}>
+						<Grid item id="ctd">
+							Time Remain &nbsp; <CountdownTimer onTimeUp={this.onTimeUp}/>
+						</Grid>
 
-						<Grid item><Button variant="contained" id={0}
-						                   onClick={this.onSubmitAnswer}>{choices[0]}</Button></Grid>
-						<Grid item><Button variant="contained" id={1}
-						                   onClick={this.onSubmitAnswer}>{choices[1]}</Button></Grid>
-						<Grid item><Button variant="contained" id={2}
-						                   onClick={this.onSubmitAnswer}>{choices[2]}</Button></Grid>
-						<Grid item><Button variant="contained" id={3}
-						                   onClick={this.onSubmitAnswer}>{choices[3]}</Button></Grid>
+						<Grid item>
+							<Grid id="selectAnswer" container direction="column" justify="center"
+							      alignItems="flex-start" spacing={2}>
+
+								<Grid item><Button variant="contained" id={0}
+								                   onClick={this.onSubmitAnswer}>{choices[0]}</Button></Grid>
+								<Grid item><Button variant="contained" id={1}
+								                   onClick={this.onSubmitAnswer}>{choices[1]}</Button></Grid>
+								<Grid item><Button variant="contained" id={2}
+								                   onClick={this.onSubmitAnswer}>{choices[2]}</Button></Grid>
+								<Grid item><Button variant="contained" id={3}
+								                   onClick={this.onSubmitAnswer}>{choices[3]}</Button></Grid>
+							</Grid>
+						</Grid>
+
 					</Grid>
 
 				</div>
@@ -155,7 +168,9 @@ class QuizTaker extends React.Component {
 									               qCount={20} isReadOnly={true} showAnswer={true}
 									               genMoreLimit={genMoreLimit}/>
 									<p id="correctAnswerTxt">Correct Answer: {question.answer}</p>
-									<p id="studentAnswerTxt">Your Answer: {studentAnswers[index]}</p>
+									<p id="studentAnswerTxt">Your Answer: {
+										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
+									}</p>
 									<br/>
 									<hr/>
 								</div>
@@ -165,6 +180,18 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		}
+	}
+}
+
+class CountdownTimer extends React.PureComponent {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<Countdown date={Date.now() + 10000} onComplete={this.props.onTimeUp}/>
+		);
 	}
 }
 

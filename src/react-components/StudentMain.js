@@ -5,7 +5,7 @@ import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 
-export default class StudentMain extends React.Component {
+class StudentMain extends React.Component {
 
   render() {
     let { state } = this.props.location;
@@ -31,3 +31,5 @@ export default class StudentMain extends React.Component {
   }
 
 }
+
+export default withRouter(StudentMain);

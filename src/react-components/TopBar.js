@@ -16,41 +16,42 @@ const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
 const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Groups', 'Log Out'];
 
 class TopBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false,
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			isOpen: false,
+		};
+	}
 
-  openDrawer = () => {
-    this.setState({isOpen: true});
-  };
+	openDrawer = () => {
+		this.setState({isOpen: true});
+	};
 
-  navigate = (text) => {
-    let newPage = "/";
-    if (text === "Home") {
-      if (this.props.type === "student") {
-        newPage = "/student"
-      }
-      else {
-        newPage = "/professor"
-      }
-    } else if (text === "Assignments") {
-      if (this.props.type === "professor"){
-        newPage = "/student/quiz"
-      }
-    } else if (text === "Groups") {
-      newPage = "/professor/groups"
-    } else if (text === "Practice") {
-      newPage = "/student/gen"
-    } else if (text === "Assign Quiz") {
-      newPage = "/professor/quiz"
-    } else if (text === "Generate Problems") {
-      newPage = "/professor/gen"
-    } else if (text === "Log Out") {
-      newPage = "/"
-    }
+	navigate = (text) => {
+		let newPage = "/";
+		if (text === "Home") {
+			if (this.props.type === "student") {
+				newPage = "/student"
+			} else {
+				newPage = "/professor"
+			}
+		} else if (text === "Assignments") {
+			if (this.props.type === "student") {
+				newPage = "/student/quiz"
+			}
+		} else if (text === "Groups") {
+			if (this.props.type === "professor") {
+				newPage = "/professor/groups"
+			}
+		} else if (text === "Practice") {
+			newPage = "/student/gen"
+		} else if (text === "Assign Quiz") {
+			newPage = "/professor/quiz"
+		} else if (text === "Generate Problems") {
+			newPage = "/professor/gen"
+		} else if (text === "Log Out") {
+			newPage = "/"
+		}
 
 		this.props.history.push({
 			pathname: newPage,
@@ -62,7 +63,7 @@ class TopBar extends React.Component {
 				password: this.props.password
 			}
 		})
-	}
+	};
 
 	closeDrawer = () => {
 		this.setState({isOpen: false});
