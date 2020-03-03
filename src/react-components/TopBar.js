@@ -12,8 +12,8 @@ import Divider from '@material-ui/core/Divider'
 
 import {withRouter} from "react-router-dom"
 
-const studentNav = ['Home', 'Assignments', 'Groups', 'Practice', 'Log Out'];
-const profNav = ['Home', 'Make Quiz', 'Generate Problems', 'Groups', 'Log Out'];
+const studentNav = ['Home', 'Groups', 'Practice', 'Log Out'];
+const profNav = ['Home', 'Make Quiz', 'Groups', 'Log Out'];
 
 class TopBar extends React.Component {
 	constructor(props) {
@@ -44,11 +44,6 @@ class TopBar extends React.Component {
 			} else {
 				newPage = "/professor"
 			}
-		} else if (text === "Assignments") {
-			if (this.props.type === "student") {
-				newPage = "/student/quiz";
-				stateToPush.quizzes = this.props.quizzes;
-			}
 		} else if (text === "Groups") {
 			if (this.props.type === "professor") {
 				newPage = "/professor/groups"
@@ -59,8 +54,6 @@ class TopBar extends React.Component {
 			newPage = "/student/gen"
 		} else if (text === "Make Quiz") {
 			newPage = "/professor/quiz"
-		} else if (text === "Generate Problems") {
-			newPage = "/professor/gen"
 		} else if (text === "Log Out") {
 			newPage = "/"
 		}
