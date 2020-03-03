@@ -17,36 +17,20 @@ class StudentGroupPage extends React.Component {
     return(
       <div>
         <TopBar {...this.props.location.state}></TopBar>
-        <h1 className="title">Current Groups</h1>
-        <div>
-          <Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
-          {
-            student.groups.map((group, i) => {
-              return(
-                <Grid className="groupItem" item key={i}>
-                  <Paper>
-                    <h3>{group}</h3>
-                  </Paper>
-                </Grid>
-              )
-            })}
-          </Grid>
-        </div>
+        <h1 className="title">Enrolled Groups</h1>
         <Divider />
-        <h1 className="title">Invites</h1>
-        <div>
-          <Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
+        <div id="groupsList">
+          <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
           {
             student.groups.map((group, i) => {
               return(
-                <Grid className="groupItem" item key={i}>
-                  <Paper>
-                    <h3>{group}</h3>
-                    <Button>
-                      Accept Invite
-                    </Button>
-                  </Paper>
-                </Grid>
+                <div className="gridContainer">
+                  <Grid item key={i}>
+                    <Paper className="groupItem">
+                      <h3 id="groupName">{group}</h3>
+                    </Paper>
+                  </Grid>
+                </div>
               )
             })}
           </Grid>
