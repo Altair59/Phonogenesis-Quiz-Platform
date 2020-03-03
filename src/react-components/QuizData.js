@@ -1,4 +1,4 @@
-export const questionList = [{
+export const ruleList = [{
 	templates: ['[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[consonant]-[vowel]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]-[consonant]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]-[consonant]'],
 	poi: "['c', 'ɟ', 'ç', 'ʝ', 'ɲ', 'k', 'g', 'x', 'ɣ', 'ŋ']",
 	ruleType: "Alternating",
@@ -18,11 +18,32 @@ export const questionList = [{
 	UR: ['miɡɡɔʔ', 'jiki', 'niɣɡɔl', 'dihhix', 't͡ʃiɡdu', 'jiɡu', 'xiku', 'ziɣ', 't͡ʃiɣjɔ', 'ɣixso', 'ɣafix', 'θikxi', 'xixko', 'ɡɔdix', 'xixxɔ', 'fɔɡɔ', 'kɔsu', 'xub', 'dufxif', 'xɔ', 'pulɣa', 'ɣirkoj', 'ɡat͡ʃxap', 'ɡu', 'ɣɔxu', 'ɡij', 'ɣɔxaɡ', 'dolha', 'd͡ʒuθud͡ʒ', 'laðzaj']
 }];
 
-export const DEFAULT_GEN_SIZE = 40;
+const DEFAULT_QUESTION_SIZE = 20;
 
-export function getShuffledQList(){
-	let newLst = questionList.slice(0);
-	for (let i = questionList.length - 1; i > 0; i--) {
+export class Question {
+	constructor(rule, canUR, canPhoneme, maxCADT) {
+		this.rule = rule;
+		this.size = DEFAULT_QUESTION_SIZE;
+		this.canUR = canUR;
+		this.canPhoneme = canPhoneme;
+		this.maxCADT = maxCADT;
+	}
+}
+
+export class Quiz {
+	constructor(questions, timeLim, group, name) {
+		this.name = name;
+		this.questions = questions;
+		this.timeLim = timeLim;
+		this.group = group;
+		this.isCompleted = false;
+	}
+}
+
+
+export function getShuffledQList() {
+	let newLst = ruleList.slice(0);
+	for (let i = ruleList.length - 1; i > 0; i--) {
 		let j = Math.floor(Math.random() * (i + 1));
 		[newLst[i], newLst[j]] = [newLst[j], newLst[i]];
 	}
@@ -39,8 +60,8 @@ export function shuffleQuestion(question) {
 }
 
 export function transIPAg(question, wantIPAg) {
-	for (let i = 0; i < question.UR.length; i++){
-		if (wantIPAg){
+	for (let i = 0; i < question.UR.length; i++) {
+		if (wantIPAg) {
 			question.UR[i] = question.UR[i].replace("g", "ɡ");
 			question.SR[i] = question.SR[i].replace("g", "ɡ");
 		} else {

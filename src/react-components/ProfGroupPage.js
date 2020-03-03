@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {users, getUserByUsername, getStudentsByGroup} from "./User";
+import {users, getUserByUsername, groups} from "./User";
 
 
 import "./ProfGroupPage.css";
@@ -33,6 +33,7 @@ class ProfGroupPage extends React.Component {
 
 	removeStudent = (group, stuObj) => {
 		stuObj["groups"] = stuObj["groups"].filter(e => e !== group);
+		groups[group] = groups[group].filter(e => e !== stuObj);
 		this.forceUpdate();
 	};
 
@@ -40,18 +41,20 @@ class ProfGroupPage extends React.Component {
 	createGroup = () => {
 		let {state} = this.props.location;
 		const prof = getUserByUsername(state.username);
+		const existingGroups = Object.keys(groups);
 		const name = document.getElementById("new-group-name-field").value;
 
 		let reg = /^[0-9a-zA-Z]+[-]?[0-9a-zA-Z]+$/;
 
-		if (prof.groups.includes(name)){
+		if (existingGroups.includes(name)) {
 			alert("Group already exists!");
 			this.setState({err: true});
-		} else if (!reg.test(name)){
+		} else if (!reg.test(name)) {
 			alert("Group must be alphanumeric strings with an optional - in the middle!");
 			this.setState({err: true});
 		} else {
 			prof.groups.push(name);
+			groups[name] = [prof];
 			alert("Successfully added group");
 			this.setState({err: false})
 		}
@@ -65,10 +68,11 @@ class ProfGroupPage extends React.Component {
 				user["groups"] = user["groups"].filter(e => e !== group);
 			}
 		}
+		delete groups[group];
 		this.forceUpdate();
 	};
 
-	onAddGroup = (group) => {
+	addToGroup = (group) => {
 		const username = document.getElementById("add-input-".concat(group)).value;
 		const user = getUserByUsername(username);
 
@@ -88,6 +92,7 @@ class ProfGroupPage extends React.Component {
 		}
 
 		user.groups.push(group);
+		groups[group].push(user);
 		alert("Student Added!");
 		this.setState({trig: this.state.trig + 1});
 		this.forceUpdate();
@@ -96,11 +101,11 @@ class ProfGroupPage extends React.Component {
 	render() {
 		let {state} = this.props.location;
 		const prof = getUserByUsername(state.username);
-		const groups = prof.groups;
+		const profGroups = prof.groups;
 		const groupMap = {};
 
-		for (let gi = 0; gi < groups.length; gi++) {
-			groupMap[groups[gi]] = getStudentsByGroup(groups[gi]);
+		for (let gi = 0; gi < profGroups.length; gi++) {
+			groupMap[profGroups[gi]] = groups[profGroups[gi]];
 		}
 
 		return (
@@ -115,7 +120,7 @@ class ProfGroupPage extends React.Component {
 						<IconButton onClick={this.createGroup}><AddIcon>Create Group</AddIcon></IconButton>
 					</Grid>
 					{
-						groups.map((group) => (
+						profGroups.map((group) => (
 							<Grid item key={group}>
 								<Grid container spacing={2} direction="row" justify="flex-start" alignItems="center">
 									<Grid item><h2>{group}</h2></Grid>
@@ -136,7 +141,7 @@ class ProfGroupPage extends React.Component {
 										</TableHead>
 										<TableBody>
 											{
-												groupMap[group].map((stuObj) => (
+												groupMap[group].slice(1).map((stuObj) => (
 													<TableRow key={stuObj.username}>
 														<TableCell>{stuObj.name}</TableCell>
 														<TableCell>{stuObj.email}</TableCell>
@@ -153,7 +158,7 @@ class ProfGroupPage extends React.Component {
 
 									<form>
 										<TextField id={"add-input-".concat(group)} label="Name">Name</TextField>
-										<IconButton onClick={this.onAddGroup.bind(this, group)}><AddIcon>Add
+										<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
 											Student</AddIcon></IconButton>
 									</form>
 								</TableContainer>

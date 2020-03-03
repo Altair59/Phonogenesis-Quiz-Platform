@@ -11,49 +11,48 @@ import "./StudentGroupPage.css";
 
 class StudentGroupPage extends React.Component {
 
-  render() {
-    const student = getUserByUsername(this.props.location.state.username);
-    console.log(student.groups)
-    return(
-      <div>
-        <TopBar {...this.props.location.state}></TopBar>
-        <h1 className="title">Current Groups</h1>
-        <div>
-          <Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
-          {
-            student.groups.map((group, i) => {
-              return(
-                <Grid className="groupItem" item key={i}>
-                  <Paper>
-                    <h3>{group}</h3>
-                  </Paper>
-                </Grid>
-              )
-            })}
-          </Grid>
-        </div>
-        <Divider />
-        <h1 className="title">Invites</h1>
-        <div>
-          <Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
-          {
-            student.groups.map((group, i) => {
-              return(
-                <Grid className="groupItem" item key={i}>
-                  <Paper>
-                    <h3>{group}</h3>
-                    <Button>
-                      Accept Invite
-                    </Button>
-                  </Paper>
-                </Grid>
-              )
-            })}
-          </Grid>
-        </div>
-      </div>
-    )
-  }
+	render() {
+		const student = getUserByUsername(this.props.location.state.username);
+		return (
+			<div>
+				<TopBar {...this.props.location.state}/>
+				<h1 className="title">Current Groups</h1>
+				<div>
+					<Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
+						{
+							student.groups.map((group, i) => {
+								return (
+									<Grid className="groupItem" item key={i}>
+										<Paper>
+											<h3>{group}</h3>
+										</Paper>
+									</Grid>
+								)
+							})}
+					</Grid>
+				</div>
+				<Divider/>
+				<h1 className="title">Invites</h1>
+				<div>
+					<Grid container spacing={3} justify="flex-start" alignItems="flex-start" className="gridContainer">
+						{
+							student.groups.map((group, i) => {
+								return (
+									<Grid className="groupItem" item key={i}>
+										<Paper>
+											<h3>{group}</h3>
+											<Button>
+												Accept Invite
+											</Button>
+										</Paper>
+									</Grid>
+								)
+							})}
+					</Grid>
+				</div>
+			</div>
+		)
+	}
 }
 
 export default withRouter(StudentGroupPage)

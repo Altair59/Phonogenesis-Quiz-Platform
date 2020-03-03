@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from "@material-ui/core/Grid";
 import {withRouter} from "react-router-dom";
 import "./QuizTile.css"
-import {questionList} from "./Rules.js"
+import {ruleList} from "./QuizData.js"
 
 class QuizTile extends React.Component {
 	render() {
@@ -32,7 +32,7 @@ class QuizTile extends React.Component {
 											<div className="act-paper">
 												<p><strong>Question #{i + 1}:</strong></p>
 												<p>Your Answer: {sAnswer}</p>
-												<p>Correct Answer: {questionList[i].answer}</p>
+												<p>Correct Answer: {ruleList[i].answer}</p>
 											</div>
 										</Paper>
 									</Grid>
