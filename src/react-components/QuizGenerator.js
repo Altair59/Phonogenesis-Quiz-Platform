@@ -17,7 +17,7 @@ import {Question} from "./QuizData";
 import {Quiz} from "./QuizData";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
-import {quizzes} from "./User";
+import {quizList} from "./QuizData";
 
 class QuizGenerator extends React.Component {
 	question_block = function () {
@@ -88,26 +88,22 @@ class QuizGenerator extends React.Component {
 		this.setState({redirect: "/professor/quiz"});
 	}
 
-	makeQuiz(){
+	makeQuiz = () => {
 		let quiz_questions = [];
-		for (let i=0;i<this.state.questions.length;i++){
+		for (let i = 0; i < this.state.questions.length; i++) {
 			let new_question = new Question(this.state.questions[i].rule, this.state.questions[i].ur_check, this.state.questions[i].phe_check, this.state.questions[i].max_cadt);
 			quiz_questions.push(new_question);
 		}
-		let new_quiz = new Quiz(quiz_questions, this.state.time, this.state.group,this.state.name);
-		quizzes.push(new_quiz);
+		let new_quiz = new Quiz(quiz_questions, this.state.time, this.state.group, this.state.name);
+		quizList.push(new_quiz);
 		this.distributeQuiz(new_quiz);
-	}
+	};
 
-	distributeQuiz(quiz){
-		let targets = [];
-		for (let group in groups){
-			if (quiz.group === group){
-				targets = groups.group;
-			}
-		}
-		for (let i=0;i<targets.length;i++){
-			targets[i].quizzes.push(quiz);
+	distributeQuiz(quiz) {
+		let targetUser = groups[quiz.group];
+		
+		for (let i = 0; i < targetUser.length; i++) {
+			targetUser[i].quizzes.push(quiz);
 		}
 	};
 
