@@ -4,10 +4,21 @@ import Grid from "@material-ui/core/Grid"
 import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
+import Paper from "@material-ui/core/Paper"
 import "./MainPage.css"
 import {getUserByUsername} from "./User";
 
 class StudentMain extends React.Component {
+
+	takeQuiz = (quiz) => {
+		this.props.history.push({
+			pathname: "/student/quiz",
+			state: {
+				quiz: quiz,
+				username: this.props.location.username
+			}
+		})
+	}
 
 	render() {
 		let {state} = this.props.location;
@@ -28,6 +39,21 @@ class StudentMain extends React.Component {
                                 return (
                                     <Grid item key={i}>
                                         <QuizTile {...quiz} />
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </div>
+
+										<Divider/>
+                    <h2>Pending Quizzes</h2>
+
+										<div id="quizzes">
+                        <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
+                            {state.quizzes.map((quiz, i) => {
+                                return (
+                                    <Grid item key={i}>
+                                        <Button onClick={() => this.takeQuiz(quiz)}>{quiz.name}</Button>
                                     </Grid>
                                 );
                             })}
