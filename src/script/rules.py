@@ -451,9 +451,9 @@ class RuleFamily:
         self._rules = default
         self._name = name
 
-    def add_rule(self, rule: Rule) -> bool:
-        if rule not in self._rules:
-            self._rules.append(rule)
+    def add_rule(self, ruleTxt: Rule) -> bool:
+        if ruleTxt not in self._rules:
+            self._rules.append(ruleTxt)
             return True
         else:
             return False
@@ -496,10 +496,10 @@ def _fetch_rule_and_family_csv(filename: str, feature_pool: List[str]) -> Tuple[
             rule_name = line[1]
             rule_content = str(line[0]).strip().strip('\n').strip('\ufeff')
 
-            rule = interpret_rule_content_str(rule_content, feature_pool, rule_name, rule_family)
+            ruleTxt = interpret_rule_content_str(rule_content, feature_pool, rule_name, rule_family)
 
-            rule_family.add_rule(rule)
-            rules.append(rule)
+            rule_family.add_rule(ruleTxt)
+            rules.append(ruleTxt)
 
     return list(families.values()), rules
 
@@ -519,13 +519,13 @@ def interpret_rule_content_str(rule_content: str, feature_pool: List[str], rule_
     cd_info = _interpret_cd(mid_break[1], feature_pool)
 
     if predefined:
-        rule = PredefinedRule(rule_name, rule_family, ast.literal_eval(mid_break[0]), cd_info[0], cd_info[1],
+        ruleTxt = PredefinedRule(rule_name, rule_family, ast.literal_eval(mid_break[0]), cd_info[0], cd_info[1],
                               cd_info[2], cd_info[3])
     else:
         action_break = mid_break[0].split(">")
 
         if len(action_break) != 2:
-            raise ImportError("Invalid rule format: %s" % rule_content)
+            raise ImportError("Invalid ruleTxt format: %s" % rule_content)
 
         a_str = action_break[0]
         b_str = action_break[1]
@@ -538,12 +538,12 @@ def interpret_rule_content_str(rule_content: str, feature_pool: List[str], rule_
             raise ValueError("error reading b data invalid format %s" % b_str)
 
         if len(mid_break) != 2:
-            raise ImportError("Invalid rule format: %s" % rule_content)
+            raise ImportError("Invalid ruleTxt format: %s" % rule_content)
 
-        rule = Rule(rule_name, rule_family, _interpret_a(a_str, feature_pool), b_sec, cd_info[0],
+        ruleTxt = Rule(rule_name, rule_family, _interpret_a(a_str, feature_pool), b_sec, cd_info[0],
                     cd_info[1], cd_info[2], cd_info[3])
 
-    return rule
+    return ruleTxt
 
 
 def _interpret_b(b_str: str, feature_pool: List[str]) -> Tuple[Optional[Particle, None], List[str], int]:
@@ -603,7 +603,7 @@ def _interpret_cd(cd_str: str, feature_pool: List[str]) -> Tuple[
         condition_break = cond_sec.split("_")
 
         if len(condition_break) != 2:
-            raise ImportError("Invalid rule format: %s" % cond_sec)
+            raise ImportError("Invalid ruleTxt format: %s" % cond_sec)
 
         c_part = condition_break[0]
         d_part = condition_break[1]

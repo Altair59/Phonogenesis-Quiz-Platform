@@ -115,9 +115,9 @@ def translate_rule_data(data_set, rule_data: str) -> Rule:
 #                 rule_family = RuleFamily(rule_data[2], [])
 #                 is_new_family = True
 #
-#             rule = interpret_rule_content_str(rule_data[0], data['features'], rule_data[1], rule_family)
-#             data['rules'].append(rule)
-#             rule_family.add_rule(rule)
+#             ruleTxt = interpret_rule_content_str(rule_data[0], data['features'], rule_data[1], rule_family)
+#             data['rules'].append(ruleTxt)
+#             rule_family.add_rule(ruleTxt)
 #
 #             if is_new_family:
 #                 data['rule_fam'].append(rule_family)

@@ -27,15 +27,15 @@ class Generator:
     _duplicate_exclusion: Set[Word]
     _unid: int
 
-    def __init__(self, phonemes: List[Word], templates: List[Template], rule: Rule, difficulty: int,
+    def __init__(self, phonemes: List[Word], templates: List[Template], ruleTxt: Rule, difficulty: int,
                  feature_to_type: Dict[str, str], feature_to_sounds: Dict[str, List[Sound]]) -> None:
         self._templates = templates
-        self._rule = rule
-        self._CADT = [set([]) for _ in range(rule.get_c_split_size())]
-        self._CADNT = [set([]) for _ in range(rule.get_c_split_size())]
-        self._CAND = [set([]) for _ in range(rule.get_c_split_size())]
-        self._NCAD = [set([]) for _ in range(rule.get_c_split_size())]
-        self._IRR = [set([]) for _ in range(rule.get_c_split_size())]
+        self._rule = ruleTxt
+        self._CADT = [set([]) for _ in range(ruleTxt.get_c_split_size())]
+        self._CADNT = [set([]) for _ in range(ruleTxt.get_c_split_size())]
+        self._CAND = [set([]) for _ in range(ruleTxt.get_c_split_size())]
+        self._NCAD = [set([]) for _ in range(ruleTxt.get_c_split_size())]
+        self._IRR = [set([]) for _ in range(ruleTxt.get_c_split_size())]
         self._duplicate_exclusion = set([])
         self._phonemes = phonemes
         self._unid = random.getrandbits(30)
@@ -339,7 +339,7 @@ class Generator:
             a = {"UR": [str(w).replace('g', 'ɡ') for w in ur_words],
                  "SR": [str(w).replace('g', 'ɡ') for w in sr_words],
                  "Gloss": [str(w) for w in gloss_words],
-                 "rule": str(self._rule),
+                 "ruleTxt": str(self._rule),
                  "templates": [str(w) for w in self._templates],
                  "phonemes": [str(w).replace('g', 'ɡ') for w in self._phonemes],
                  "phone_interest": [str(w).replace('g', 'ɡ') for w in phones_of_interest]}
@@ -349,13 +349,13 @@ class Generator:
             return {"UR": [str(w) for w in ur_words],
                     "SR": [str(w) for w in sr_words],
                     "Gloss": [str(w) for w in gloss_words],
-                    "rule": str(self._rule),
+                    "ruleTxt": str(self._rule),
                     "templates": [str(w) for w in self._templates],
                     "phonemes": [str(w) for w in self._phonemes],
                     "phone_interest": [str(w) for w in phones_of_interest]}
         else:
             LOGGER.debug("Gen Mode ~12 - org mode")
-            return {"UR": ur_words, "SR": sr_words, "Gloss": gloss_words, "rule": self._rule,
+            return {"UR": ur_words, "SR": sr_words, "Gloss": gloss_words, "ruleTxt": self._rule,
                     "templates": self._templates,
                     "phonemes": self._phonemes, "phone_interest": phones_of_interest}
 

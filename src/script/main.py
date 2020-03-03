@@ -31,13 +31,13 @@ def _print_result(rst: dict):
 
 def random_select(families: List[RuleFamily], rules_: List[Rule], family_num: int, rule_num: int) -> List[Rule]:
     if family_num > rule_num:
-        raise AttributeError("family num larger than rule num")
+        raise AttributeError("family num larger than ruleTxt num")
 
     if len(families) < family_num:
         raise AttributeError("num greater than family size")
 
     if len(rules_) < rule_num:
-        raise AttributeError("num greater than rule size")
+        raise AttributeError("num greater than ruleTxt size")
 
     chosen_family = random.choices(families, k=family_num)  # type: List[RuleFamily]
     rules_pool = [family_.get_rules() for family_ in chosen_family]
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     rule_families = rule_data[0]  # type: List[RuleFamily]
     rules = rule_data[1]  # type: List[Rule]
 
-    print("\nfull rule families:")
+    print("\nfull ruleTxt families:")
     fi = 1
     for family in rule_families:
         print(fi, family)
@@ -89,8 +89,8 @@ if __name__ == '__main__':
 
     print("\nfull rules: ")
     ri = 1
-    for rule in rules:
-        print(ri, rule)
+    for ruleTxt in rules:
+        print(ri, ruleTxt)
         ri += 1
 
     gloss_data = import_default_gloss()

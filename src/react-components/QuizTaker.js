@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import "./QuizTaker.css";
-import QuestionBlock from "./QuestionComp/QuestionBlock";
+import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
@@ -18,7 +18,7 @@ class QuizTaker extends React.Component {
 
 		this.state = {
 			questionIndex: 0,
-			choices: this.genChoicesFromPool(quiz.questions[0], 4),
+			choices: this.genChoicesFromPool(quiz.questions[0].rule.ruleTxt, 4),
 			score: 0,
 			studentAnswers: [],
 			qKey: 0
@@ -51,7 +51,7 @@ class QuizTaker extends React.Component {
 		const quiz = getQuizByName(this.props.quiz.name);
 		const choice = this.state.choices[e.currentTarget.id];
 
-		if (choice === quiz.questions[this.state.questionIndex].rule) {
+		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
 		}
 		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
@@ -61,7 +61,7 @@ class QuizTaker extends React.Component {
 		this.setState({qKey: this.state.qKey + 1});
 
 		if (newIndex < quiz.questions.length) {
-			this.setState({choices: this.genChoicesFromPool(quiz.questions[newIndex].rule, 4)});
+			this.setState({choices: this.genChoicesFromPool(quiz.questions[newIndex].rule.ruleTxt, 4)});
 		}
 
 		e.preventDefault();
@@ -98,24 +98,21 @@ class QuizTaker extends React.Component {
 		const studentAnswers = this.state.studentAnswers;
 		const qKey = this.state.qKey;
 		const currQuestion = quiz.questions[index];
-		const genMoreLimit = currQuestion.maxCADT;
-		const canShowUR = currQuestion.canUR;
-		const canShowPhoneme = currQuestion.canPhoneme;
-		const qCount = currQuestion.size;
 
-		if (index < size) {
+		if (index < size && currQuestion) {
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
-					<QuestionBlock instTxt={"Get QuizData"} question={currQuestion} qCount={qCount}
-					               isQuiz={true} isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit}
-					               key={qKey} canShowUR={canShowUR} canShowPhoneme={canShowPhoneme}/>
+					<QuestionBlock instTxt={"Get QuizData"} rule={currQuestion.rule} qCount={currQuestion.size}
+					               isQuiz={true} isReadOnly={false} showAnswer={false}
+					               genMoreLimit={currQuestion.maxCADT} key={qKey} canShowUR={currQuestion.canUR}
+					               canShowPhoneme={currQuestion.canPhoneme}/>
 					<br/>
 					<hr/>
 					<br/>
 					<Grid container direction="row" justify="center" alignItems="center" spacing={10}>
-						<Grid item id="ctd">
-							Time Remain &nbsp; <CountdownTimer id="ctd-timer" onTimeUp={this.onTimeUp}/>
+						<Grid item id="ctd"> Time Remain &nbsp; <CountdownTimer id="ctd-timer" time={quiz.timeLim}
+						                                                        onTimeUp={this.onTimeUp}/>
 						</Grid>
 
 						<Grid item>
@@ -138,8 +135,6 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		} else {
-			let timer = document.getElementById("ctd-timer");
-			timer.removeEventListener("onComplete", this.onTimeUp);
 
 			return (
 				<div>
@@ -153,10 +148,10 @@ class QuizTaker extends React.Component {
 						<Grid item>
 							{quiz.questions.map((question, index) => (
 								<div key={index}>
-									<QuestionBlock instTxt={"Get QuizData"} question={question}
+									<QuestionBlock instTxt={"Get QuizData"} rule={question.rule}
 									               qCount={question.size} isReadOnly={true} showAnswer={true}
 									               genMoreLimit={question.maxCADT} isQuiz={false}/>
-									<p id="correctAnswerTxt">Correct Answer: {question.rule}</p>
+									<p id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</p>
 									<p id="studentAnswerTxt">Your Answer: {
 										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
 									}</p>
@@ -175,7 +170,7 @@ class QuizTaker extends React.Component {
 class CountdownTimer extends React.PureComponent {
 	render() {
 		return (
-			<Countdown date={Date.now() + 10000} onComplete={this.props.onTimeUp}/>
+			<Countdown date={Date.now() + this.props.time} onComplete={this.props.onTimeUp}/>
 		);
 	}
 }
