@@ -6,3 +6,9 @@
 .text {
     font-weight: normal;
 }
+
+.tileContainer {
+  display: block;
+  margin: 10px;
+  margin-top: 25px;
+}

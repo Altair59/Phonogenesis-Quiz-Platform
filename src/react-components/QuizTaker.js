@@ -14,7 +14,7 @@ const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration o
 class QuizTaker extends React.Component {
 	constructor(props) {
 		super(props);
-		const quiz = getQuizByName(this.props.quiz.name);
+		const quiz = getQuizByName(this.props.location.state.quiz.name);
 
 		this.state = {
 			questionIndex: 0,
@@ -48,7 +48,7 @@ class QuizTaker extends React.Component {
 	};
 
 	onSubmitAnswer = (e) => {
-		const quiz = getQuizByName(this.props.quiz.name);
+		const quiz = getQuizByName(this.props.location.state.quiz.name);
 		const choice = this.state.choices[e.currentTarget.id];
 		quiz.pastAnswer.push(choice);
 
@@ -69,29 +69,29 @@ class QuizTaker extends React.Component {
 	};
 
 	onTimeUp = () => {
-		const quiz = getQuizByName(this.props.quiz.name);
+		const quiz = getQuizByName(this.props.location.state.quiz.name);
 		alert("You've used up all your time!");
 		this.setState({questionIndex: quiz.questions.length});
 	};
 
 	onBackToMain = (e) => {
-		let {state} = this.props.location;
+		const {state} = this.props.location;
 		this.props.history.push({
 			pathname: '/student',
 			state: {
+				id: state.id,
 				type: state.type,
 				name: state.name,
 				email: state.email,
-				username: state.username,
 				password: state.password,
-				quizzes: [...state.quizzes, {...this.state, quizId: state.quizzes.length}]
+				username: state.username
 			}
 		});
 		e.preventDefault();
 	};
 
 	render() {
-		const quiz = getQuizByName(this.props.quiz.name);
+		const quiz = getQuizByName(this.props.location.state.quiz.name);
 		const size = quiz.questions.length;
 		const index = this.state.questionIndex;
 		const score = this.state.score;
