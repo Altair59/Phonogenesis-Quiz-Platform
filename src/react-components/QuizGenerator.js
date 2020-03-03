@@ -105,8 +105,6 @@ class QuizGenerator extends React.Component {
 					<Grid item>
 						<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Set Time Limit</h4>
 					</Grid>
@@ -114,8 +112,6 @@ class QuizGenerator extends React.Component {
 						<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
 						           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Add Quiz Question</h4>
 					</Grid>
@@ -127,7 +123,6 @@ class QuizGenerator extends React.Component {
 				</Grid>
 				{this.state.questions.map((row, i) => (
 					<Grid container direction="row" id="q" key={i} justify="center" alignItems="center">
-
 						<Grid item>
 							<FormControlLabel control={<Switch checked={this.state.questions[i].ur_check}
 							                                   onChange={(e) => {
@@ -162,7 +157,6 @@ class QuizGenerator extends React.Component {
 							</Select>
 							<FormHelperText>Rule</FormHelperText>
 						</Grid>
-
 					</Grid>
 				))}
 				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
