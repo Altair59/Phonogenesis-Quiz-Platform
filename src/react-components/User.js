@@ -50,6 +50,10 @@ export const groups = {
 	"csc309": [getUserByUsername("user3"), getUserByUsername("user"), getUserByUsername("user1"), getUserByUsername("user2")]
 };
 
+export const quizzes = {
+
+};
+
 export function getUserByUsername(username) {
 	for (let i = 0; i < users.length; i++) {
 		const user = users[i];
