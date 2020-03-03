@@ -50,5 +50,3 @@ export function getUserByUsername(username){
 
 	return null;
 }
-
-export const groups = {};

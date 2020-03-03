@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
@@ -20,6 +22,8 @@ const ruleList = [];
 for (let i = 0; i < questionList.length; i++) {
 	ruleList.push(questionList[i].rule);
 }
+
+const groupList = ["csc263", "csc309", "csc236"];
 
 
 class QuizGenerator extends React.Component {
@@ -33,7 +37,7 @@ class QuizGenerator extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {name: '', time: 0, questions: [], err: false, redirect: "/professor/quiz"};
+		this.state = {name: '', time: 0, questions: [], err: false, redirect: "/professor/quiz", group: ''};
 	};
 
 	handleNameChange = e => {
@@ -85,56 +89,101 @@ class QuizGenerator extends React.Component {
 		this.updateQuestion(i, tmp);
 	}
 
+	handleGroupSelect(e) {
+		this.setState({group: e.target.value});
+		this.setState({redirect: "/professor/quiz"});
+	}
+
 	render() {
 		return (
-			<div>
+			<div id="main">
 				<TopBar {...this.props.location.state}> </TopBar>
-				<Grid container direction="column" justify="flex-start" alignItems="flex-start">
-					<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
-					<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
-					           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
-					<IconButton
-						onClick={this.createQuestionBlock}><AddShoppingCartIcon>Create
-						Group</AddShoppingCartIcon></IconButton>
+				<Grid container direction="row" justify="flex-start" alignItems="center" className="qgblock">
+					<Grid item>
+						<h4>Define Quiz Name</h4>
+					</Grid>
+					<Grid item>
+						<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
+					</Grid>
+				</Grid>
+				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
+					<Grid item>
+						<h4>Set Time Limit</h4>
+					</Grid>
+					<Grid item>
+						<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
+						           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
+					</Grid>
+				</Grid>
+				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
+					<Grid item>
+						<h4>Add Quiz Question</h4>
+					</Grid>
+					<Grid item>
+						<IconButton
+							onClick={this.createQuestionBlock}><AddShoppingCartIcon>Create
+							Group</AddShoppingCartIcon></IconButton>
+					</Grid>
 				</Grid>
 				{this.state.questions.map((row, i) => (
-					<Grid item key={i}>
-						<Grid container direction="column">
-							<Grid item>
+					<Grid container direction="row" id="q" key={i} justify="center" alignItems="center">
 
-								<FormGroup>
-									<FormControlLabel control={<Switch checked={this.state.questions[i].ur_check}
-									                                   onChange={(e) => {
-										                                   this.handleUrCheck(e, i)
-									                                   }}
-									                                   value="ur_check"/>} label="UR"/>
-									<FormControlLabel control={<Switch checked={this.state.questions[i].phe_check}
-									                                   onChange={(e) => {
-										                                   this.handlePheCheck(e, i)
-									                                   }}
-									                                   value="phe_check"/>} label="Phe"/>
-									<Select value={this.state.questions[i].max_cadt} onChange={(e) => {
-										this.handleCadtSelect(e, i)
-									}}>
-										<MenuItem value={0}>0</MenuItem>
-										<MenuItem value={1}>1</MenuItem>
-										<MenuItem value={2}>2</MenuItem>
-										<MenuItem value={3}>3</MenuItem>
-									</Select>
-									<Select value={this.state.questions[i].rule}
-									        onChange={(e) => this.handleRuleSelect(e, i)}>
-										{ruleList.map((rule, j) => (
-											<MenuItem key={j} value={ruleList[j]}>{ruleList[j]}</MenuItem>
-										))}
-									</Select>
-								</FormGroup>
-
-							</Grid>
+						<Grid item>
+							<FormControlLabel control={<Switch checked={this.state.questions[i].ur_check}
+							                                   onChange={(e) => {
+								                                   this.handleUrCheck(e, i)
+							                                   }}
+							                                   value="ur_check"/>} label="UR"/>
 						</Grid>
+						<Grid item>
+							<FormControlLabel control={<Switch checked={this.state.questions[i].phe_check}
+							                                   onChange={(e) => {
+								                                   this.handlePheCheck(e, i)
+							                                   }}
+							                                   value="phe_check"/>} label="Phe"/>
+						</Grid>
+						<Grid item>
+							<Select value={this.state.questions[i].max_cadt} onChange={(e) => {
+								this.handleCadtSelect(e, i)
+							}}>
+								<MenuItem value={0}>0</MenuItem>
+								<MenuItem value={1}>1</MenuItem>
+								<MenuItem value={2}>2</MenuItem>
+								<MenuItem value={3}>3</MenuItem>
+							</Select>
+							<FormHelperText>cadt#</FormHelperText>
+						</Grid>
+						<Grid item>
+							<Select value={this.state.questions[i].rule}
+							        onChange={(e) => this.handleRuleSelect(e, i)}>
+								{ruleList.map((rule, j) => (
+									<MenuItem key={j} value={ruleList[j]}>{ruleList[j]}</MenuItem>
+								))}
+							</Select>
+							<FormHelperText>Rule</FormHelperText>
+						</Grid>
+
 					</Grid>
 				))}
-				<Grid container direction="column" justify="flex-start" alignItems="flex-start">
-
+				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
+					<Grid item>
+						<h4>Select which group to send to </h4>
+					</Grid>
+					<Grid item>
+						<Select value={this.state.group} onChange={(e) => this.handleGroupSelect(e)}>
+							{groupList.map((rule, j) => (
+								<MenuItem key={j} value={groupList[j]}>{groupList[j]}</MenuItem>
+							))}
+						</Select>
+					</Grid>
+				</Grid>
+				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
+					<Grid item>
+						<h4>Distribute</h4>
+					</Grid>
+					<Grid item>
+						<IconButton><ArrowUpwardIcon/></IconButton>
+					</Grid>
 				</Grid>
 			</div>
 		)
