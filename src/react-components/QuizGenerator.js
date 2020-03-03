@@ -3,7 +3,6 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,14 +12,12 @@ import Select from '@material-ui/core/Select';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {ruleList} from "./QuizData";
-
+import {groups} from "./User";
+import {Question} from "./QuizData";
+import {Quiz} from "./QuizData";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
-
-
-
-const groupList = ["csc263", "csc309", "csc236"];
-
+import {quizzes} from "./User";
 
 class QuizGenerator extends React.Component {
 	question_block = function () {
@@ -91,6 +88,29 @@ class QuizGenerator extends React.Component {
 		this.setState({redirect: "/professor/quiz"});
 	}
 
+	makeQuiz(){
+		let quiz_questions = [];
+		for (let i=0;i<this.state.questions.length;i++){
+			let new_question = new Question(this.state.questions[i].rule, this.state.questions[i].ur_check, this.state.questions[i].phe_check, this.state.questions[i].max_cadt);
+			quiz_questions.push(new_question);
+		}
+		let new_quiz = new Quiz(quiz_questions, this.state.time, this.state.group,this.state.name);
+		quizzes.push(new_quiz);
+		this.distributeQuiz(new_quiz);
+	}
+
+	distributeQuiz(quiz){
+		let targets = [];
+		for (let group in groups){
+			if (quiz.group === group){
+				targets = groups.group;
+			}
+		}
+		for (let i=0;i<targets.length;i++){
+			targets[i].quizzes.push(quiz);
+		}
+	};
+
 	render() {
 		return (
 			<div id="main">
@@ -102,8 +122,6 @@ class QuizGenerator extends React.Component {
 					<Grid item>
 						<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Set Time Limit</h4>
 					</Grid>
@@ -111,8 +129,6 @@ class QuizGenerator extends React.Component {
 						<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
 						           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Add Quiz Question</h4>
 					</Grid>
@@ -124,7 +140,6 @@ class QuizGenerator extends React.Component {
 				</Grid>
 				{this.state.questions.map((row, i) => (
 					<Grid container direction="row" id="q" key={i} justify="center" alignItems="center">
-
 						<Grid item>
 							<FormControlLabel control={<Switch checked={this.state.questions[i].ur_check}
 							                                   onChange={(e) => {
@@ -159,7 +174,6 @@ class QuizGenerator extends React.Component {
 							</Select>
 							<FormHelperText>Rule</FormHelperText>
 						</Grid>
-
 					</Grid>
 				))}
 				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
@@ -168,8 +182,8 @@ class QuizGenerator extends React.Component {
 					</Grid>
 					<Grid item>
 						<Select value={this.state.group} onChange={(e) => this.handleGroupSelect(e)}>
-							{groupList.map((rule, j) => (
-								<MenuItem key={j} value={groupList[j]}>{groupList[j]}</MenuItem>
+							{Object.keys(groups).map((group, j) => (
+								<MenuItem key={j} value={Object.keys(groups)[j]}>{Object.keys(groups)[j]}</MenuItem>
 							))}
 						</Select>
 					</Grid>
@@ -179,7 +193,7 @@ class QuizGenerator extends React.Component {
 						<h4>Distribute</h4>
 					</Grid>
 					<Grid item>
-						<IconButton><ArrowUpwardIcon/></IconButton>
+						<IconButton onClick={this.makeQuiz}><ArrowUpwardIcon/></IconButton>
 					</Grid>
 				</Grid>
 			</div>
