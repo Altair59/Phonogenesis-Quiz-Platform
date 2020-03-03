@@ -31,7 +31,7 @@ class ProfGroupPage extends React.Component {
 		for (let i = 0; i < students.length; i++) {
 			inputs.push('');
 		}
-		this.state = {students: students, redirect: "/professor/groups", value: inputs, users: this.props.users};
+		this.state = {students: students, redirect: "/professor/groups", value: inputs, users: this.props.users, err: false};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -82,10 +82,22 @@ class ProfGroupPage extends React.Component {
 		return (!is_enrolled.includes(name));
 	}
 
+	validate_group(){
+		let reg = /^[0-9a-zA-Z]+[-]?[0-9a-zA-Z]+$/;
+		console.log(reg.test(this.state.value[0]));
+		return reg.test(this.state.value[0]);
+	}
+
 	createGroup = () => {
-		this.state.students.push(new this.group([], this.state.value[0]));
-		this.state.value.push('');
-		this.setState({redirect: "/professor/groups"});
+		if (this.validate_group()){
+			this.setState({err: false});
+			this.state.students.push(new this.group([], this.state.value[0]));
+			this.state.value.push('');
+			this.setState({redirect: "/professor/groups"});
+		} else {
+			this.setState({err: true});
+		}
+
 	};
 
 	removeGroup = j => {
@@ -105,7 +117,8 @@ class ProfGroupPage extends React.Component {
 						<h2>Create Group</h2>
 						<TextField onChange={(e) => {
 							this.handleChange(e, 0)
-						}} label="Name">Group Name</TextField>
+						}} label="Name" error={this.state.err}
+						           helperText={this.state.err ? "Incorrect group name" : ''}>Group Name</TextField>
 
 						<IconButton
 							onClick={this.createGroup}><AddShoppingCartIcon>Create
