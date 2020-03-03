@@ -50,6 +50,7 @@ class QuizTaker extends React.Component {
 	onSubmitAnswer = (e) => {
 		const quiz = getQuizByName(this.props.quiz.name);
 		const choice = this.state.choices[e.currentTarget.id];
+		quiz.pastAnswer.push(choice);
 
 		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
@@ -103,15 +104,17 @@ class QuizTaker extends React.Component {
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
+					<br/>
+					<h3 id="quiz-title">Quiz: {quiz.name}</h3>
+					<hr className="qtaker-hr"/>
 					<QuestionBlock instTxt={"Get QuizData"} rule={currQuestion.rule} qCount={currQuestion.size}
 					               isQuiz={true} isReadOnly={false} showAnswer={false}
 					               genMoreLimit={currQuestion.maxCADT} key={qKey} canShowUR={currQuestion.canUR}
 					               canShowPhoneme={currQuestion.canPhoneme}/>
-					<br/>
-					<hr/>
-					<br/>
+					<hr className="qtaker-hr"/>
 					<Grid container direction="row" justify="center" alignItems="center" spacing={10}>
-						<Grid item id="ctd"> Time Remain &nbsp; <CountdownTimer id="ctd-timer" time={quiz.timeLim}
+						<Grid item id="ctd"> Time Remain &nbsp; <CountdownTimer id="ctd-timer"
+						                                                        msec={quiz.timeLim * 1000}
 						                                                        onTimeUp={this.onTimeUp}/>
 						</Grid>
 
@@ -135,7 +138,8 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		} else {
-
+			quiz.pastScore = score;
+			quiz.isCompleted = true;
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
@@ -151,10 +155,10 @@ class QuizTaker extends React.Component {
 									<QuestionBlock instTxt={"Get QuizData"} rule={question.rule}
 									               qCount={question.size} isReadOnly={true} showAnswer={true}
 									               genMoreLimit={question.maxCADT} isQuiz={false}/>
-									<p id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</p>
-									<p id="studentAnswerTxt">Your Answer: {
+									<p><span id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</span></p>
+									<p><span id="studentAnswerTxt">Your Answer: {
 										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
-									}</p>
+									}</span></p>
 									<br/>
 									<hr/>
 								</div>
@@ -170,7 +174,7 @@ class QuizTaker extends React.Component {
 class CountdownTimer extends React.PureComponent {
 	render() {
 		return (
-			<Countdown date={Date.now() + this.props.time} onComplete={this.props.onTimeUp}/>
+			<Countdown date={Date.now() + this.props.msec} onComplete={this.props.onTimeUp}/>
 		);
 	}
 }
