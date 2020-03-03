@@ -43,7 +43,7 @@ class ProfGroupPage extends React.Component {
 	};
 
 	handleChange(e, j) {
-		this.state.value[j] = e.target.value;
+		this.setState({value: this.state.value.slice(0, j).concat([e.target.value]).concat(this.state.value.slice(j + 1, this.state.value.length))});
 	};
 
 	findUser(name) {
@@ -100,7 +100,7 @@ class ProfGroupPage extends React.Component {
 		return (
 			<div>
 				<TopBar {...state} />
-				<Grid container direction="column" justify="flex-start" alignItems="center">
+				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item>
 						<h2>Create Group</h2>
 						<TextField onChange={(e) => {

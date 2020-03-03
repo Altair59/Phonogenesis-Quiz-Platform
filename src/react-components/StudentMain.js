@@ -19,11 +19,13 @@ class StudentMain extends React.Component {
         <h2>Activity History</h2>
         <div id="activities">
         <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <QuizTile quizId="1" score="17/20"/>
-            </Grid>
-            <Grid item>
-            </Grid>
+            {state.quizzes.map((quiz, i) => {
+              return(
+                <Grid item>
+                  <QuizTile {...quiz} />
+                </Grid>
+              );
+            })}
         </Grid>
         </div>
       </div>

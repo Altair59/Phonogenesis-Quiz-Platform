@@ -22,6 +22,19 @@ class LoginPage extends React.Component {
         let filtered_user = this.props.users.filter(user => user.username === this.state.username)
         if (filtered_user.length === 1) {
             if (filtered_user[0].password === this.state.password) {
+              if (filtered_user[0].type === "student") {
+                this.props.history.push({
+                  pathname: '/' + filtered_user[0].type,
+                  state: {
+                    type: filtered_user[0].type,
+                    name: filtered_user[0].name,
+                    email: filtered_user[0].email,
+                    username: filtered_user[0].username,
+                    password: filtered_user[0].password,
+                    quizzes: []
+                  }
+                });
+              } else {
                 this.props.history.push({
                   pathname: '/' + filtered_user[0].type,
                   state: {
@@ -32,6 +45,7 @@ class LoginPage extends React.Component {
                     password: filtered_user[0].password
                   }
                 });
+              }
             } else {
                 this.setState({err: true})
             }

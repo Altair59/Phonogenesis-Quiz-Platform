@@ -22,7 +22,6 @@ class QuizTaker extends React.Component {
 			quizSize: 2,
 			score: 0,
 			studentAnswers: [],
-			doRedirect: false,
 			qKey: 0
 		};
 	}
@@ -75,8 +74,7 @@ class QuizTaker extends React.Component {
 	};
 
 	onBackToMain = (e) => {
-		console.log(this.props.location);
-		let {state} = this.props.location;
+		let { state } = this.props.location;
 		this.props.history.push({
 			pathname: '/student',
 			state: {
@@ -85,6 +83,7 @@ class QuizTaker extends React.Component {
 				email: state.email,
 				username: state.username,
 				password: state.password,
+				quizzes: [...state.quizzes, {...this.state, quizId: state.quizzes.length}]
 			}
 		});
 		e.preventDefault();

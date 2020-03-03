@@ -1,18 +1,16 @@
 import React from "react";
 import {withRouter} from "react-router-dom"
 import Grid from "@material-ui/core/Grid"
-import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
-import Divider from "@material-ui/core/Divider"
+import Avatar from '@material-ui/core/Avatar';
 
 class ProfessorHome extends React.Component {
-
 	render() {
 		let { state } = this.props.location;
 		return (
 			<div>
 				<TopBar {...state} />
-				<h1>HOME FOR PROF</h1>
+				<Avatar alt="Professor" src="/src/react-components/david.jpg"/>
 			</div>
 		);
 	}
