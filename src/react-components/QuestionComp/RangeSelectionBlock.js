@@ -1,4 +1,6 @@
 import React from "react";
+import TextField from "@material-ui/core/TextField";
+
 
 // rangeMax, rangeMin, allowEmpty, default, title
 export default class RangeSelectionBlock extends React.Component {
@@ -39,9 +41,20 @@ export default class RangeSelectionBlock extends React.Component {
 
 		return (
 			<div className={"formElement"}>
-				<legend className={"labelText"}>{this.props.title}</legend>
 				<div className={"inputBlock"}>
-					<input value={selection} onChange={this.onChange} onBlur={this.onBlur}/>
+					<TextField
+						id="standard-number"
+						label={this.props.title}
+						type="number"
+						variant="outlined"
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={this.onChange}
+						pattern="[0-9]*"
+					/>
+
+
 					{warning === "" ? null : (<p className={"validateWarn"}>{warning}</p>)}
 				</div>
 

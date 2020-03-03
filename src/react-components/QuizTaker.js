@@ -6,36 +6,16 @@ import QuestionBlock from "./QuestionComp/QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
+import {shuffleQuestion, transIPAg, questionList, getShuffledQList} from "./Rules";
 
 const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration of voiceless stops', 'intervocalic fricative voicing', 'vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'word-final stop devoicing', 'word-final consonant devoicing', 'obstruent devoicing in codas', 'obstruent devoicing in codas', 'aspiration of voiceless stops in onsets', 'aspiration of voiceless stops in codas', 'word-final aspiration of voiceless stops', 'intervocalic fricative voicing', 'intervocalic obstruent voicing', 'intervocalic spirantization of voiced stops', 'postvocalic spirantization of voiced stops', 'spirantization of voiceless stops in codas', 'high vowel laxing in closed syllables', 'mid vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'palatal mutation of velar stops to postalveolar fricatives before front vowels', 'palatal mutation of velar stops to alveolar affricates before front vowels', 'palatal mutation of velar stops to alveolar fricatives before front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before front vowels', 'palatal mutation of alveolar stops to alveolar affricates before front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before front vowels', 'palatal mutation of velar stops to postalveolar affricates before high front vowels', 'palatal mutation of velar stops to postalveolar fricatives before high front vowels', 'palatal mutation of velar stops to alveolar affricates before high front vowels', 'palatal mutation of velar stops to alveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before high front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to alveolar affricates before high front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before high front vowels', 'palatalization of velars after front vowels', 'palatalization of velars before front vowels', 'palatalization of velar fricatives after front vowels', 'palatalization of velar fricatives before front vowels', 'palatalization of velars after high front vowels', 'palatalization of velars before high front vowels', 'palatalization of velar fricatives after high front vowels', 'palatalization of velar fricatives before high front vowels', 'regressive vowel nasalization', 'progressive vowel nasalization', 'regressive vowel nasalization from nasal codas', 'word-final vowel devoicing', 'word-final high vowel devoicing', 'word-final vowel devoicing after voiceless consonants', 'word-final high vowel devoicing after voiceless consonants', 'vowel devoicing between voiceless consonants', 'high vowel devoicing between voiceless consonants', 'postnasal voicing of stops', 'postnasal voicing of obstruents', 'postnasal voicing of fricatives', 'word-final raising of mid vowels', 'word-final lowerinɡ of hiɡh vowels', 'word-final raising of low vowels', 'raising of mid vowels before voiceless codas', 'raising of low vowels before voiceless codas', 'raising of mid vowels before voiced codas', 'uvularization of velars after back non-high vowels', 'uvularization of velars before back non-high vowels', 'velarization of /l/ before back vowels', 'velarization of /l/ after back vowels', 'dentalization of alveolar stops before front vowels', 'dentalization and spirantization of alveolar stops before front vowels', 'lateralization of /d/ before nonhigh vowels', 'lateralization of /d/ after nonhigh vowels', 'retraction of high front vowels after postalveolars', 'retraction of high front vowels after velars', 'fronting of high back vowels after alveolars', 'word-final ashibilation of alveolar fricatives', 'ashibilation of alveolar fricatives in codas', 'debuccalization of /s/ in codas', 'velarization of /l/ in codas', 'intervocalic deletion of voiced velar obstruents', 'intervocalic deletion of velar obstruents', 'intervocalic deletion of voiced velar oral stops', 'intervocalic deletion of voiced obstruents', 'intervocalic deletion of voiced oral stops', 'deletion of high vowels in final closed syllables to create rising sonority codas', 'deletion of high front vowels in final closed syllables to carete rising sonority codas'];
-
-// 30 ur
-const questionList = [{
-	templates: ['[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[consonant]-[vowel]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]-[consonant]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]-[consonant]'],
-	poi: "['c', 'ɟ', 'ç', 'ʝ', 'ɲ', 'k', 'g', 'x', 'ɣ', 'ŋ']",
-	ruleType: "Alternating",
-	phoneme: "p b t d k g ʔ t͡ʃ d͡ʒ f v θ ð s z ʃ ʒ x ɣ m n ŋ l w j i e ɔ o æ ɑ",
-	answer: "palatalization of velars after high front vowels",
-	gloss: ['\'bounce\'', '\'wheat\'', '\'mosquito\'', '\'awaken\'', '\'two\'', '\'coastline\'', '\'rain\'', '\'lose\'', '\'we (incl)\'', '\'bring\'', '\'you (dual)\'', '\'what\'', '\'ketchup\'', '\'sun\'', '\'build\'', '\'lake\'', '\'west\'', '\'fight\'', '\'destroy\'', '\'thumb\'', '\'kneel\'', '\'few\'', '\'then\'', '\'black\'', '\'pretend\'', '\'food\'', '\'apple\'', '\'onion\'', '\'horn\'', '\'soybean\''],
-	SR: ['diɲxɑ', 'ʃiɟe', 'ɣiçseɣ', 'ŋoʒziç', 'kicɑθ', 'ŋictog', 'xiɲʔo', 'lɔmiɟ', 'kiɲd͡ʒɑt͡ʃ', 'ʔicʃɑ', 'giʝneɣ', 'kɔfxiʝ', 'ʃiçɔ', 'liɲvoŋ', 'θiɲ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin'],
-	UR: ['diŋxɑ', 'ʃige', 'ɣixseɣ', 'ŋoʒzix', 'kikɑθ', 'ŋiktog', 'xiŋʔo', 'lɔmig', 'kiŋd͡ʒɑt͡ʃ', 'ʔikʃɑ', 'giɣneɣ', 'kɔfxiɣ', 'ʃixɔ', 'liŋvoŋ', 'θiŋ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin']
-}, {
-	templates: ['[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[consonant]-[vowel]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]-[consonant]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]-[consonant]'],
-	poi: "['c', 'ɟ', 'ç', 'ʝ', 'k', 'ɡ', 'x', 'ɣ']",
-	ruleType: "Alternating",
-	phoneme: "p b t d k ɡ ʔ t͡ʃ d͡ʒ f v θ ð s z h x ɣ m n r l j i ɔ o u a",
-	answer: "palatalization of velars after front vowels",
-	gloss: ['\'inland\'', '\'mud\'', '\'evil\'', '\'brown\'', '\'fox\'', '\'face\'', '\'avoid\'', '\'corn\'', '\'threaten\'', '\'think\'', '\'almond\'', '\'honey\'', '\'choose\'', '\'sit\'', '\'baby\'', '\'full\'', '\'parent\'', '\'regret\'', '\'night\'', '\'shark\'', '\'drink\'', '\'tongue\'', '\'laugh\'', '\'that\'', '\'island\'', '\'repeat\'', '\'owl\'', '\'rabbit\'', '\'put\'', '\'hair\''],
-	SR: ['miɟɡɔʔ', 'jici', 'niʝɡɔl', 'dihhiç', 't͡ʃiɟdu', 'jiɟu', 'xicu', 'ziʝ', 't͡ʃiʝjɔ', 'ɣiçso', 'ɣafiç', 'θicxi', 'xiçko', 'ɡɔdiç', 'xiçxɔ', 'fɔɡɔ', 'kɔsu', 'xub', 'dufxif', 'xɔ', 'pulɣa', 'ɣirkoj', 'ɡat͡ʃxap', 'ɡu', 'ɣɔxu', 'ɡij', 'ɣɔxaɡ', 'dolha', 'd͡ʒuθud͡ʒ', 'laðzaj'],
-	UR: ['miɡɡɔʔ', 'jiki', 'niɣɡɔl', 'dihhix', 't͡ʃiɡdu', 'jiɡu', 'xiku', 'ziɣ', 't͡ʃiɣjɔ', 'ɣixso', 'ɣafix', 'θikxi', 'xixko', 'ɡɔdix', 'xixxɔ', 'fɔɡɔ', 'kɔsu', 'xub', 'dufxif', 'xɔ', 'pulɣa', 'ɣirkoj', 'ɡat͡ʃxap', 'ɡu', 'ɣɔxu', 'ɡij', 'ɣɔxaɡ', 'dolha', 'd͡ʒuθud͡ʒ', 'laðzaj']
-}];
 
 class QuizTaker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			questionIndex: 0,
-			choices: this.genChoicesFromPool(questionList[0].answer, 4),
+			choices: this.genChoicesFromPool(questionList[0].rule, 4),
 			allowUR: true,
 			allowPhonemes: true,
 			maxGenMore: 2,
@@ -50,6 +30,7 @@ class QuizTaker extends React.Component {
 	genChoicesFromPool(answer, size) {
 		const choices = [];
 		let haveAns = false;
+
 
 		for (let i = 0; i < size; i++) {
 			if (!haveAns && (i === size - 1 || Math.random() > 0.5)) {
@@ -72,7 +53,7 @@ class QuizTaker extends React.Component {
 	onSubmitAnswer = (e) => {
 		const choice = this.state.choices[e.currentTarget.id];
 
-		if (choice === questionList[this.state.questionIndex].answer) {
+		if (choice === questionList[this.state.questionIndex].rule) {
 			this.setState({score: this.state.score + 1});
 		}
 		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
@@ -82,7 +63,7 @@ class QuizTaker extends React.Component {
 		this.setState({qKey: this.state.qKey + 1});
 
 		if (newIndex < this.state.quizSize) {
-			this.setState({choices: this.genChoicesFromPool(questionList[newIndex].answer, 4)});
+			this.setState({choices: this.genChoicesFromPool(questionList[newIndex].rule, 4)});
 		}
 
 		e.preventDefault();
@@ -95,7 +76,7 @@ class QuizTaker extends React.Component {
 
 	onBackToMain = (e) => {
 		console.log(this.props.location);
-		let { state } = this.props.location;
+		let {state} = this.props.location;
 		this.props.history.push({
 			pathname: '/student',
 			state: {
@@ -122,8 +103,9 @@ class QuizTaker extends React.Component {
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
-					<QuestionBlock instTxt={"Get Question"} question={questionList[index]} qCount={20}
-					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}/>
+					<QuestionBlock instTxt={"Get Question"} question={questionList[index]} qCount={20} isQuiz={true}
+					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}
+					               canShowUR={true} canShowPhoneme={true}/>
 					<br/>
 					<hr/>
 					<br/>
@@ -166,8 +148,8 @@ class QuizTaker extends React.Component {
 								<div key={index}>
 									<QuestionBlock instTxt={"Get Question"} question={questionList[index]}
 									               qCount={20} isReadOnly={true} showAnswer={true}
-									               genMoreLimit={genMoreLimit}/>
-									<p id="correctAnswerTxt">Correct Answer: {question.answer}</p>
+									               genMoreLimit={genMoreLimit} isQuiz={false}/>
+									<p id="correctAnswerTxt">Correct Answer: {question.rule}</p>
 									<p id="studentAnswerTxt">Your Answer: {
 										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
 									}</p>
