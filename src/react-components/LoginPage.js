@@ -39,7 +39,7 @@ class LoginPage extends React.Component {
                 this.props.history.push({
                   pathname: '/' + filtered_user[0].type,
                   state: {
-                    id: filtered_user[0].id, 
+                    id: filtered_user[0].id,
                     type: filtered_user[0].type,
                     name: filtered_user[0].name,
                     email: filtered_user[0].email,

@@ -12,6 +12,7 @@ import QuizGenerator from './react-components/QuizGenerator';
 import StudentMain from './react-components/StudentMain';
 import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
+import StudentGroupPage from "./react-components/StudentGroupPage"
 
 class App extends React.Component {
   render() {
@@ -28,6 +29,7 @@ class App extends React.Component {
             <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
             <Route exact path='/student' render={() => (<StudentMain />)}/>
             <Route exact path='/student/quiz' render={() => (<QuizTaker />)}/>
+            <Route exact path='/student/groups' render={() => (<StudentGroupPage />)}/>
           </Switch>
         </BrowserRouter>
       </div>

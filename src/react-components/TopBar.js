@@ -52,6 +52,8 @@ class TopBar extends React.Component {
 		} else if (text === "Groups") {
 			if (this.props.type === "professor") {
 				newPage = "/professor/groups"
+			} else if(this.props.type === "student") {
+				newPage = "/student/groups"
 			}
 		} else if (text === "Practice") {
 			newPage = "/student/gen"
