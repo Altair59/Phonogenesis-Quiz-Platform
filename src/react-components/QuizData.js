@@ -40,6 +40,18 @@ export class Quiz {
 	}
 }
 
+export const quizList = [];
+
+export function getQuizByName(name){
+	for (let i = 0; i < quizList.length; i++){
+		if (quizList[i].name === name){
+			return quizList[i];
+		}
+	}
+
+	return null;
+}
+
 
 export function getShuffledQList() {
 	let newLst = ruleList.slice(0);
