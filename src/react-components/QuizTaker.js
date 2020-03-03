@@ -6,7 +6,7 @@ import QuestionBlock from "./QuestionComp/QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
-import {questionList} from "./Rules";
+import {ruleList} from "./QuizData";
 
 const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration of voiceless stops', 'intervocalic fricative voicing', 'vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'word-final stop devoicing', 'word-final consonant devoicing', 'obstruent devoicing in codas', 'obstruent devoicing in codas', 'aspiration of voiceless stops in onsets', 'aspiration of voiceless stops in codas', 'word-final aspiration of voiceless stops', 'intervocalic fricative voicing', 'intervocalic obstruent voicing', 'intervocalic spirantization of voiced stops', 'postvocalic spirantization of voiced stops', 'spirantization of voiceless stops in codas', 'high vowel laxing in closed syllables', 'mid vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'palatal mutation of velar stops to postalveolar fricatives before front vowels', 'palatal mutation of velar stops to alveolar affricates before front vowels', 'palatal mutation of velar stops to alveolar fricatives before front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before front vowels', 'palatal mutation of alveolar stops to alveolar affricates before front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before front vowels', 'palatal mutation of velar stops to postalveolar affricates before high front vowels', 'palatal mutation of velar stops to postalveolar fricatives before high front vowels', 'palatal mutation of velar stops to alveolar affricates before high front vowels', 'palatal mutation of velar stops to alveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before high front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to alveolar affricates before high front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before high front vowels', 'palatalization of velars after front vowels', 'palatalization of velars before front vowels', 'palatalization of velar fricatives after front vowels', 'palatalization of velar fricatives before front vowels', 'palatalization of velars after high front vowels', 'palatalization of velars before high front vowels', 'palatalization of velar fricatives after high front vowels', 'palatalization of velar fricatives before high front vowels', 'regressive vowel nasalization', 'progressive vowel nasalization', 'regressive vowel nasalization from nasal codas', 'word-final vowel devoicing', 'word-final high vowel devoicing', 'word-final vowel devoicing after voiceless consonants', 'word-final high vowel devoicing after voiceless consonants', 'vowel devoicing between voiceless consonants', 'high vowel devoicing between voiceless consonants', 'postnasal voicing of stops', 'postnasal voicing of obstruents', 'postnasal voicing of fricatives', 'word-final raising of mid vowels', 'word-final lowerinɡ of hiɡh vowels', 'word-final raising of low vowels', 'raising of mid vowels before voiceless codas', 'raising of low vowels before voiceless codas', 'raising of mid vowels before voiced codas', 'uvularization of velars after back non-high vowels', 'uvularization of velars before back non-high vowels', 'velarization of /l/ before back vowels', 'velarization of /l/ after back vowels', 'dentalization of alveolar stops before front vowels', 'dentalization and spirantization of alveolar stops before front vowels', 'lateralization of /d/ before nonhigh vowels', 'lateralization of /d/ after nonhigh vowels', 'retraction of high front vowels after postalveolars', 'retraction of high front vowels after velars', 'fronting of high back vowels after alveolars', 'word-final ashibilation of alveolar fricatives', 'ashibilation of alveolar fricatives in codas', 'debuccalization of /s/ in codas', 'velarization of /l/ in codas', 'intervocalic deletion of voiced velar obstruents', 'intervocalic deletion of velar obstruents', 'intervocalic deletion of voiced velar oral stops', 'intervocalic deletion of voiced obstruents', 'intervocalic deletion of voiced oral stops', 'deletion of high vowels in final closed syllables to create rising sonority codas', 'deletion of high front vowels in final closed syllables to carete rising sonority codas'];
 
@@ -15,7 +15,7 @@ class QuizTaker extends React.Component {
 		super(props);
 		this.state = {
 			questionIndex: 0,
-			choices: this.genChoicesFromPool(questionList[0].rule, 4),
+			choices: this.genChoicesFromPool(ruleList[0].rule, 4),
 			allowUR: true,
 			allowPhonemes: true,
 			maxGenMore: 2,
@@ -52,7 +52,7 @@ class QuizTaker extends React.Component {
 	onSubmitAnswer = (e) => {
 		const choice = this.state.choices[e.currentTarget.id];
 
-		if (choice === questionList[this.state.questionIndex].rule) {
+		if (choice === ruleList[this.state.questionIndex].rule) {
 			this.setState({score: this.state.score + 1});
 		}
 		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
@@ -62,7 +62,7 @@ class QuizTaker extends React.Component {
 		this.setState({qKey: this.state.qKey + 1});
 
 		if (newIndex < this.state.quizSize) {
-			this.setState({choices: this.genChoicesFromPool(questionList[newIndex].rule, 4)});
+			this.setState({choices: this.genChoicesFromPool(ruleList[newIndex].rule, 4)});
 		}
 
 		e.preventDefault();
@@ -70,7 +70,7 @@ class QuizTaker extends React.Component {
 
 	onTimeUp = () => {
 		alert("You've used up all your time!");
-		this.setState({questionIndex: questionList.length});
+		this.setState({questionIndex: ruleList.length});
 	};
 
 	onBackToMain = (e) => {
@@ -102,7 +102,7 @@ class QuizTaker extends React.Component {
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
-					<QuestionBlock instTxt={"Get Question"} question={questionList[index]} qCount={20} isQuiz={true}
+					<QuestionBlock instTxt={"Get QuizData"} question={ruleList[index]} qCount={20} isQuiz={true}
 					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}
 					               canShowUR={true} canShowPhoneme={true}/>
 					<br/>
@@ -143,9 +143,9 @@ class QuizTaker extends React.Component {
 						</Grid>
 
 						<Grid item>
-							{questionList.map((question, index) => (
+							{ruleList.map((question, index) => (
 								<div key={index}>
-									<QuestionBlock instTxt={"Get Question"} question={questionList[index]}
+									<QuestionBlock instTxt={"Get QuizData"} question={ruleList[index]}
 									               qCount={20} isReadOnly={true} showAnswer={true}
 									               genMoreLimit={genMoreLimit} isQuiz={false}/>
 									<p id="correctAnswerTxt">Correct Answer: {question.rule}</p>
