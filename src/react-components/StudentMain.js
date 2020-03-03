@@ -5,13 +5,13 @@ import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 import "./MainPage.css"
-import {getUserByName} from "./User";
+import {getUserByUsername} from "./User";
 
 class StudentMain extends React.Component {
 
 	render() {
 		let {state} = this.props.location;
-		const student = getUserByName(state.name);
+		const student = getUserByUsername(state.username);
 
 		return (
 			<div>

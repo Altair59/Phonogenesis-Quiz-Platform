@@ -13,7 +13,6 @@ import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 
 import "./AdminPage.css";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 
 class AdminPage extends React.Component {
@@ -48,8 +47,6 @@ class AdminPage extends React.Component {
 			const newPassword = document.getElementById("edit-password".concat(i.toString())).value;
 			const currUsername = document.getElementById("edit-username".concat(i.toString())).value;
 
-			console.log(document.getElementById("edit-name".concat(i.toString())));
-
 			const currUser = getUserByUsername(currUsername);
 			currUser.email = newEmail;
 			currUser.name = newName;
@@ -61,11 +58,6 @@ class AdminPage extends React.Component {
 			this.setState({currEdit: i});
 		}
 
-		// TODO: Implement editUser
-	};
-
-	changeUser = e => {
-		// TODO: Implement
 	};
 
 	removeUser = i => {
@@ -141,17 +133,14 @@ class AdminPage extends React.Component {
 									                                     id={"edit-name".concat(i.toString())}>{row.name}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined"
 									                                     disabled={this.state.currEdit !== i}
-									                                     align="center" defaultValue={row.email}
-									                                     required
+									                                     align="center" defaultValue={row.email} required
 									                                     id={"edit-email".concat(i.toString())}>{row.email}</TextField></TableCell>
-									<TableCell align="center"><TextField variant="outlined" disabled
+									<TableCell align="center"><TextField variant="outlined" disabled required
 									                                     align="center" defaultValue={row.username}
-									                                     required
 									                                     id={"edit-username".concat(i.toString())}>{row.username}</TextField></TableCell>
-									<TableCell align="center"><TextField variant="outlined"
+									<TableCell align="center"><TextField variant="outlined" required
 									                                     disabled={this.state.currEdit !== i}
 									                                     align="center" defaultValue={row.password}
-									                                     required
 									                                     id={"edit-password".concat(i.toString())}>{row.password}</TextField></TableCell>
 
 									<TableCell align="center">
