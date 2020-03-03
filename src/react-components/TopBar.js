@@ -90,7 +90,7 @@ class TopBar extends React.Component {
 					</IconButton>
 					<Divider/>
 					<List>
-						{(this.props.type === "student" ? studentNav : profNav).map((text, index) => (
+						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav :["Log Out"])).map((text, index) => (
 							<ListItem button onClick={() => this.navigate(text)} key={text}>
 								<ListItemText primary={text}/>
 							</ListItem>

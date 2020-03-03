@@ -1,14 +1,17 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import {users} from "./User"
+import {users} from "./User";
+import TopBar from "./TopBar.js";
+import {withRouter} from "react-router-dom";
+
 import "./AdminPage.css";
 
 class AdminPage extends React.Component {
@@ -24,16 +27,16 @@ class AdminPage extends React.Component {
 			password: this.state.password,
 			groups: []
 		});
-		this.setState({redirect: "/admin"})
+		this.setState({redirect: "/admin"});
 	};
 
 	editUser = e => {
-
+		// TODO: Implement editUser
 	};
 
 	removeUser = i => {
 		users.splice(i, 1);
-		this.setState({redirect: "/admin"})
+		this.setState({redirect: "/admin"});
 	};
 
 	handleTextFieldChange = e => {
@@ -45,7 +48,11 @@ class AdminPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<h3> Total User Count: <span id="userCount">{users.length}</span></h3>
+				<TopBar {...this.props.location.state}/>
+				<h3>
+					{" "}
+					Total User Count: <span id="userCount">{users.length}</span>
+				</h3>
 				<div className="addButton">
 					<TextField
 						id="type"
@@ -95,18 +102,22 @@ class AdminPage extends React.Component {
 									<TableCell align="right">{row.email}</TableCell>
 									<TableCell align="right">{row.username}</TableCell>
 									<TableCell align="right">{row.password}</TableCell>
-									<TableCell align="right"><Button onClick={this.editUser}>Edit</Button></TableCell>
-									<TableCell align="right"><Button
-										onClick={this.removeUser.bind(this, i)}>Remove</Button></TableCell>
+									<TableCell align="right">
+										<Button onClick={this.editUser}>Edit</Button>
+									</TableCell>
+									<TableCell align="right">
+										<Button onClick={this.removeUser.bind(this, i)}>
+											Remove
+										</Button>
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
 					</Table>
 				</TableContainer>
 			</div>
-
 		);
 	}
 }
 
-export default AdminPage;
+export default withRouter(AdminPage);
