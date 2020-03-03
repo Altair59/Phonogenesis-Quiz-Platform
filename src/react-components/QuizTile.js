@@ -32,7 +32,7 @@ class QuizTile extends React.Component {
 											<div className="act-paper">
 												<p><strong>Question #{i + 1}:</strong></p>
 												<p>Your Answer: {sAnswer}</p>
-												<p>Correct Answer: {ruleList[i].answer}</p>
+												<p>Correct Answer: {ruleList[i].ruleTxt}</p>
 											</div>
 										</Paper>
 									</Grid>

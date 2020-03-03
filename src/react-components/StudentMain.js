@@ -6,37 +6,39 @@ import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 import "./MainPage.css"
 import {users, getUserByUsername} from "./User";
+import QuizTaker from "./QuizTaker";
 
 class StudentMain extends React.Component {
 
 	render() {
 		let {state} = this.props.location;
-		const student = getUserByUsername(state.username);
-		console.log(users);
+		const currStudent = getUserByUsername(state.username);
+		console.log(currStudent);
 
 		return (
-			<div>
-				<TopBar {...state}/>
-				<div className="main-area">
-					<h1>{student.name ? student.name : "Anonymous"}</h1>
-					<h3>Email: <span className="text">{student.email ? student.email : "Undefined"}</span></h3>
-					<h3>Enrolled: <span
-						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span></h3>
-					<Divider/>
-					<h2>Activity History</h2>
-					<div id="activities">
-						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-							{state.quizzes.map((quiz, i) => {
-								return (
-									<Grid item key={i}>
-										<QuizTile {...quiz} />
-									</Grid>
-								);
-							})}
-						</Grid>
-					</div>
-				</div>
-			</div>
+			<QuizTaker quiz={currStudent.quizzes[0]}/>
+			// <div>
+			// 	<TopBar {...state}/>
+			// 	{/*<div className="main-area">*/}
+			// 	{/*	<h1>{student.name ? student.name : "Anonymous"}</h1>*/}
+			// 	{/*	<h3>Email: <span className="text">{student.email ? student.email : "Undefined"}</span></h3>*/}
+			// 	{/*	<h3>Enrolled: <span*/}
+			// 	{/*		className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span></h3>*/}
+			// 	{/*	<Divider/>*/}
+			// 	{/*	<h2>Activity History</h2>*/}
+			// 	{/*	<div id="activities">*/}
+			// 	{/*		<Grid container spacing={3} justify="flex-start" alignItems="flex-start">*/}
+			// 	{/*			{state.quizzes.map((quiz, i) => {*/}
+			// 	{/*				return (*/}
+			// 	{/*					<Grid item key={i}>*/}
+			// 	{/*						<QuizTile {...quiz} />*/}
+			// 	{/*					</Grid>*/}
+			// 	{/*				);*/}
+			// 	{/*			})}*/}
+			// 	{/*		</Grid>*/}
+			// 	{/*	</div>*/}
+			// 	{/*</div>*/}
+			// </div>
 		);
 	}
 

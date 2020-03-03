@@ -88,7 +88,7 @@
 <<PREDEFINED>>{'s':'h'}/_#&_[consonant][consonant],debuccalization of /s/ in codas,weird
 <<PREDEFINED>>{'l':'ɫ'}/_#&_[consonant][consonant],velarization of /l/ in codas,weird
 ,,
-"[oral stop,voiced]&[affricate,voiced]>[voiceless]/_#",and in A environment test rule,consonant devoicing
+"[oral stop,voiced]&[affricate,voiced]>[voiceless]/_#",and in A environment test ruleTxt,consonant devoicing
 ,,
 "[voiced,velar,obstruent]>0/[vowel]_[vowel]",intervocalic deletion of voiced velar obstruents,deletion
 "[velar,obstruent]>0/[vowel]_[vowel]",intervocalic deletion of velar obstruents,deletion
@@ -98,5 +98,5 @@
 "[high,vowel]>0/[vowel][sonorant,contoid]_[obstruent,consonant]#",deletion of high vowels in final closed syllables to create rising sonority codas,deletion
 "[high,front,vowel]>0/[vowel][sonorant,contoid]_[obstruent,consonant]#",deletion of high front vowels in final closed syllables to carete rising sonority codas,deletion
 ,,
-<<PREDEFINED>>{'':'i'}/[consonant]_[consonant],test rule,test
-"[vowel,high]>[$-2$rounded]/[vowel,high][consonant]_#",copy cat rule,test
+<<PREDEFINED>>{'':'i'}/[consonant]_[consonant],test ruleTxt,test
+"[vowel,high]>[$-2$rounded]/[vowel,high][consonant]_#",copy cat ruleTxt,test

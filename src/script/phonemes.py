@@ -66,19 +66,19 @@ def _fetch_randomized_phonemes(filename: str, interests: List[List[str]]) -> Lis
     for full_rule in drop_rules:
         rand_var = random.random()
 
-        for rule in full_rule:
-            if len(rule) % 2 == 0 or len(rule) < 3:
-                raise ValueError("Error in file %s, all rule lines must have odd number args >= 3" % filename)
+        for ruleTxt in full_rule:
+            if len(ruleTxt) % 2 == 0 or len(ruleTxt) < 3:
+                raise ValueError("Error in file %s, all ruleTxt lines must have odd number args >= 3" % filename)
 
             rule_completed = False
             preserv_enforced = False
-            prb_met = rand_var < rule[0]
+            prb_met = rand_var < ruleTxt[0]
             drop_buffer = []
 
             sec = 1
-            while sec + 1 < len(rule):
-                pool = rule[sec]
-                sample_size = rule[sec + 1]
+            while sec + 1 < len(ruleTxt):
+                pool = ruleTxt[sec]
+                sample_size = ruleTxt[sec + 1]
 
                 pick_result = _get_random_pick(pool, interests, sample_size, preserv_probs, preserved_set)
 

@@ -44,7 +44,7 @@ export default class QuestionBlock extends React.Component {
 
 	onMoreCADT = (e) => {
 		const newGenMoreCt = this.state.genMoreCount + 1;
-		const capacity = this.props.question.UR.length;
+		const capacity = this.props.rule.UR.length;
 
 		if (newGenMoreCt > this.props.genMoreLimit || capacity - this.state.qCount - 5 < 0) {
 			alert("You've reach maximum allowance to generate more instances for this question!");
@@ -57,22 +57,22 @@ export default class QuestionBlock extends React.Component {
 	};
 
 	render() {
-		if (!this.props.question) {
+		if (!this.props.rule) {
 			return (<br/>);
 		}
 
 		const showUR = this.state.showUR;
 		const showAns = this.props.showAnswer || this.state.showAns;
 		const showPhoneme = this.state.showPhoneme;
-		const question = this.props.question;
-		const endIndex = Math.min(this.state.qCount, question.UR.length);
-		const templates = question.templates;
+		const rule = this.props.rule;
+		const endIndex = Math.min(this.state.qCount, rule.UR.length);
+		const templates = rule.templates;
 		const sp1 = endIndex / 3;
 		const sp2 = endIndex / 3 * 2;
-		const urs = [question.UR.slice(0, sp1), question.UR.slice(sp1, sp2), question.UR.slice(sp2, endIndex)];
-		const srs = [question.SR.slice(0, sp1), question.SR.slice(sp1, sp2), question.SR.slice(sp2, endIndex)];
-		const gls = [question.gloss.slice(0, sp1), question.gloss.slice(sp1, sp2),
-			question.gloss.slice(sp2, question.gloss.length)];
+		const urs = [rule.UR.slice(0, sp1), rule.UR.slice(sp1, sp2), rule.UR.slice(sp2, endIndex)];
+		const srs = [rule.SR.slice(0, sp1), rule.SR.slice(sp1, sp2), rule.SR.slice(sp2, endIndex)];
+		const gls = [rule.gloss.slice(0, sp1), rule.gloss.slice(sp1, sp2),
+			rule.gloss.slice(sp2, rule.gloss.length)];
 
 		return (
 			<Grid container direction="row" justify="center" alignItems="center" spacing={7}>
@@ -90,10 +90,10 @@ export default class QuestionBlock extends React.Component {
 							</ul>
 						</Grid>
 
-						{showAns ? (<Grid item>Rule: {question.rule}</Grid>) : null}
-						{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
-						<Grid item>Phones of Interest: {question.poi}</Grid>
-						<Grid item>Rule Type: {question.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
+						{showAns ? (<Grid item>Rule: {rule.ruleTxt}</Grid>) : null}
+						{showPhoneme ? (<Grid item>Phonemes: {rule.phoneme}</Grid>) : null}
+						<Grid item>Phones of Interest: {rule.poi}</Grid>
+						<Grid item>Rule Type: {rule.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
 
 						{!this.props.isReadOnly ? (<Grid item>
 							<Grid container direction={"row"} justify="flex-start" alignItems={"center"}
