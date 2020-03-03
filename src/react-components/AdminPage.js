@@ -8,6 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
+import TopBar from "./TopBar.js";
+import { withRouter } from "react-router-dom";
 
 import "./AdminPage.css";
 
@@ -27,7 +29,7 @@ class AdminPage extends React.Component {
   };
 
   editUser = e => {
-
+      // TODO: Implement editUser
   };
 
   removeUser = i => {
@@ -44,6 +46,7 @@ class AdminPage extends React.Component {
   render() {
     return (
       <div>
+        <TopBar {...this.props.location.state}></TopBar>
         <h3> Total User Count: <span id="userCount">{this.props.users.length}</span></h3>
         <div className="addButton">
           <TextField
@@ -107,4 +110,4 @@ class AdminPage extends React.Component {
   }
 }
 
-export default AdminPage;
+export default withRouter(AdminPage);
