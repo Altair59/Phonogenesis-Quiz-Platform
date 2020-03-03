@@ -38,14 +38,7 @@ class QuizGenerator extends React.Component {
 	};
 
 	handleTimeChange = e => {
-
-		let reg = /^[0-9]+$/;
-		if (reg.test(e.target.value)) {
-			this.setState({err: false});
-			this.setState({time: parseInt(e.target.value)});
-		} else {
-			this.setState({err: true});
-		}
+		this.setState({time: parseInt(e.target.value)});
 	};
 
 	createQuestionBlock = e => {
@@ -88,27 +81,58 @@ class QuizGenerator extends React.Component {
 		this.setState({redirect: "/professor/quiz"});
 	}
 
-	makeQuiz = () => {
-		let quiz_questions = [];
-		for (let i = 0; i < this.state.questions.length; i++) {
-			let new_question = new Question(this.state.questions[i].rule, this.state.questions[i].ur_check, this.state.questions[i].phe_check, this.state.questions[i].max_cadt);
-			quiz_questions.push(new_question);
+	validateName(){
+		for(let i=0;i<quizList.length;i++){
+			if (quizList[i].name === this.state.name){
+				return false;
+			}
 		}
-		let new_quiz = new Quiz(quiz_questions, this.state.time, this.state.group, this.state.name);
-		quizList.push(new_quiz);
-		this.distributeQuiz(new_quiz);
+		return true;
+	}
+
+	validateQuestion(){
+		for(let i=0;i<this.state.questions.length;i++){
+			if (this.state.questions[i].rule === ''){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	makeQuiz = () => {
+		if (this.state.name === '') {
+			alert("Quiz name cannot be empty!");
+		} else if (!this.validateName()){
+			alert("Quiz name has already been taken!")
+		} else if (this.state.questions.length === 0) {
+			alert("You must include at least one question!")
+		} else if (!this.validateQuestion()){
+			alert("You must specify a rule for each question!")
+		} else if (this.state.group === ''){
+			alert("You must specify a group to send quiz!")
+		} else {
+			let quiz_questions = [];
+			for (let i = 0; i < this.state.questions.length; i++) {
+				let new_question = new Question(this.state.questions[i].rule, this.state.questions[i].ur_check, this.state.questions[i].phe_check, this.state.questions[i].max_cadt);
+				quiz_questions.push(new_question);
+			}
+			let new_quiz = new Quiz(quiz_questions, this.state.time, this.state.group, this.state.name);
+			quizList.push(new_quiz);
+			this.distributeQuiz(new_quiz);
+			alert("Quiz Distributed");
+			this.setState({name: '', time: 0, questions: [], err: false, group: '', redirect: "/professor/quiz"});
+		}
 	};
 
 	distributeQuiz(quiz) {
 		let targetUser = groups[quiz.group];
-		
+
 		for (let i = 0; i < targetUser.length; i++) {
 			targetUser[i].quizzes.push(quiz);
 		}
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<div id="main">
 				<TopBar {...this.props.location.state}> </TopBar>
@@ -117,13 +141,15 @@ class QuizGenerator extends React.Component {
 						<h4>Define Quiz Name</h4>
 					</Grid>
 					<Grid item>
-						<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
+						<TextField value={this.state.name} onChange={this.handleNameChange}
+						           label="Name">Name</TextField>
 					</Grid>
 					<Grid item>
 						<h4>Set Time Limit</h4>
 					</Grid>
 					<Grid item>
-						<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
+						<TextField type="number" inputProps={{min: "0", max: "9999999", step: "1"}} value={this.state.time} onChange={this.handleTimeChange} label="Time"
+						           error={this.state.err}
 						           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
 					</Grid>
 					<Grid item>
