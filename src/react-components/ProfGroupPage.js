@@ -14,6 +14,8 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
+import {users, getUserByName, groups} from "./User";
+
 
 import "./ProfGroupPage.css";
 
@@ -25,19 +27,22 @@ class ProfGroupPage extends React.Component {
 
 	constructor(props) {
 		super(props);
-		let students = [new this.group(this.props.users.slice(1, 3), "csc309"), new this.group(this.props.users.slice(2, 4), "csc369")];
+		let students = [];
 		let inputs = [];
 		inputs.push('');
 		for (let i = 0; i < students.length; i++) {
 			inputs.push('');
 		}
-		this.state = {students: students, redirect: "/professor/groups", value: inputs, users: this.props.users, err: false};
+		this.state = {students: students, redirect: "/professor/groups", value: inputs, users: users, err: false};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	removeStudent = (i, j) => {
-		console.log(i, j);
+		let student = getUserByName(this.state.students[j].students[i].name);
+		let groupName = this.state.students[j].name;
+		student.groups = student.groups.filter(function (e) {
+			return e !== groupName;});
 		this.state.students[j].students.splice(i, 1);
 		this.setState({redirect: "/professor/groups"})
 	};
@@ -54,16 +59,16 @@ class ProfGroupPage extends React.Component {
 		}
 	}
 
-	handleSubmit = j => {
+	handleSubmit = (j) => {
 		if (this.verify_invite(this.state.value[j + 1], j) === true) {
 			alert('Invited');
+			let student = getUserByName(this.findUser(this.state.value[j + 1]).name);
+			student.groups.push(this.state.students[j].name);
 			this.state.students[j].students.push(this.findUser(this.state.value[j + 1]));
 			this.setState({redirect: "/professor/groups"});
 		} else {
 			alert('Invalid student');
 		}
-		//this.setState({value: ''});
-		//e.preventDefault();
 	};
 
 	verify_invite(name, group) {
@@ -82,17 +87,23 @@ class ProfGroupPage extends React.Component {
 		return (!is_enrolled.includes(name));
 	}
 
-	validate_group(){
+	validate_group(prof){
 		let reg = /^[0-9a-zA-Z]+[-]?[0-9a-zA-Z]+$/;
-		console.log(reg.test(this.state.value[0]));
+		for (let i=0;i<prof.groups.length;i++){
+			if (prof.groups[i] === this.state.value[0]){
+				return false;
+			}
+		}
 		return reg.test(this.state.value[0]);
 	}
 
-	createGroup = () => {
-		if (this.validate_group()){
+	createGroup = (state) => {
+		let prof = getUserByName(state.name);
+		if (this.validate_group(prof)){
 			this.setState({err: false});
 			this.state.students.push(new this.group([], this.state.value[0]));
 			this.state.value.push('');
+			prof.groups.push(this.state.value[0]);
 			this.setState({redirect: "/professor/groups"});
 		} else {
 			this.setState({err: true});
@@ -100,15 +111,26 @@ class ProfGroupPage extends React.Component {
 
 	};
 
-	removeGroup = j => {
+	removeGroup = (j,state) => {
+		let prof = getUserByName(state.name);
+		let groupName = this.state.students[j].name;
+		for (let i=0;i<this.state.students[j].students.length;i++){
+			let student = getUserByName(this.state.students[j].students[i].name);
+			student.groups = student.groups.filter(function (e) {
+				return e !== groupName;});
+		}
 		this.state.students.splice(j, 1);
 		this.state.value.splice(j + 1, 1);
+		prof.groups = prof.groups.filter(function (e) {
+			return e !== groupName;
+		});
 		this.setState({redirect: "/professor/groups"});
 	};
 
 
 	render() {
 		let {state} = this.props.location;
+		console.log(users);
 		return (
 			<div>
 				<TopBar {...state} />
@@ -121,7 +143,7 @@ class ProfGroupPage extends React.Component {
 						           helperText={this.state.err ? "Incorrect group name" : ''}>Group Name</TextField>
 
 						<IconButton
-							onClick={this.createGroup}><AddShoppingCartIcon>Create
+							onClick={this.createGroup.bind(this, state)}><AddShoppingCartIcon>Create
 							Group</AddShoppingCartIcon></IconButton>
 					</Grid>
 					{
@@ -135,7 +157,7 @@ class ProfGroupPage extends React.Component {
 									</Grid>
 									<Grid item>
 										<IconButton
-											onClick={this.removeGroup.bind(this, j)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+											onClick={this.removeGroup.bind(this, j, state)}><DeleteIcon>Remove</DeleteIcon></IconButton>
 									</Grid>
 								</Grid>
 								<TableContainer component={Paper}>

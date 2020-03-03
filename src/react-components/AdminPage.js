@@ -13,6 +13,8 @@ import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 
 import "./AdminPage.css";
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
 
 class AdminPage extends React.Component {
 	constructor(props) {
@@ -62,14 +64,14 @@ class AdminPage extends React.Component {
 		// TODO: Implement editUser
 	};
 
-  changeUser = e => {
-    // TODO: Implement
-  };
+	changeUser = e => {
+		// TODO: Implement
+	};
 
-  removeUser = i => {
-    this.props.users.splice(i, 1);
-    this.setState({redirect: "/admin"});
-  };
+	removeUser = i => {
+		this.props.users.splice(i, 1);
+		this.setState({redirect: "/admin"});
+	};
 
 	handleTextFieldChange = e => {
 		this.setState({
@@ -81,38 +83,39 @@ class AdminPage extends React.Component {
 		return (
 			<div>
 				<TopBar {...this.props.location.state}/>
-				<h3>
-					{" "}
-					Total User Count: <span id="userCount">{users.length}</span>
-				</h3>
-				<div className="addButton">
-					<TextField
-						id="type"
+
+				<Grid container id="admin-add-user" direction="row" alignItems="center" justify="center" spacing={3}>
+					<Grid item><h3>Total User Count: <span id="userCount">{users.length}</span></h3></Grid>
+					<Grid item><TextField
+						id="type" variant="outlined"
 						label="Type"
 						onChange={this.handleTextFieldChange}
-					/>
-					<TextField
-						id="name"
+					/></Grid>
+					<Grid item><TextField
+						id="name" variant="outlined"
 						label="Name"
 						onChange={this.handleTextFieldChange}
-					/>
-					<TextField
-						id="email"
+					/></Grid>
+					<Grid item><TextField
+						id="email" variant="outlined"
 						label="Email"
 						onChange={this.handleTextFieldChange}
-					/>
-					<TextField
-						id="username"
+					/></Grid>
+					<Grid item><TextField
+						id="username" variant="outlined"
 						label="Username"
 						onChange={this.handleTextFieldChange}
-					/>
-					<TextField
-						id="password"
+					/></Grid>
+					<Grid item><TextField
+						id="password" variant="outlined"
 						label="Password"
 						onChange={this.handleTextFieldChange}
-					/>
-					<Button onClick={this.addUser}>Add User</Button>
-				</div>
+					/></Grid>
+					<Grid item><Button variant="contained" color="primary" onClick={this.addUser}>Add User</Button></Grid>
+				</Grid>
+				<br/>
+				<hr/>
+				<br/>
 				<TableContainer component={Paper}>
 					<Table className="table" aria-label="simple table">
 						<TableHead>
@@ -130,25 +133,31 @@ class AdminPage extends React.Component {
 							{users.map((row, i) => (
 								<TableRow key={row.name}>
 									<TableCell align="center"><TextField variant="outlined" disabled
-									                                    align="center" defaultValue={row.type} required
-									                                    id={"edit-type".concat(i.toString())}>{row.type}</TextField></TableCell>
-									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
-									                                    align="center" defaultValue={row.name} required
-									                                    id={"edit-name".concat(i.toString())}>{row.name}</TextField></TableCell>
-									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
-									                                    align="center" defaultValue={row.email} required
-									                                    id={"edit-email".concat(i.toString())}>{row.email}</TextField></TableCell>
+									                                     align="center" defaultValue={row.type} required
+									                                     id={"edit-type".concat(i.toString())}>{row.type}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined"
+									                                     disabled={this.state.currEdit !== i}
+									                                     align="center" defaultValue={row.name} required
+									                                     id={"edit-name".concat(i.toString())}>{row.name}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined"
+									                                     disabled={this.state.currEdit !== i}
+									                                     align="center" defaultValue={row.email}
+									                                     required
+									                                     id={"edit-email".concat(i.toString())}>{row.email}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined" disabled
-									                                    align="center" defaultValue={row.username} required
-									                                    id={"edit-username".concat(i.toString())}>{row.username}</TextField></TableCell>
-									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
-									                                    align="center" defaultValue={row.password} required
-									                                    id={"edit-password".concat(i.toString())}>{row.password}</TextField></TableCell>
+									                                     align="center" defaultValue={row.username}
+									                                     required
+									                                     id={"edit-username".concat(i.toString())}>{row.username}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined"
+									                                     disabled={this.state.currEdit !== i}
+									                                     align="center" defaultValue={row.password}
+									                                     required
+									                                     id={"edit-password".concat(i.toString())}>{row.password}</TextField></TableCell>
 
 									<TableCell align="center">
 										{
 											i === this.state.currEdit ?
-												<Button variant="contained"  onClick={this.editUser.bind(this, i)}
+												<Button variant="contained" onClick={this.editUser.bind(this, i)}
 												        className={"admin-apply-but"}>Apply</Button> :
 												<Button variant="contained" onClick={this.editUser.bind(this, i)}
 												        className={"admin-edit-but"}>Edit</Button>
