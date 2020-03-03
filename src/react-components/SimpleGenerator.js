@@ -6,7 +6,7 @@ import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import {shuffleQuestion, transIPAg, questionList, getShuffledQList} from "./Rules";
+import {shuffleQuestion, transIPAg, ruleList, getShuffledQList} from "./QuizData";
 import {FormGroup, Select} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -127,7 +127,7 @@ class SimpleGenerator extends React.Component {
 							<InputLabel style={{marginTop: "-7px", marginLeft: "-12px"}}>Rule</InputLabel>
 							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
-								{questionList.map((question) => (
+								{ruleList.map((question) => (
 									<MenuItem value={question.rule} key={question}>{question.rule}</MenuItem>
 								))}
 							</Select>
@@ -135,7 +135,7 @@ class SimpleGenerator extends React.Component {
 					</Grid>
 
 					<Grid item><TextField
-						label="Question Size (15-30)"
+						label="QuizData Size (15-30)"
 						error={isValidSize}
 						helperText={this.state.sizeSelectWarn}
 						type="number"
@@ -149,7 +149,7 @@ class SimpleGenerator extends React.Component {
 					/></Grid>
 
 					<Grid item><FormControl variant="outlined" disabled={!this.state.canChangeType}>
-						<InputLabel id="typeLabel" style={{marginTop: "-7px", marginLeft: "-12px"}}>Question
+						<InputLabel id="typeLabel" style={{marginTop: "-7px", marginLeft: "-12px"}}>QuizData
 							Type</InputLabel>
 						<Select labelId="typeLabel" value={this.state.selectedType} onChange={this.onTypeChange}>
 							<MenuItem value={"Random"}>Random</MenuItem>
@@ -186,11 +186,11 @@ class SimpleGenerator extends React.Component {
 
 					<Grid item>
 						<Button variant="contained" color="primary" onClick={this.onGetQuestion}>Generate
-							Question</Button>
+							QuizData</Button>
 					</Grid>
 				</Grid>
 
-				<QuestionBlock instTxt={"Get Question"} question={this.state.question} submitAction={this.onGetQuestion}
+				<QuestionBlock instTxt={"Get QuizData"} question={this.state.question} submitAction={this.onGetQuestion}
 				               qCount={this.state.selectedSize} isReadOnly={false} showAnswer={false} isQuiz={false}
 				               canShowUR={true} canShowPhoneme={true} key={this.state.genKey}/>
 			</div>

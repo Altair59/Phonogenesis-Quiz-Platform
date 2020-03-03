@@ -36,7 +36,7 @@ class TopBar extends React.Component {
 			email: this.props.email,
 			username: this.props.username,
 			password: this.props.password
-		}
+		};
 
 		if (text === "Home") {
 			if (this.props.type === "student") {
@@ -57,7 +57,7 @@ class TopBar extends React.Component {
 			}
 		} else if (text === "Practice") {
 			newPage = "/student/gen"
-		} else if (text === "Assign Quiz") {
+		} else if (text === "Make Quiz") {
 			newPage = "/professor/quiz"
 		} else if (text === "Generate Problems") {
 			newPage = "/professor/gen"

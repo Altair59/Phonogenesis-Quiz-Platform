@@ -5,47 +5,59 @@ export const users = [
 		email: "admin@admin.com",
 		username: "admin",
 		password: "admin",
-		groups: []
+		groups: null,
+		quizzes: null
 	},
 	{
-		type: "professor",
-		name: "David",
-		email: "david@gmail.com",
-		username: "user1",
-		password: "user1",
-		groups: []
+		type: "student",
+		name: "Adrian",
+		email: "adrian@gmail.com",
+		username: "user",
+		password: "user",
+		groups: ["csc309"],
+		quizzes: []
 	},
 	{
 		type: "student",
 		name: "Josh",
 		email: "joshhan619@gmail.com",
+		username: "user1",
+		password: "user1",
+		groups: ["csc309"],
+		quizzes: []
+	},
+	{
+		type: "student",
+		name: "Youhai",
+		email: "youhai@gmail.com",
 		username: "user2",
 		password: "user2",
-		groups: []
+		groups: ["csc309"],
+		quizzes: []
 	},
-	{type: "student", name: "Adrian", email: "adrian@gmail.com", username: "user3", password: "user3", groups: []},
-	{type: "student", name: "Youhai", email: "youhai@gmail.com", username: "user4", password: "user4", groups: []}
+	{
+		type: "professor",
+		name: "Mark",
+		email: "mark@gmail.com",
+		username: "user3",
+		password: "user3",
+		groups: ["csc309"],
+		quizzes: []
+	}
 ];
 
-export function getUserByUsername(username){
-	for (let i = 0; i < users.length; i++){
+export const groups = {
+	"csc309": [getUserByUsername("user3"), getUserByUsername("user"), getUserByUsername("user1"), getUserByUsername("user2")]
+};
+
+export function getUserByUsername(username) {
+	for (let i = 0; i < users.length; i++) {
 		const user = users[i];
 
-		if (user.username === username){
+		if (user.username === username) {
 			return user;
 		}
 	}
 
 	return null;
-}
-
-export function getStudentsByGroup(group){
-	let userLst = [];
-	for (let i = 0; i < users.length; i++){
-		if (users[i].type === "student" && users[i].groups.includes(group)){
-			userLst.push(users[i]);
-		}
-	}
-
-	return userLst;
 }

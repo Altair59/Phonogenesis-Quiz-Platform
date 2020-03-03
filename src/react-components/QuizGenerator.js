@@ -7,21 +7,17 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import {ruleList} from "./QuizData";
 
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
 
-import {questionList} from "./Rules";
 
-const ruleList = [];
-for (let i = 0; i < questionList.length; i++) {
-	ruleList.push(questionList[i].rule);
-}
 
 const groupList = ["csc263", "csc309", "csc236"];
 
@@ -45,6 +41,7 @@ class QuizGenerator extends React.Component {
 	};
 
 	handleTimeChange = e => {
+
 		let reg = /^[0-9]+$/;
 		if (reg.test(e.target.value)) {
 			this.setState({err: false});
@@ -105,8 +102,6 @@ class QuizGenerator extends React.Component {
 					<Grid item>
 						<TextField onChange={this.handleNameChange} label="Name">Name</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Set Time Limit</h4>
 					</Grid>
@@ -114,20 +109,17 @@ class QuizGenerator extends React.Component {
 						<TextField onChange={this.handleTimeChange} label="Time" error={this.state.err}
 						           helperText={this.state.err ? "MUST BE DIGITS" : ''}>Time</TextField>
 					</Grid>
-				</Grid>
-				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">
 					<Grid item>
 						<h4>Add Quiz Question</h4>
 					</Grid>
 					<Grid item>
 						<IconButton
-							onClick={this.createQuestionBlock}><AddShoppingCartIcon>Create
-							Group</AddShoppingCartIcon></IconButton>
+							onClick={this.createQuestionBlock}><AddIcon>Create
+							Group</AddIcon></IconButton>
 					</Grid>
 				</Grid>
 				{this.state.questions.map((row, i) => (
 					<Grid container direction="row" id="q" key={i} justify="center" alignItems="center">
-
 						<Grid item>
 							<FormControlLabel control={<Switch checked={this.state.questions[i].ur_check}
 							                                   onChange={(e) => {
@@ -157,12 +149,11 @@ class QuizGenerator extends React.Component {
 							<Select value={this.state.questions[i].rule}
 							        onChange={(e) => this.handleRuleSelect(e, i)}>
 								{ruleList.map((rule, j) => (
-									<MenuItem key={j} value={ruleList[j]}>{ruleList[j]}</MenuItem>
+									<MenuItem key={j} value={ruleList[j].rule}>{ruleList[j].rule}</MenuItem>
 								))}
 							</Select>
 							<FormHelperText>Rule</FormHelperText>
 						</Grid>
-
 					</Grid>
 				))}
 				<Grid container direction="row" justify="flex-start" alignItems="flex-start" className="qgblock">

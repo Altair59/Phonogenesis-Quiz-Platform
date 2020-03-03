@@ -6,3 +6,8 @@
 .text {
     font-weight: normal;
 }
+
+#quizzes #activities {
+  display: block;
+  margin: 10px;
+}

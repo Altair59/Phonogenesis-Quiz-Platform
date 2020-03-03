@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
-import Paper from "@material-ui/core/Paper"
+import Button from "@material-ui/core/Button"
 import "./MainPage.css"
 import {getUserByUsername} from "./User";
 
@@ -47,7 +47,6 @@ class StudentMain extends React.Component {
 
 										<Divider/>
                     <h2>Pending Quizzes</h2>
-
 										<div id="quizzes">
                         <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
                             {state.quizzes.map((quiz, i) => {
