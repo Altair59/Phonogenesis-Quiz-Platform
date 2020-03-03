@@ -1,6 +1,5 @@
 import React from "react";
 import {withRouter} from "react-router-dom"
-import Grid from "@material-ui/core/Grid"
 import TopBar from "./TopBar.js"
 import Avatar from '@material-ui/core/Avatar';
 

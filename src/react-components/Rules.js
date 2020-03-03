@@ -1,20 +1,9 @@
-import React from "react"
-import Paper from '@material-ui/core/Paper'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Grid from "@material-ui/core/Grid";
-import {withRouter} from "react-router-dom";
-import "./QuizTile.css"
-
-
-const questionList = [{
+export const questionList = [{
 	templates: ['[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[consonant]-[vowel]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]', '[consonant]-[vowel]-[consonant]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiceless]-[obstruent,voiceless]-[vowel]-[consonant]', '[consonant]-[vowel]-[obstruent,voiced]-[consonant,voiced]-[vowel]-[consonant]', '[consonant]-[vowel]-[sonorant,contoid]-[consonant]-[vowel]-[consonant]'],
 	poi: "['c', 'ɟ', 'ç', 'ʝ', 'ɲ', 'k', 'g', 'x', 'ɣ', 'ŋ']",
 	ruleType: "Alternating",
 	phoneme: "p b t d k g ʔ t͡ʃ d͡ʒ f v θ ð s z ʃ ʒ x ɣ m n ŋ l w j i e ɔ o æ ɑ",
-	answer: "palatalization of velars after high front vowels",
+	rule: "palatalization of velars after high front vowels",
 	gloss: ['\'bounce\'', '\'wheat\'', '\'mosquito\'', '\'awaken\'', '\'two\'', '\'coastline\'', '\'rain\'', '\'lose\'', '\'we (incl)\'', '\'bring\'', '\'you (dual)\'', '\'what\'', '\'ketchup\'', '\'sun\'', '\'build\'', '\'lake\'', '\'west\'', '\'fight\'', '\'destroy\'', '\'thumb\'', '\'kneel\'', '\'few\'', '\'then\'', '\'black\'', '\'pretend\'', '\'food\'', '\'apple\'', '\'onion\'', '\'horn\'', '\'soybean\''],
 	SR: ['diɲxɑ', 'ʃiɟe', 'ɣiçseɣ', 'ŋoʒziç', 'kicɑθ', 'ŋictog', 'xiɲʔo', 'lɔmiɟ', 'kiɲd͡ʒɑt͡ʃ', 'ʔicʃɑ', 'giʝneɣ', 'kɔfxiʝ', 'ʃiçɔ', 'liɲvoŋ', 'θiɲ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin'],
 	UR: ['diŋxɑ', 'ʃige', 'ɣixseɣ', 'ŋoʒzix', 'kikɑθ', 'ŋiktog', 'xiŋʔo', 'lɔmig', 'kiŋd͡ʒɑt͡ʃ', 'ʔikʃɑ', 'giɣneɣ', 'kɔfxiɣ', 'ʃixɔ', 'liŋvoŋ', 'θiŋ', 'koxoʒ', 'ʒiʒŋi', 'zid͡ʒŋe', 'ɣɔɣjɔz', 'gæŋjɔ', 'ɣot͡ʃxæ', 'xoɣɣɔ', 'ɣækʔil', 'ʒogʒi', 'ðex', 'ŋɔp', 'ŋe', 'jældeʒ', 'ʔɑnmæ', 'pesin']
@@ -23,47 +12,40 @@ const questionList = [{
 	poi: "['c', 'ɟ', 'ç', 'ʝ', 'k', 'ɡ', 'x', 'ɣ']",
 	ruleType: "Alternating",
 	phoneme: "p b t d k ɡ ʔ t͡ʃ d͡ʒ f v θ ð s z h x ɣ m n r l j i ɔ o u a",
-	answer: "palatalization of velars after front vowels",
+	rule: "palatalization of velars after front vowels",
 	gloss: ['\'inland\'', '\'mud\'', '\'evil\'', '\'brown\'', '\'fox\'', '\'face\'', '\'avoid\'', '\'corn\'', '\'threaten\'', '\'think\'', '\'almond\'', '\'honey\'', '\'choose\'', '\'sit\'', '\'baby\'', '\'full\'', '\'parent\'', '\'regret\'', '\'night\'', '\'shark\'', '\'drink\'', '\'tongue\'', '\'laugh\'', '\'that\'', '\'island\'', '\'repeat\'', '\'owl\'', '\'rabbit\'', '\'put\'', '\'hair\''],
 	SR: ['miɟɡɔʔ', 'jici', 'niʝɡɔl', 'dihhiç', 't͡ʃiɟdu', 'jiɟu', 'xicu', 'ziʝ', 't͡ʃiʝjɔ', 'ɣiçso', 'ɣafiç', 'θicxi', 'xiçko', 'ɡɔdiç', 'xiçxɔ', 'fɔɡɔ', 'kɔsu', 'xub', 'dufxif', 'xɔ', 'pulɣa', 'ɣirkoj', 'ɡat͡ʃxap', 'ɡu', 'ɣɔxu', 'ɡij', 'ɣɔxaɡ', 'dolha', 'd͡ʒuθud͡ʒ', 'laðzaj'],
 	UR: ['miɡɡɔʔ', 'jiki', 'niɣɡɔl', 'dihhix', 't͡ʃiɡdu', 'jiɡu', 'xiku', 'ziɣ', 't͡ʃiɣjɔ', 'ɣixso', 'ɣafix', 'θikxi', 'xixko', 'ɡɔdix', 'xixxɔ', 'fɔɡɔ', 'kɔsu', 'xub', 'dufxif', 'xɔ', 'pulɣa', 'ɣirkoj', 'ɡat͡ʃxap', 'ɡu', 'ɣɔxu', 'ɡij', 'ɣɔxaɡ', 'dolha', 'd͡ʒuθud͡ʒ', 'laðzaj']
 }];
 
-class QuizTile extends React.Component {
-	render() {
-		return (
-			<Paper elevation={3}>
-				<div className="act-paper">
-					<h4>Quiz #{this.props.quizId + 1}</h4>
-					<p>Score: {this.props.score}/{this.props.quizSize}</p>
-				</div>
-				<ExpansionPanel>
-					<ExpansionPanelSummary
-						expandIcon={<ExpandMoreIcon/>}
-					>
-						More details
-					</ExpansionPanelSummary>
-					<ExpansionPanelDetails>
-						<Grid container spacing={2} alignItems="flex-end" key={this.props.quizId}>
-							{this.props.studentAnswers.map((sAnswer, i) => {
-								return (
-									<Grid item key={i}>
-										<Paper elevation={2}>
-											<div className="act-paper">
-												<p><strong>Question #{i + 1}:</strong></p>
-												<p>Your Answer: {sAnswer}</p>
-												<p>Correct Answer: {questionList[i].answer}</p>
-											</div>
-										</Paper>
-									</Grid>
-								)
-							})}
-						</Grid>
-					</ExpansionPanelDetails>
-				</ExpansionPanel>
-			</Paper>
-		)
+export const DEFAULT_GEN_SIZE = 40;
+
+export function getShuffledQList(){
+	let newLst = questionList.slice(0);
+	for (let i = questionList.length - 1; i > 0; i--) {
+		let j = Math.floor(Math.random() * (i + 1));
+		[newLst[i], newLst[j]] = [newLst[j], newLst[i]];
+	}
+	return newLst;
+}
+
+export function shuffleQuestion(question) {
+	for (let i = question.UR.length - 1; i > 0; i--) {
+		let j = Math.floor(Math.random() * (i + 1));
+		[question.UR[i], question.UR[j]] = [question.UR[j], question.UR[i]];
+		[question.SR[i], question.SR[j]] = [question.SR[j], question.SR[i]];
+		[question.gloss[i], question.gloss[j]] = [question.gloss[j], question.gloss[i]];
 	}
 }
 
-export default withRouter(QuizTile)
+export function transIPAg(question, wantIPAg) {
+	for (let i = 0; i < question.UR.length; i++){
+		if (wantIPAg){
+			question.UR[i] = question.UR[i].replace("g", "ɡ");
+			question.SR[i] = question.SR[i].replace("g", "ɡ");
+		} else {
+			question.UR[i] = question.UR[i].replace("ɡ", "g");
+			question.SR[i] = question.SR[i].replace("ɡ", "g");
+		}
+	}
+}
