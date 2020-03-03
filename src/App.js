@@ -14,11 +14,11 @@ import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 
 const users = [
-  {type: "professor", name: "David", email: "david@gmail.com", username: "david123", password: "password"},
-  {type: "student", name: "Josh", email: "joshhan619@gmail.com", username: "joshhan619", password: "password"},
-  {type: "student", name: "Adrian", email: "adrian@gmail.com", username: "adrianz", password: "password"},
-  {type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password"},
-  {type: "admin", name: "Admin", email: "admin@gmail.com", username: "admin", password: "password"}
+  {id: "0", type: "professor", name: "David", email: "david@gmail.com", username: "david123", password: "password"},
+  {id: "1", type: "student", name: "Josh", email: "joshhan619@gmail.com", username: "joshhan619", password: "password"},
+  {id: "2", type: "student", name: "Adrian", email: "adrian@gmail.com", username: "adrianz", password: "password"},
+  {id: "3", type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password"},
+  {id: "4", type: "admin", name: "Admin", email: "admin@gmail.com", username: "admin", password: "password"}
 ];
 
 class App extends React.Component {

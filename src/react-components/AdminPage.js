@@ -62,10 +62,14 @@ class AdminPage extends React.Component {
 		// TODO: Implement editUser
 	};
 
-	removeUser = i => {
-		users.splice(i, 1);
-		this.setState({redirect: "/admin"});
-	};
+  changeUser = e => {
+    // TODO: Implement
+  };
+
+  removeUser = i => {
+    this.props.users.splice(i, 1);
+    this.setState({redirect: "/admin"});
+  };
 
 	handleTextFieldChange = e => {
 		this.setState({
