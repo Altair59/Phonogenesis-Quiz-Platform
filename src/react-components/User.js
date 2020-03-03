@@ -27,18 +27,6 @@ export const users = [
 	{type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password", groups: []}
 ];
 
-export function getUserByName(name){
-	for (let i = 0; i < users.length; i++){
-		const user = users[i];
-
-		if (user.name === name){
-			return user;
-		}
-	}
-
-	return null;
-}
-
 export function getUserByUsername(username){
 	for (let i = 0; i < users.length; i++){
 		const user = users[i];
@@ -50,3 +38,15 @@ export function getUserByUsername(username){
 
 	return null;
 }
+
+export function getStudentsByGroup(group){
+	let userLst = [];
+	for (let i = 0; i < users.length; i++){
+		if (users[i].type === "student" && users[i].groups.includes(group)){
+			userLst.push(users[i]);
+		}
+	}
+
+	return userLst;
+}
+
