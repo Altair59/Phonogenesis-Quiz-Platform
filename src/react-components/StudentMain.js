@@ -7,17 +7,22 @@ import Divider from "@material-ui/core/Divider"
 import Button from "@material-ui/core/Button"
 import "./MainPage.css"
 import {users, getUserByUsername} from "./User";
-import QuizTaker from "./QuizTaker";
 import {quizList} from "./QuizData.js"
 
 class StudentMain extends React.Component {
 
 	takeQuiz = (quiz) => {
+		const {state} = this.props.location;
 		this.props.history.push({
 			pathname: "/student/quiz",
 			state: {
 				quiz: quiz,
-				username: this.props.location.username
+				id: state.id,
+				type: state.type,
+				name: state.name,
+				email: state.email,
+				password: state.password,
+				username: state.username
 			}
 		})
 	}
@@ -62,7 +67,7 @@ class StudentMain extends React.Component {
 															if(currStudent.groups.includes(quiz.group) && !quiz.isCompleted) {
 																return (
 																		<Grid item key={i}>
-																				<QuizTile {...quiz} />
+																				<Button onClick={() => this.takeQuiz(quiz)}>Take Quiz: {quiz.name}</Button>
 																		</Grid>
 																);
 															}

@@ -16,7 +16,7 @@ class QuizTile extends React.Component {
 				<div className="act-paper">
 					<h4>Quiz: {this.props.name}</h4>
 					<h4>Time Limit: {this.props.timeLim}</h4>
-					<p>Score: {this.props.score}/{this.props.quizSize}</p>
+					<p>Score: {this.props.pastScore}/{this.props.questions.length}</p>
 				</div>
 				<ExpansionPanel>
 					<ExpansionPanelSummary
@@ -26,19 +26,19 @@ class QuizTile extends React.Component {
 					</ExpansionPanelSummary>
 					<ExpansionPanelDetails>
 						<Grid container spacing={2} alignItems="flex-end" key={this.props.name}>
-						/*{this.props.studentAnswers.map((sAnswer, i) => {
+						{this.props.pastAnswer.map((sAnswer, i) => {
 							return (
 								<Grid item key={i}>
 									<Paper elevation={2}>
 										<div className="act-paper">
 											<p><strong>Question #{i + 1}:</strong></p>
 											<p>Your Answer: {sAnswer}</p>
-											<p>Correct Answer: {ruleList[i].ruleTxt}</p>
+											<p>Correct Answer: {this.props.questions[i].rule.ruleTxt}</p>
 										</div>
 									</Paper>
 								</Grid>
 							)
-						})}*/
+						})}
 						</Grid>
 					</ExpansionPanelDetails>
 				</ExpansionPanel>
