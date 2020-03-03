@@ -112,6 +112,7 @@ class QuizGenerator extends React.Component {
 	};
 
 	render() {
+		console.log(this.state);
 		return (
 			<div id="main">
 				<TopBar {...this.props.location.state}> </TopBar>
