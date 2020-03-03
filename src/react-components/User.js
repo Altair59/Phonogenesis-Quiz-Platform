@@ -11,20 +11,20 @@ export const users = [
 		type: "professor",
 		name: "David",
 		email: "david@gmail.com",
-		username: "david123",
-		password: "password",
+		username: "user1",
+		password: "user1",
 		groups: []
 	},
 	{
 		type: "student",
 		name: "Josh",
 		email: "joshhan619@gmail.com",
-		username: "joshhan619",
-		password: "password",
+		username: "user2",
+		password: "user2",
 		groups: []
 	},
-	{type: "student", name: "Adrian", email: "adrian@gmail.com", username: "adrianz", password: "password", groups: []},
-	{type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password", groups: []}
+	{type: "student", name: "Adrian", email: "adrian@gmail.com", username: "user3", password: "user3", groups: []},
+	{type: "student", name: "Youhai", email: "youhai@gmail.com", username: "user4", password: "user4", groups: []}
 ];
 
 export function getUserByUsername(username){
@@ -49,4 +49,3 @@ export function getStudentsByGroup(group){
 
 	return userLst;
 }
-

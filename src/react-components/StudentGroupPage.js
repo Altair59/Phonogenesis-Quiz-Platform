@@ -5,14 +5,14 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import {withRouter} from "react-router-dom";
 import TopBar from "./TopBar.js";
-import {getUserByName} from "./User";
+import {getUserByUsername} from "./User.js";
 
 import "./StudentGroupPage.css";
 
 class StudentGroupPage extends React.Component {
 
   render() {
-    const student = getUserByName(this.props.location.state.name);
+    const student = getUserByUsername(this.props.location.state.username);
     console.log(student.groups)
     return(
       <div>
