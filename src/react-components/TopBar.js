@@ -30,6 +30,7 @@ class TopBar extends React.Component {
 	navigate = (text) => {
 		let newPage = "/";
 		let stateToPush = {
+			id: this.props.id,
 			type: this.props.type,
 			name: this.props.name,
 			email: this.props.email,
