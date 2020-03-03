@@ -19,4 +19,16 @@ export const users = [
 	{type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password", groups: []}
 ];
 
+export function getUserByName(name){
+	for (let i = 0; i < users.length; i++){
+		const user = users[i];
+
+		if (user.name === name){
+			return user;
+		}
+	}
+
+	return null;
+}
+
 export const groups = {};
