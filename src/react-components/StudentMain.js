@@ -5,7 +5,7 @@ import QuizTile from "./QuizTile.js"
 import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 import "./MainPage.css"
-import {users, getUserByName} from "./User";
+import {getUserByName} from "./User";
 
 class StudentMain extends React.Component {
 
@@ -18,8 +18,8 @@ class StudentMain extends React.Component {
 				<TopBar {...state}/>
 				<div className="main-area">
                     <h1>{student.name ? student.name : "Anonymous"}</h1>
-                    <h3>Email: <span>{state.email ? state.email : "Undefined"}</span></h3>
-                    <h3>Enrolled: </h3>
+                    <h3>Email: <span>{student.email ? student.email : "Undefined"}</span></h3>
+                    <h3>Enrolled: <span>{student.groups ? student.groups.join(", ") : "Undefined"}</span></h3>
                     <Divider/>
                     <h2>Activity History</h2>
                     <div id="activities">

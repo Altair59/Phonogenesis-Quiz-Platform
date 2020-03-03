@@ -8,13 +8,20 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import {users} from "./User";
+import {users, getUserByUsername} from "./User";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 
 import "./AdminPage.css";
 
 class AdminPage extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {currEdit: -1};
+	}
+
+
 	state = {
 		redirect: null
 	};
@@ -30,7 +37,28 @@ class AdminPage extends React.Component {
 		this.setState({redirect: "/admin"});
 	};
 
-	editUser = e => {
+	editUser = i => {
+		console.log(this.state);
+
+		if (i === this.state.currEdit) {
+			const newName = document.getElementById("edit-name".concat(i.toString())).value;
+			const newEmail = document.getElementById("edit-email".concat(i.toString())).value;
+			const newPassword = document.getElementById("edit-password".concat(i.toString())).value;
+			const currUsername = document.getElementById("edit-username".concat(i.toString())).value;
+
+			console.log(document.getElementById("edit-name".concat(i.toString())));
+
+			const currUser = getUserByUsername(currUsername);
+			currUser.email = newEmail;
+			currUser.name = newName;
+			currUser.password = newPassword;
+
+			this.setState({currEdit: -1});
+		} else {
+
+			this.setState({currEdit: i});
+		}
+
 		// TODO: Implement editUser
 	};
 
@@ -85,28 +113,45 @@ class AdminPage extends React.Component {
 					<Table className="table" aria-label="simple table">
 						<TableHead>
 							<TableRow>
-								<TableCell align="right">Type</TableCell>
-								<TableCell align="right">Name</TableCell>
-								<TableCell align="right">Email</TableCell>
-								<TableCell align="right">Username</TableCell>
-								<TableCell align="right">Password</TableCell>
-								<TableCell align="right">Edit User</TableCell>
-								<TableCell align="right">Remove User</TableCell>
+								<TableCell align="center">Type</TableCell>
+								<TableCell align="center">Name</TableCell>
+								<TableCell align="center">Email</TableCell>
+								<TableCell align="center">Username</TableCell>
+								<TableCell align="center">Password</TableCell>
+								<TableCell align="center">Edit User</TableCell>
+								<TableCell align="center">Remove User</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{users.map((row, i) => (
 								<TableRow key={row.name}>
-									<TableCell align="right">{row.type}</TableCell>
-									<TableCell align="right">{row.name}</TableCell>
-									<TableCell align="right">{row.email}</TableCell>
-									<TableCell align="right">{row.username}</TableCell>
-									<TableCell align="right">{row.password}</TableCell>
-									<TableCell align="right">
-										<Button onClick={this.editUser}>Edit</Button>
+									<TableCell align="center"><TextField variant="outlined" disabled
+									                                    align="center" defaultValue={row.type} required
+									                                    id={"edit-type".concat(i.toString())}>{row.type}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
+									                                    align="center" defaultValue={row.name} required
+									                                    id={"edit-name".concat(i.toString())}>{row.name}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
+									                                    align="center" defaultValue={row.email} required
+									                                    id={"edit-email".concat(i.toString())}>{row.email}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined" disabled
+									                                    align="center" defaultValue={row.username} required
+									                                    id={"edit-username".concat(i.toString())}>{row.username}</TextField></TableCell>
+									<TableCell align="center"><TextField variant="outlined" disabled={this.state.currEdit !== i}
+									                                    align="center" defaultValue={row.password} required
+									                                    id={"edit-password".concat(i.toString())}>{row.password}</TextField></TableCell>
+
+									<TableCell align="center">
+										{
+											i === this.state.currEdit ?
+												<Button variant="contained"  onClick={this.editUser.bind(this, i)}
+												        className={"admin-apply-but"}>Apply</Button> :
+												<Button variant="contained" onClick={this.editUser.bind(this, i)}
+												        className={"admin-edit-but"}>Edit</Button>
+										}
 									</TableCell>
-									<TableCell align="right">
-										<Button onClick={this.removeUser.bind(this, i)}>
+									<TableCell align="center">
+										<Button variant="contained" onClick={this.removeUser.bind(this, i)}>
 											Remove
 										</Button>
 									</TableCell>

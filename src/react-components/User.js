@@ -1,5 +1,13 @@
 export const users = [
 	{
+		type: "admin",
+		name: "admin",
+		email: "admin@admin.com",
+		username: "admin",
+		password: "admin",
+		groups: []
+	},
+	{
 		type: "professor",
 		name: "David",
 		email: "david@gmail.com",
@@ -24,6 +32,18 @@ export function getUserByName(name){
 		const user = users[i];
 
 		if (user.name === name){
+			return user;
+		}
+	}
+
+	return null;
+}
+
+export function getUserByUsername(username){
+	for (let i = 0; i < users.length; i++){
+		const user = users[i];
+
+		if (user.username === username){
 			return user;
 		}
 	}
