@@ -6,7 +6,7 @@ import QuestionBlock from "./QuestionComp/QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
-import {shuffleQuestion, transIPAg, questionList, getShuffledQList} from "./Rules";
+import {questionList} from "./Rules";
 
 const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration of voiceless stops', 'intervocalic fricative voicing', 'vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'word-final stop devoicing', 'word-final consonant devoicing', 'obstruent devoicing in codas', 'obstruent devoicing in codas', 'aspiration of voiceless stops in onsets', 'aspiration of voiceless stops in codas', 'word-final aspiration of voiceless stops', 'intervocalic fricative voicing', 'intervocalic obstruent voicing', 'intervocalic spirantization of voiced stops', 'postvocalic spirantization of voiced stops', 'spirantization of voiceless stops in codas', 'high vowel laxing in closed syllables', 'mid vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'palatal mutation of velar stops to postalveolar fricatives before front vowels', 'palatal mutation of velar stops to alveolar affricates before front vowels', 'palatal mutation of velar stops to alveolar fricatives before front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before front vowels', 'palatal mutation of alveolar stops to alveolar affricates before front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before front vowels', 'palatal mutation of velar stops to postalveolar affricates before high front vowels', 'palatal mutation of velar stops to postalveolar fricatives before high front vowels', 'palatal mutation of velar stops to alveolar affricates before high front vowels', 'palatal mutation of velar stops to alveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before high front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to alveolar affricates before high front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before high front vowels', 'palatalization of velars after front vowels', 'palatalization of velars before front vowels', 'palatalization of velar fricatives after front vowels', 'palatalization of velar fricatives before front vowels', 'palatalization of velars after high front vowels', 'palatalization of velars before high front vowels', 'palatalization of velar fricatives after high front vowels', 'palatalization of velar fricatives before high front vowels', 'regressive vowel nasalization', 'progressive vowel nasalization', 'regressive vowel nasalization from nasal codas', 'word-final vowel devoicing', 'word-final high vowel devoicing', 'word-final vowel devoicing after voiceless consonants', 'word-final high vowel devoicing after voiceless consonants', 'vowel devoicing between voiceless consonants', 'high vowel devoicing between voiceless consonants', 'postnasal voicing of stops', 'postnasal voicing of obstruents', 'postnasal voicing of fricatives', 'word-final raising of mid vowels', 'word-final lowerinɡ of hiɡh vowels', 'word-final raising of low vowels', 'raising of mid vowels before voiceless codas', 'raising of low vowels before voiceless codas', 'raising of mid vowels before voiced codas', 'uvularization of velars after back non-high vowels', 'uvularization of velars before back non-high vowels', 'velarization of /l/ before back vowels', 'velarization of /l/ after back vowels', 'dentalization of alveolar stops before front vowels', 'dentalization and spirantization of alveolar stops before front vowels', 'lateralization of /d/ before nonhigh vowels', 'lateralization of /d/ after nonhigh vowels', 'retraction of high front vowels after postalveolars', 'retraction of high front vowels after velars', 'fronting of high back vowels after alveolars', 'word-final ashibilation of alveolar fricatives', 'ashibilation of alveolar fricatives in codas', 'debuccalization of /s/ in codas', 'velarization of /l/ in codas', 'intervocalic deletion of voiced velar obstruents', 'intervocalic deletion of velar obstruents', 'intervocalic deletion of voiced velar oral stops', 'intervocalic deletion of voiced obstruents', 'intervocalic deletion of voiced oral stops', 'deletion of high vowels in final closed syllables to create rising sonority codas', 'deletion of high front vowels in final closed syllables to carete rising sonority codas'];
 
@@ -74,7 +74,7 @@ class QuizTaker extends React.Component {
 	};
 
 	onBackToMain = (e) => {
-		let { state } = this.props.location;
+		let {state} = this.props.location;
 		this.props.history.push({
 			pathname: '/student',
 			state: {
@@ -165,10 +165,6 @@ class QuizTaker extends React.Component {
 }
 
 class CountdownTimer extends React.PureComponent {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<Countdown date={Date.now() + 10000} onComplete={this.props.onTimeUp}/>

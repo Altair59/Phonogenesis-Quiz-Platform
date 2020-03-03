@@ -5,7 +5,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from "@material-ui/core/Grid";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import "./QuizTile.css"
 
 
 const questionList = [{
@@ -29,40 +30,40 @@ const questionList = [{
 }];
 
 class QuizTile extends React.Component {
-  constructor(props) {
-		super(props);
+	render() {
+		return (
+			<Paper elevation={3}>
+				<div className="act-paper">
+					<h4>Quiz #{this.props.quizId + 1}</h4>
+					<p>Score: {this.props.score}/{this.props.quizSize}</p>
+				</div>
+				<ExpansionPanel>
+					<ExpansionPanelSummary
+						expandIcon={<ExpandMoreIcon/>}
+					>
+						More details
+					</ExpansionPanelSummary>
+					<ExpansionPanelDetails>
+						<Grid container spacing={2} alignItems="flex-end" key={this.props.quizId}>
+							{this.props.studentAnswers.map((sAnswer, i) => {
+								return (
+									<Grid item key={i}>
+										<Paper elevation={2}>
+											<div className="act-paper">
+												<p><strong>Question #{i + 1}:</strong></p>
+												<p>Your Answer: {sAnswer}</p>
+												<p>Correct Answer: {questionList[i].answer}</p>
+											</div>
+										</Paper>
+									</Grid>
+								)
+							})}
+						</Grid>
+					</ExpansionPanelDetails>
+				</ExpansionPanel>
+			</Paper>
+		)
 	}
-
-  render() {
-    return(
-      <Paper elevation={3}>
-        <h4>Quiz #{this.props.quizId+1}</h4>
-        <p>Score: {this.props.score}/{this.props.quizSize}</p>
-        <ExpansionPanel>
-         <ExpansionPanelSummary
-           expandIcon={<ExpandMoreIcon />}
-         >
-           More details
-         </ExpansionPanelSummary>
-         <ExpansionPanelDetails>
-          <Grid container spacing={1} alignItems="flex-end" key={this.props.quizId}>
-            {this.props.studentAnswers.map((sAnswer, i) => {
-              return(
-                <Grid item key={i}>
-                  <Paper elevation={2}>
-                    <p><strong>Question #{i+1}:</strong></p>
-                    <p>Your Answer: {sAnswer}</p>
-                    <p>Correct Answer: {questionList[i].answer}</p>
-                  </Paper>
-                </Grid>
-              )
-            })}
-          </Grid>
-         </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </Paper>
-    )
-  }
 }
 
 export default withRouter(QuizTile)
