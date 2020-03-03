@@ -2,6 +2,15 @@
     padding: 10px;
 }
 
+#quiz-title {
+    margin-left: 20px;
+}
+
+.qtaker-hr {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 #selectAnswer {
     align-content: center;
     align-items: flex-start;
@@ -13,6 +22,7 @@
     font-size: 1.35em;
     align-items: center;
     align-content: center;
+    margin-bottom: 10px;
 }
 
 #studentAnswerTxt {
@@ -21,6 +31,7 @@
     font-size: 1.35em;
     align-items: center;
     align-content: center;
+    margin-top: 10px;
 }
 
 #ctd {

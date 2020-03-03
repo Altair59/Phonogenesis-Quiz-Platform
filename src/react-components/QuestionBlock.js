@@ -49,7 +49,7 @@ export default class QuestionBlock extends React.Component {
 		if (newGenMoreCt > this.props.genMoreLimit || capacity - this.state.qCount - 5 < 0) {
 			alert("You've reach maximum allowance to generate more instances for this question!");
 		} else {
-			this.setState({genMoreCount: this.state.genMoreCount + 1});
+			this.setState({genMoreCount: newGenMoreCt});
 			this.setState({qCount: this.state.qCount + 5});
 		}
 
