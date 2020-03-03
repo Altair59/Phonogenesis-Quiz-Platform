@@ -12,7 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 
-//  instTxt, question, genBlock (null), isReadOnly, showAnswer
+//  instTxt, question, isReadOnly, showAnswer, genMoreLimit, isQuiz, canShowUR, canShowPhoneme
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,7 +20,6 @@ export default class QuestionBlock extends React.Component {
 			showAns: props.showAnswer || false,
 			showUR: false,
 			showPhoneme: false,
-			isQuiz: typeof props.genBlock === "undefined" || props.genBlock === null,
 			qCount: props.qCount,
 			genMoreCount: 0
 		};
@@ -45,8 +44,9 @@ export default class QuestionBlock extends React.Component {
 
 	onMoreCADT = (e) => {
 		const newGenMoreCt = this.state.genMoreCount + 1;
+		const capacity = this.props.question.UR.length;
 
-		if (newGenMoreCt > this.props.genMoreLimit){
+		if (newGenMoreCt > this.props.genMoreLimit || capacity - this.state.qCount - 5 < 0) {
 			alert("You've reach maximum allowance to generate more instances for this question!");
 		} else {
 			this.setState({genMoreCount: this.state.genMoreCount + 1});
@@ -57,6 +57,10 @@ export default class QuestionBlock extends React.Component {
 	};
 
 	render() {
+		if (!this.props.question) {
+			return (<br/>);
+		}
+
 		const showUR = this.state.showUR;
 		const showAns = this.props.showAnswer || this.state.showAns;
 		const showPhoneme = this.state.showPhoneme;
@@ -71,113 +75,104 @@ export default class QuestionBlock extends React.Component {
 			question.gloss.slice(sp2, question.gloss.length)];
 
 		return (
-			<Grid container direction="column" justify="flex-start" alignItems="center" spacing={7}>
+			<Grid container direction="row" justify="center" alignItems="center" spacing={7}>
 				<Grid item>
-					<Grid container direction="column" justify="space-evenly" alignItems="center"
+					<Grid container direction={"column"} justify={"flex-start"} alignItems={"center"}
 					      spacing={2}>
-						{
-							typeof this.props.genBlock !== 'undefined' && this.props.genBlock !== null ?
-								(<Grid item>{this.props.genBlock}</Grid>) : null
-						}
+
+						<Grid item>
+							<Typography variant="h5">Templates: </Typography>
+							<ul>
+								{
+									templates.map((template) => (
+										<li key={template}>{template}</li>))
+								}
+							</ul>
+						</Grid>
+
+						{showAns ? (<Grid item>Rule: {question.rule}</Grid>) : null}
+						{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
+						<Grid item>Phones of Interest: {question.poi}</Grid>
+						<Grid item>Rule Type: {question.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
+
+						{!this.props.isReadOnly ? (<Grid item>
+							<Grid container direction={"row"} justify="flex-start" alignItems={"center"}
+							      spacing={7}>
+								<Grid item>
+									<Grid container direction="column" justify="space-evenly"
+									      alignItems="center"
+									      spacing={3}>
+										<Grid item>
+											<ButtonGroup variant="outlined" color="primary"
+											             aria-label={"contained primary hint button group"}>
+												{this.props.canShowPhoneme ? (
+													<Button onClick={this.onGetPhonemes}>Get Phonemes</Button>
+												) : null}
+												{this.props.canShowUR ? (
+													<Button onClick={this.onGetUR}>Get UR</Button>
+												) : null}
+											</ButtonGroup>
+										</Grid>
+
+										<Grid item>
+											{this.props.genMoreLimit === 0 ? null : (
+												<ButtonGroup variant="outlined" color="primary"
+												             aria-label={"contained primary hint button group"}>
+													<Button onClick={this.onMoreCADT}>More CADT</Button>
+													{/*<Button>More CAND</Button>*/}
+													{/*<Button>More NCAD</Button>*/}
+												</ButtonGroup>
+											)}
+										</Grid>
+									</Grid>
+								</Grid>
+
+								{this.props.isQuiz ? null : (
+									<Grid item>
+										<Button vraiant="contained" color="primary" onClick={this.onShowAnswer}>
+											Show Answer</Button>
+									</Grid>
+								)}
+							</Grid>
+						</Grid>) : null}
 					</Grid>
 				</Grid>
 
-
 				<Grid item>
-					<Grid container direction="row" justify="flex-start" alignItems="center" spacing={7}>
-						<Grid item>
-							<Grid container direction={"column"} justify={"flex-start"} alignItems={"center"}
-							      spacing={2}>
+					<Grid container direction={"row"} justify="space-evenly" spacing={4}>
 
-								<Grid item>
-									<Typography variant="h5">Templates: </Typography>
-									<ul>
-										{
-											templates.map((template) => (
-												<li key={template}>{template}</li>))
-										}
-									</ul>
-								</Grid>
-
-								{showAns ? (<Grid item>Rule: {question.answer}</Grid>) : null}
-								{showPhoneme ? (<Grid item>Phonemes: {question.phoneme}</Grid>) : null}
-								<Grid item>Phones of Interest: {question.poi}</Grid>
-								<Grid item>Rule Type: {question.ruleType} &nbsp;&nbsp; Count: {this.state.qCount}</Grid>
-
-								{!this.props.isReadOnly ? (<Grid item>
-									<Grid container direction={"row"} justify="flex-start" alignItems={"center"}
-									      spacing={7}>
-										<Grid item>
-											<Grid container direction="column" justify="space-evenly"
-											      alignItems="center"
-											      spacing={3}>
-												<Grid item>
-													<ButtonGroup variant="outlined" color="primary"
-													             aria-label={"contained primary hint button group"}>
-														<Button onClick={this.onGetPhonemes}>Get Phonemes</Button>
-														<Button onClick={this.onGetUR}>Get UR</Button>
-													</ButtonGroup>
-												</Grid>
-
-												<Grid item>
-													<ButtonGroup variant="outlined" color="primary"
-													             aria-label={"contained primary hint button group"}>
-														<Button onClick={this.onMoreCADT}>More CADT</Button>
-														{/*<Button>More CAND</Button>*/}
-														{/*<Button>More NCAD</Button>*/}
-													</ButtonGroup>
-												</Grid>
-											</Grid>
-										</Grid>
-
-										{this.state.isQuiz ? null : (
-											<Grid item>
-												<Button vraiant="contained" color="primary" onClick={this.onShowAnswer}>
-													Show Answer</Button>
-											</Grid>
-										)}
-									</Grid>
-								</Grid>) : null}
-							</Grid>
-						</Grid>
-
-						<Grid item>
-							<Grid container direction={"row"} justify="space-evenly" spacing={4}>
-
-								{[0, 1, 2].map((index) => (
-									<Grid item key={index}>
-										<TableContainer component={Paper}>
-											<Table aria-label="question data table">
-												<TableHead>
-													<TableRow>
-														{showUR ? <TableCell align="center"
-														                     style={{fontWeight: "bolder"}}>
-															UR</TableCell> : null}
-														<TableCell align="center"
-														           style={{fontWeight: "bolder"}}>SR</TableCell>
-														<TableCell align="center"
-														           style={{fontWeight: "bolder"}}>Gloss</TableCell>
+						{[0, 1, 2].map((index) => (
+							<Grid item key={index}>
+								<TableContainer component={Paper}>
+									<Table aria-label="question data table">
+										<TableHead>
+											<TableRow>
+												{showUR ? <TableCell align="center"
+												                     style={{fontWeight: "bolder"}}>
+													UR</TableCell> : null}
+												<TableCell align="center"
+												           style={{fontWeight: "bolder"}}>SR</TableCell>
+												<TableCell align="center"
+												           style={{fontWeight: "bolder"}}>Gloss</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{
+												urs[index].map((urWord, i) => (
+													<TableRow key={urWord}>
+														{showUR ?
+															<TableCell
+																align="center">{urWord}</TableCell> : null}
+														<TableCell align="center">{srs[index][i]}</TableCell>
+														<TableCell align="center">{gls[index][i]}</TableCell>
 													</TableRow>
-												</TableHead>
-												<TableBody>
-													{
-														urs[index].map((urWord, i) => (
-															<TableRow key={urWord}>
-																{showUR ?
-																	<TableCell
-																		align="center">{urWord}</TableCell> : null}
-																<TableCell align="center">{srs[index][i]}</TableCell>
-																<TableCell align="center">{gls[index][i]}</TableCell>
-															</TableRow>
-														))
-													}
-												</TableBody>
-											</Table>
-										</TableContainer>
-									</Grid>
-								))}
+												))
+											}
+										</TableBody>
+									</Table>
+								</TableContainer>
 							</Grid>
-						</Grid>
+						))}
 					</Grid>
 				</Grid>
 
