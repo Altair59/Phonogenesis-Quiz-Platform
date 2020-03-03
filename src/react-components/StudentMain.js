@@ -6,7 +6,9 @@ import TopBar from "./TopBar.js"
 import Divider from "@material-ui/core/Divider"
 import Button from "@material-ui/core/Button"
 import "./MainPage.css"
-import {getUserByUsername} from "./User";
+import {users, getUserByUsername} from "./User";
+import QuizTaker from "./QuizTaker";
+import {quizList} from "./QuizData.js"
 
 class StudentMain extends React.Component {
 
@@ -22,39 +24,51 @@ class StudentMain extends React.Component {
 
 	render() {
 		let {state} = this.props.location;
-		const student = getUserByUsername(state.username);
+		const currStudent = getUserByUsername(state.username);
+		console.log(currStudent);
+		console.log(quizList);
 
 		return (
 			<div>
 				<TopBar {...state}/>
 				<div className="main-area">
-                    <h1>{student.name ? student.name : "Anonymous"}</h1>
-                    <h3>Email: <span className="text">{student.email ? student.email : "Undefined"}</span></h3>
-                    <h3>Enrolled: <span className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span></h3>
+                    <h1>{currStudent.name ? currStudent.name : "Anonymous"}</h1>
+                    <h3>Email: <span className="text">{currStudent.email ? currStudent.email : "Undefined"}</span></h3>
+                    <h3>Enrolled: <span className="text">{currStudent.groups.length > 0 ? currStudent.groups.join(", ") : "None"}</span></h3>
                     <Divider/>
                     <h2>Activity History</h2>
-                    <div id="activities">
+                    <div className="tileContainer">
                         <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-                            {state.quizzes.map((quiz, i) => {
-                                return (
-                                    <Grid item key={i}>
-                                        <QuizTile {...quiz} />
-                                    </Grid>
-                                );
+                            {quizList.map((quiz, i) => {
+																if(currStudent.groups.includes(quiz.group) && quiz.isCompleted) {
+																	return (
+	                                    <Grid item key={i}>
+	                                        <QuizTile {...quiz} />
+	                                    </Grid>
+	                                );
+																}
+																else {
+																	return null;
+																}
                             })}
                         </Grid>
                     </div>
 
 										<Divider/>
                     <h2>Pending Quizzes</h2>
-										<div id="quizzes">
+										<div className="tileContainer">
                         <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-                            {state.quizzes.map((quiz, i) => {
-                                return (
-                                    <Grid item key={i}>
-                                        <Button onClick={() => this.takeQuiz(quiz)}>{quiz.name}</Button>
-                                    </Grid>
-                                );
+                            {quizList.map((quiz, i) => {
+															if(currStudent.groups.includes(quiz.group) && !quiz.isCompleted) {
+																return (
+																		<Grid item key={i}>
+																				<QuizTile {...quiz} />
+																		</Grid>
+																);
+															}
+															else {
+																return null;
+															}
                             })}
                         </Grid>
                     </div>

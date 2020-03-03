@@ -2,24 +2,23 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import "./QuizTaker.css";
-import QuestionBlock from "./QuestionComp/QuestionBlock";
+import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
-import {ruleList} from "./QuizData";
+import {getQuizByName} from "./QuizData";
 
 const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration of voiceless stops', 'intervocalic fricative voicing', 'vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'word-final stop devoicing', 'word-final consonant devoicing', 'obstruent devoicing in codas', 'obstruent devoicing in codas', 'aspiration of voiceless stops in onsets', 'aspiration of voiceless stops in codas', 'word-final aspiration of voiceless stops', 'intervocalic fricative voicing', 'intervocalic obstruent voicing', 'intervocalic spirantization of voiced stops', 'postvocalic spirantization of voiced stops', 'spirantization of voiceless stops in codas', 'high vowel laxing in closed syllables', 'mid vowel laxing in closed syllables', 'palatal mutation of velar stops to postalveolar affricates before front vowels', 'palatal mutation of velar stops to postalveolar fricatives before front vowels', 'palatal mutation of velar stops to alveolar affricates before front vowels', 'palatal mutation of velar stops to alveolar fricatives before front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before front vowels', 'palatal mutation of alveolar stops to alveolar affricates before front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before front vowels', 'palatal mutation of velar stops to postalveolar affricates before high front vowels', 'palatal mutation of velar stops to postalveolar fricatives before high front vowels', 'palatal mutation of velar stops to alveolar affricates before high front vowels', 'palatal mutation of velar stops to alveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to postalveolar affricates before high front vowels', 'palatal mutation of alveolar stops to postalveolar fricatives before high front vowels', 'palatal mutation of alveolar stops to alveolar affricates before high front vowels', 'palatal mutation of alveolar stops to alveolar fricatives before high front vowels', 'palatalization of velars after front vowels', 'palatalization of velars before front vowels', 'palatalization of velar fricatives after front vowels', 'palatalization of velar fricatives before front vowels', 'palatalization of velars after high front vowels', 'palatalization of velars before high front vowels', 'palatalization of velar fricatives after high front vowels', 'palatalization of velar fricatives before high front vowels', 'regressive vowel nasalization', 'progressive vowel nasalization', 'regressive vowel nasalization from nasal codas', 'word-final vowel devoicing', 'word-final high vowel devoicing', 'word-final vowel devoicing after voiceless consonants', 'word-final high vowel devoicing after voiceless consonants', 'vowel devoicing between voiceless consonants', 'high vowel devoicing between voiceless consonants', 'postnasal voicing of stops', 'postnasal voicing of obstruents', 'postnasal voicing of fricatives', 'word-final raising of mid vowels', 'word-final lowerinɡ of hiɡh vowels', 'word-final raising of low vowels', 'raising of mid vowels before voiceless codas', 'raising of low vowels before voiceless codas', 'raising of mid vowels before voiced codas', 'uvularization of velars after back non-high vowels', 'uvularization of velars before back non-high vowels', 'velarization of /l/ before back vowels', 'velarization of /l/ after back vowels', 'dentalization of alveolar stops before front vowels', 'dentalization and spirantization of alveolar stops before front vowels', 'lateralization of /d/ before nonhigh vowels', 'lateralization of /d/ after nonhigh vowels', 'retraction of high front vowels after postalveolars', 'retraction of high front vowels after velars', 'fronting of high back vowels after alveolars', 'word-final ashibilation of alveolar fricatives', 'ashibilation of alveolar fricatives in codas', 'debuccalization of /s/ in codas', 'velarization of /l/ in codas', 'intervocalic deletion of voiced velar obstruents', 'intervocalic deletion of velar obstruents', 'intervocalic deletion of voiced velar oral stops', 'intervocalic deletion of voiced obstruents', 'intervocalic deletion of voiced oral stops', 'deletion of high vowels in final closed syllables to create rising sonority codas', 'deletion of high front vowels in final closed syllables to carete rising sonority codas'];
 
+// quiz
 class QuizTaker extends React.Component {
 	constructor(props) {
 		super(props);
+		const quiz = getQuizByName(this.props.quiz.name);
+
 		this.state = {
 			questionIndex: 0,
-			choices: this.genChoicesFromPool(ruleList[0].rule, 4),
-			allowUR: true,
-			allowPhonemes: true,
-			maxGenMore: 2,
-			quizSize: 2,
+			choices: this.genChoicesFromPool(quiz.questions[0].rule.ruleTxt, 4),
 			score: 0,
 			studentAnswers: [],
 			qKey: 0
@@ -29,7 +28,6 @@ class QuizTaker extends React.Component {
 	genChoicesFromPool(answer, size) {
 		const choices = [];
 		let haveAns = false;
-
 
 		for (let i = 0; i < size; i++) {
 			if (!haveAns && (i === size - 1 || Math.random() > 0.5)) {
@@ -50,9 +48,10 @@ class QuizTaker extends React.Component {
 	};
 
 	onSubmitAnswer = (e) => {
+		const quiz = getQuizByName(this.props.quiz.name);
 		const choice = this.state.choices[e.currentTarget.id];
 
-		if (choice === ruleList[this.state.questionIndex].rule) {
+		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
 		}
 		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
@@ -61,16 +60,17 @@ class QuizTaker extends React.Component {
 		this.setState({questionIndex: newIndex});
 		this.setState({qKey: this.state.qKey + 1});
 
-		if (newIndex < this.state.quizSize) {
-			this.setState({choices: this.genChoicesFromPool(ruleList[newIndex].rule, 4)});
+		if (newIndex < quiz.questions.length) {
+			this.setState({choices: this.genChoicesFromPool(quiz.questions[newIndex].rule.ruleTxt, 4)});
 		}
 
 		e.preventDefault();
 	};
 
 	onTimeUp = () => {
+		const quiz = getQuizByName(this.props.quiz.name);
 		alert("You've used up all your time!");
-		this.setState({questionIndex: ruleList.length});
+		this.setState({questionIndex: quiz.questions.length});
 	};
 
 	onBackToMain = (e) => {
@@ -90,27 +90,29 @@ class QuizTaker extends React.Component {
 	};
 
 	render() {
-		const size = this.state.quizSize;
+		const quiz = getQuizByName(this.props.quiz.name);
+		const size = quiz.questions.length;
 		const index = this.state.questionIndex;
 		const score = this.state.score;
 		const choices = this.state.choices;
 		const studentAnswers = this.state.studentAnswers;
-		const genMoreLimit = this.state.maxGenMore;
 		const qKey = this.state.qKey;
+		const currQuestion = quiz.questions[index];
 
-		if (index < size) {
+		if (index < size && currQuestion) {
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
-					<QuestionBlock instTxt={"Get QuizData"} question={ruleList[index]} qCount={20} isQuiz={true}
-					               isReadOnly={false} showAnswer={false} genMoreLimit={genMoreLimit} key={qKey}
-					               canShowUR={true} canShowPhoneme={true}/>
+					<QuestionBlock instTxt={"Get QuizData"} rule={currQuestion.rule} qCount={currQuestion.size}
+					               isQuiz={true} isReadOnly={false} showAnswer={false}
+					               genMoreLimit={currQuestion.maxCADT} key={qKey} canShowUR={currQuestion.canUR}
+					               canShowPhoneme={currQuestion.canPhoneme}/>
 					<br/>
 					<hr/>
 					<br/>
 					<Grid container direction="row" justify="center" alignItems="center" spacing={10}>
-						<Grid item id="ctd">
-							Time Remain &nbsp; <CountdownTimer onTimeUp={this.onTimeUp}/>
+						<Grid item id="ctd"> Time Remain &nbsp; <CountdownTimer id="ctd-timer" time={quiz.timeLim}
+						                                                        onTimeUp={this.onTimeUp}/>
 						</Grid>
 
 						<Grid item>
@@ -133,6 +135,7 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		} else {
+
 			return (
 				<div>
 					<TopBar {...this.props.location.state}/>
@@ -143,12 +146,12 @@ class QuizTaker extends React.Component {
 						</Grid>
 
 						<Grid item>
-							{ruleList.map((question, index) => (
+							{quiz.questions.map((question, index) => (
 								<div key={index}>
-									<QuestionBlock instTxt={"Get QuizData"} question={ruleList[index]}
-									               qCount={20} isReadOnly={true} showAnswer={true}
-									               genMoreLimit={genMoreLimit} isQuiz={false}/>
-									<p id="correctAnswerTxt">Correct Answer: {question.rule}</p>
+									<QuestionBlock instTxt={"Get QuizData"} rule={question.rule}
+									               qCount={question.size} isReadOnly={true} showAnswer={true}
+									               genMoreLimit={question.maxCADT} isQuiz={false}/>
+									<p id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</p>
 									<p id="studentAnswerTxt">Your Answer: {
 										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
 									}</p>
@@ -167,7 +170,7 @@ class QuizTaker extends React.Component {
 class CountdownTimer extends React.PureComponent {
 	render() {
 		return (
-			<Countdown date={Date.now() + 10000} onComplete={this.props.onTimeUp}/>
+			<Countdown date={Date.now() + this.props.time} onComplete={this.props.onTimeUp}/>
 		);
 	}
 }

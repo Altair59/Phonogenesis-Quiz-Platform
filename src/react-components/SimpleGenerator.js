@@ -1,6 +1,6 @@
 import React from "react";
 
-import QuestionBlock from "./QuestionComp/QuestionBlock";
+import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar";
 import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -127,8 +127,8 @@ class SimpleGenerator extends React.Component {
 							<InputLabel style={{marginTop: "-7px", marginLeft: "-12px"}}>Rule</InputLabel>
 							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
-								{ruleList.map((question) => (
-									<MenuItem value={question.rule} key={question}>{question.rule}</MenuItem>
+								{ruleList.map((rule) => (
+									<MenuItem value={rule.ruleTxt} key={rule}>{rule.ruleTxt}</MenuItem>
 								))}
 							</Select>
 						</FormControl>

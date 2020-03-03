@@ -8,13 +8,19 @@ import TopBar from "./TopBar.js";
 import {getUserByUsername} from "./User.js";
 
 import "./StudentGroupPage.css";
+import QuizTaker from "./QuizTaker";
+import {Quiz} from "./QuizData";
 
 class StudentGroupPage extends React.Component {
 	render() {
 		const student = getUserByUsername(this.props.location.state.username);
 		console.log(student.groups);
 		return (
+
 			<div>
+                {
+                    false ? null : <QuizTaker quiz={new Quiz([], 1, 1)}/>
+                }
 				<TopBar {...this.props.location.state}/>
 				<h1 className="title">Enrolled Groups</h1>
 				<Divider/>
