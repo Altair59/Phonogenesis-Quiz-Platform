@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
-
+import {users} from "./User"
 import "./LoginPage.css";
 
 /* Component for the Home page */
@@ -19,7 +19,7 @@ class LoginPage extends React.Component {
     }
 
     login = e => {
-        let filtered_user = this.props.users.filter(user => user.username === this.state.username)
+        let filtered_user = users.filter(user => user.username === this.state.username);
         if (filtered_user.length === 1) {
             if (filtered_user[0].password === this.state.password) {
               if (filtered_user[0].type === "student") {

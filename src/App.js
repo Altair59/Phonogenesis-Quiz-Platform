@@ -14,23 +14,17 @@ import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 
 class App extends React.Component {
-  users = [
-    {type: "professor", name: "David", email: "david@gmail.com", username: "david123", password: "password"},
-    {type: "student", name: "Josh", email: "joshhan619@gmail.com", username: "joshhan619", password: "password"},
-    {type: "student", name: "Adrian", email: "adrian@gmail.com", username: "adrianz", password: "password"},
-    {type: "student", name: "Youhai", email: "youhai@gmail.com", username: "liyouhai", password: "password"}
-  ];
 
   render() {
     return (
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path='/' render={() => (<LoginPage users={this.users}/>)}/>
-            <Route exact path='/admin' render={() => (<AdminPage users={this.users}/>)}/>
+            <Route exact path='/' render={() => (<LoginPage/>)}/>
+            <Route exact path='/admin' render={() => (<AdminPage/>)}/>
             <Route exact path='/professor' render={() => (<ProfessorHome />)}/>
             <Route exact path='/professor/gen' render={() => (<AdvancedGenerator />)}/>
-            <Route exact path='/professor/groups' render={() => (<GroupsPage users={this.users}/>)}/>
+            <Route exact path='/professor/groups' render={() => (<GroupsPage/>)}/>
             <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
             <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
             <Route exact path='/student' render={() => (<StudentMain />)}/>
