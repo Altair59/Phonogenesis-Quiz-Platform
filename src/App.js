@@ -19,7 +19,7 @@ class App extends React.Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path='/' render={() => (<LoginPage/>)}/>
+            <Route exact path='/index.html' render={() => (<LoginPage/>)}/>
             <Route exact path='/admin' render={() => (<AdminPage/>)}/>
             <Route exact path='/professor' render={() => (<ProfessorHome />)}/>
             <Route exact path='/professor/groups' render={() => (<GroupsPage/>)}/>

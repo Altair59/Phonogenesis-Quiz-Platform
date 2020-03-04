@@ -5,13 +5,9 @@ import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import MenuItem from '@material-ui/core/MenuItem';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {ruleList, Question, Quiz, quizList, getRuleByName} from "./QuizData";
+import {ruleList, Question, Quiz, quizList, getRuleByName, getQuizByName} from "./QuizData";
 import {groups} from "./User";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
@@ -21,12 +17,18 @@ class QuizGenerator extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			timeErr: false,
+			timeErr: "",
+			nameErr: "",
 			qCount: 0
 		};
 	};
 
 	makeQuiz = () => {
+		if (this.state.qCount <= 0) {
+			alert("Quiz can not be empty");
+			return;
+		}
+
 		const targetGroup = document.getElementById("group-sel").value;
 
 		if (!targetGroup || targetGroup === '') {
@@ -38,13 +40,22 @@ class QuizGenerator extends React.Component {
 
 		if (quizTime <= 10) {
 			alert("Time must be positive integer >= 10!");
-			this.setState({timeErr: true});
+			this.setState({timeErr: "must be >= 10"});
 			return;
 		} else {
-			this.setState({timeErr: false});
+			this.setState({timeErr: ""});
 		}
 
 		const quizName = document.getElementById("quiz-name").value;
+
+		if (getQuizByName(quizName)) {
+			alert("Quiz name must be unique! Current quiz name already exists!");
+			this.setState({nameErr: "name not unique"});
+			return;
+		} else {
+			this.setState({nameErr: ""});
+		}
+
 		const qList = [];
 
 		for (let i = 0; i < this.state.qCount; i++) {
@@ -65,6 +76,9 @@ class QuizGenerator extends React.Component {
 			targetUsers[i].quizzes.push(new_quiz);
 		}
 
+		this.setState({qCount: 0});
+		document.getElementById("quiz-name").value = "";
+		document.getElementById("quiz-time").value = 0;
 		this.forceUpdate();
 		alert("Quiz created and sent to all group members!");
 	};
@@ -84,12 +98,13 @@ class QuizGenerator extends React.Component {
 						<Grid container direction="row" justify="center" alignItems="center" className="qgblock"
 						      spacing={4}>
 							<Grid item>
-								<TextField id="quiz-name" label="Quiz Name" variant="outlined"/>
+								<TextField id="quiz-name" label="Quiz Name" variant="outlined"
+								           error={this.state.nameErr !== ""} helperText={this.state.nameErr}/>
 							</Grid>
 							<Grid item>
 								<TextField id="quiz-time" type="number" variant="outlined"
 								           label="Time Limit (in seconds)"
-								           error={this.state.timeErr}/>
+								           error={this.state.timeErr !== ""} helperText={this.state.timeErr}/>
 							</Grid>
 							<Grid item>
 								<h4>Target Group: &nbsp;</h4>
@@ -101,7 +116,8 @@ class QuizGenerator extends React.Component {
 							</Grid>
 
 							<Grid item>
-								<Button variant="contained" color="primary" onClick={this.makeQuiz}>Send Quiz</Button>
+								<Button variant="outlined" color="secondary" onClick={this.createQuestionBlock}>Add
+									Question</Button>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -142,8 +158,7 @@ class QuizGenerator extends React.Component {
 						<hr/>
 					</Grid>
 					<Grid item>
-						<Button variant="outlined" color="secondary" onClick={this.createQuestionBlock}>Add
-							Question</Button>
+						<Button variant="contained" color="primary" onClick={this.makeQuiz}>Send Quiz</Button>
 					</Grid>
 				</Grid>
 			</div>

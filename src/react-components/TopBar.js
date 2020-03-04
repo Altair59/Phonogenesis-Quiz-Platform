@@ -55,7 +55,7 @@ class TopBar extends React.Component {
 		} else if (text === "Make Quiz") {
 			newPage = "/professor/quiz"
 		} else if (text === "Log Out") {
-			newPage = "/"
+			newPage = "/index.html"
 		}
 
 		this.props.history.push({
@@ -86,7 +86,7 @@ class TopBar extends React.Component {
 					</IconButton>
 					<Divider/>
 					<List>
-						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav :["Log Out"])).map((text, index) => (
+						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav :["Log Out"])).map((text) => (
 							<ListItem button onClick={() => this.navigate(text)} key={text}>
 								<ListItemText primary={text}/>
 							</ListItem>

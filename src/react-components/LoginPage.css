@@ -5,13 +5,8 @@
   bottom: 30%;
   left: 40%;
   height: 25%;
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 15px;
-  padding-bottom: 10px;
-  border: solid;
-  border-color: lightgrey;
-  border-width: 2px;
+  padding: 15px 25px 10px;
+  border: 2px solid lightgrey;
   border-radius: 10%;
 }
 
@@ -26,9 +21,7 @@
   width: 30%;
   padding-right: 6px;
   padding-left: 19px;
-  border: solid;
-  border-color: darkgrey;
-  border-width: 2px;
+  border: 2px solid darkgrey;
   border-radius: 10%;
   margin-top: 20%;
 }

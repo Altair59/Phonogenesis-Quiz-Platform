@@ -6,7 +6,7 @@ import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import {shuffleQuestion, transIPAg, ruleList, getShuffledQList} from "./QuizData";
+import {shuffleQuestion, transIPAg, ruleList, getShuffledRuleList} from "./QuizData";
 import {FormGroup, Select} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -30,7 +30,7 @@ class SimpleGenerator extends React.Component {
 			canChangeType: true,
 			isShuffle: false,
 			isIPAg: false,
-			question: null,
+			rule: null,
 			genKey: 0
 		}
 	}
@@ -44,37 +44,38 @@ class SimpleGenerator extends React.Component {
 		const type = this.state.selectedType;
 		const rule = this.state.selectedRule;
 
-		let curQuestion;
-		let shuffledQList = getShuffledQList();
+		let curRule;
+		let shuffledRuleList = getShuffledRuleList();
 		if (rule !== "Random") {
-			for (let i = 0; i < shuffledQList.length; i++) {
-				if (rule === shuffledQList[i].rule) {
-					curQuestion = shuffledQList[i];
+			for (let i = 0; i < shuffledRuleList.length; i++) {
+				if (rule === shuffledRuleList[i].ruleTxt) {
+					curRule = shuffledRuleList[i];
 					break;
 				}
 			}
 		} else if (type !== "Random") {
-			for (let i = 0; i < shuffledQList.length; i++) {
-				if (type === shuffledQList[i].ruleType) {
-					curQuestion = shuffledQList[i];
+			for (let i = 0; i < shuffledRuleList.length; i++) {
+				if (type === shuffledRuleList[i].ruleType) {
+					curRule = shuffledRuleList[i];
 					break;
 				}
 			}
 		} else {
-			curQuestion = shuffledQList[0];
+			curRule = shuffledRuleList[0];
 		}
 
+
 		if (this.state.isShuffle) {
-			shuffleQuestion(curQuestion);
+			shuffleQuestion(curRule);
 		}
 
 		if (this.state.isIPAg) {
-			transIPAg(curQuestion, true);
+			transIPAg(curRule, true);
 		} else {
-			transIPAg(curQuestion, false);
+			transIPAg(curRule, false);
 		}
 
-		this.setState({question: curQuestion, genKey: this.state.genKey + 1});
+		this.setState({question: curRule, genKey: this.state.genKey + 1});
 		e.preventDefault();
 	};
 
@@ -107,11 +108,11 @@ class SimpleGenerator extends React.Component {
 		}
 	};
 
-	onShuffleChange = (e) => {
+	onShuffleChange = () => {
 		this.setState({isShuffle: !this.state.isShuffle});
 	};
 
-	onIPAgChange = (e) => {
+	onIPAgChange = () => {
 		this.setState({isIPAg: !this.state.isIPAg});
 	};
 
@@ -127,8 +128,8 @@ class SimpleGenerator extends React.Component {
 							<InputLabel style={{marginTop: "-7px", marginLeft: "-12px"}}>Rule</InputLabel>
 							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
-								{ruleList.map((rule) => (
-									<MenuItem value={rule.ruleTxt} key={rule}>{rule.ruleTxt}</MenuItem>
+								{ruleList.map((rule, i) => (
+									<MenuItem value={rule.ruleTxt} key={i}>{rule.ruleTxt}</MenuItem>
 								))}
 							</Select>
 						</FormControl>
@@ -186,11 +187,11 @@ class SimpleGenerator extends React.Component {
 
 					<Grid item>
 						<Button variant="contained" color="primary" onClick={this.onGetQuestion}>Generate
-							QuizData</Button>
+							Question</Button>
 					</Grid>
 				</Grid>
 
-				<QuestionBlock instTxt={"Get QuizData"} question={this.state.question} submitAction={this.onGetQuestion}
+				<QuestionBlock instTxt={"Get QuizData"} rule={this.state.question}
 				               qCount={this.state.selectedSize} isReadOnly={false} showAnswer={false} isQuiz={false}
 				               canShowUR={true} canShowPhoneme={true} key={this.state.genKey}/>
 			</div>

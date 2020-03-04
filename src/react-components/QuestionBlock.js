@@ -11,8 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-
-//  instTxt, question, isReadOnly, showAnswer, genMoreLimit, isQuiz, canShowUR, canShowPhoneme
+//  instTxt, rule, isReadOnly, showAnswer, genMoreLimit, isQuiz, canShowUR, canShowPhoneme
 export default class QuestionBlock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -47,7 +46,7 @@ export default class QuestionBlock extends React.Component {
 		const capacity = this.props.rule.UR.length;
 
 		if (newGenMoreCt > this.props.genMoreLimit || capacity - this.state.qCount - 5 < 0) {
-			alert("You've reach maximum allowance to generate more instances for this question!");
+			alert("You've reach maximum allowance to generate more instances for this rule!");
 		} else {
 			this.setState({genMoreCount: newGenMoreCt});
 			this.setState({qCount: this.state.qCount + 5});
@@ -144,7 +143,7 @@ export default class QuestionBlock extends React.Component {
 						{[0, 1, 2].map((index) => (
 							<Grid item key={index}>
 								<TableContainer component={Paper}>
-									<Table aria-label="question data table">
+									<Table aria-label="rule data table">
 										<TableHead>
 											<TableRow>
 												{showUR ? <TableCell align="center"

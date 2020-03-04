@@ -248,7 +248,7 @@ export function getRuleByName(name) {
 }
 
 
-export function getShuffledQList() {
+export function getShuffledRuleList() {
 	let newLst = ruleList.slice(0);
 	for (let i = ruleList.length - 1; i > 0; i--) {
 		let j = Math.floor(Math.random() * (i + 1));
