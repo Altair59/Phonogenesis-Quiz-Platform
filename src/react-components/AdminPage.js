@@ -61,7 +61,7 @@ class AdminPage extends React.Component {
 	};
 
 	removeUser = i => {
-		this.props.users.splice(i, 1);
+		users.splice(i, 1);
 		this.setState({redirect: "/admin"});
 	};
 
