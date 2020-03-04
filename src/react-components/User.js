@@ -1,3 +1,5 @@
+// Get users from server
+// Code below requires server call
 export const users = [
 	{
 		type: "admin",
