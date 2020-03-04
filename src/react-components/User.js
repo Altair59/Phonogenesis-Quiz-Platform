@@ -48,6 +48,8 @@ export const users = [
 	}
 ];
 
+// Get groups from server
+// Code below requires server call
 export const groups = {
 	"csc309": [getUserByUsername("user3"), getUserByUsername("user"), getUserByUsername("user1"), getUserByUsername("user2")]
 };
