@@ -18,7 +18,7 @@ class LoginPage extends React.Component {
       };
     }
 
-    login = e => {
+    login = () => {
         let filtered_user = users.filter(user => user.username === this.state.username);
         if (filtered_user.length === 1) {
             if (filtered_user[0].password === this.state.password) {
