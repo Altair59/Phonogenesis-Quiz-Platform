@@ -125,7 +125,7 @@ class SimpleGenerator extends React.Component {
 				<Grid container direction="row" justify="center" alignItems="flex-start" spacing={4} id={"gen-form"}>
 					<Grid item>
 						<FormControl variant="outlined">
-							<InputLabel style={{marginTop: "-7px", marginLeft: "-12px"}}>Rule</InputLabel>
+							<InputLabel className="text-field-label-off">Rule</InputLabel>
 							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
 								{ruleList.map((rule, i) => (
@@ -150,7 +150,7 @@ class SimpleGenerator extends React.Component {
 					/></Grid>
 
 					<Grid item><FormControl variant="outlined" disabled={!this.state.canChangeType}>
-						<InputLabel id="typeLabel" style={{marginTop: "-7px", marginLeft: "-12px"}}>QuizData
+						<InputLabel className="text-field-label-off">QuizData
 							Type</InputLabel>
 						<Select labelId="typeLabel" value={this.state.selectedType} onChange={this.onTypeChange}>
 							<MenuItem value={"Random"}>Random</MenuItem>

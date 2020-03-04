@@ -146,13 +146,10 @@ export default class QuestionBlock extends React.Component {
 									<Table aria-label="rule data table">
 										<TableHead>
 											<TableRow>
-												{showUR ? <TableCell align="center"
-												                     style={{fontWeight: "bolder"}}>
+												{showUR ? <TableCell align="center" className="table-header">
 													UR</TableCell> : null}
-												<TableCell align="center"
-												           style={{fontWeight: "bolder"}}>SR</TableCell>
-												<TableCell align="center"
-												           style={{fontWeight: "bolder"}}>Gloss</TableCell>
+												<TableCell align="center" className="table-header">SR</TableCell>
+												<TableCell align="center" className="table-header">Gloss</TableCell>
 											</TableRow>
 										</TableHead>
 										<TableBody>

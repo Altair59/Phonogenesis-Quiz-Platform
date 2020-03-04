@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import './App.css';
 
 import LoginPage from './react-components/LoginPage';
@@ -14,27 +14,27 @@ import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
 
 class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path='/index.html' render={() => (<LoginPage/>)}/>
-            <Route exact path='/admin' render={() => (<AdminPage/>)}/>
-            <Route exact path='/professor' render={() => (<ProfessorHome />)}/>
-            <Route exact path='/professor/groups' render={() => (<GroupsPage/>)}/>
-            <Route exact path='/professor/quiz' render={() => (<QuizGenerator />)}/>
-            <Route exact path='/student/gen' render={() => (<SimpleGenerator />)}/>
-            <Route exact path='/student' render={() => (<StudentMain />)}/>
-            <Route exact path='/student/quiz' render={() => (<QuizTaker />)}/>
-            <Route exact path='/student/groups' render={() => (<StudentGroupPage />)}/>
-          </Switch>
-        </BrowserRouter>
-      </div>
+	render() {
+		return (
+			<div>
+				<BrowserRouter>
+					<Switch>
+						<Route exact path='/' render={() => (<LoginPage/>)}/>
+						<Route exact path='/admin' render={() => (<AdminPage/>)}/>
+						<Route exact path='/professor' render={() => (<ProfessorHome/>)}/>
+						<Route exact path='/professor/groups' render={() => (<GroupsPage/>)}/>
+						<Route exact path='/professor/quiz' render={() => (<QuizGenerator/>)}/>
+						<Route exact path='/student/gen' render={() => (<SimpleGenerator/>)}/>
+						<Route exact path='/student' render={() => (<StudentMain/>)}/>
+						<Route exact path='/student/quiz' render={() => (<QuizTaker/>)}/>
+						<Route exact path='/student/groups' render={() => (<StudentGroupPage/>)}/>
+					</Switch>
+				</BrowserRouter>
+			</div>
 
 
-    );
-  }
+		);
+	}
 }
 
 export default App;

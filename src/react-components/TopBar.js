@@ -55,7 +55,7 @@ class TopBar extends React.Component {
 		} else if (text === "Make Quiz") {
 			newPage = "/professor/quiz"
 		} else if (text === "Log Out") {
-			newPage = "/index.html"
+			newPage = "/"
 		}
 
 		this.props.history.push({
