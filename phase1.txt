@@ -1,0 +1,39 @@
+======PHASE 1 DESCRIPTIONS======
+
+
+===ADMIN INSTRUCTION===
+credential:
+username: admin
+password: admin
+
+Log in as admin from the login page. The page consists of:
+ 1. A table showing all the users' information. Admin can click the 'edit' button to edit any info of any users and click
+  the 'apply' button to apply those changes. Admin can also click the 'remove' button to remove any users. A total count
+   of users is also included at top-left corner.
+
+ 2. A field of 5 inputs which accept type in value(with validation), and admin can click the 'add user' button to add a user.
+
+ ===PROFESSOR INSTRUCTION===
+ credential:
+ username: user3
+ password: user3
+
+ Log in as professor the login page. The page consists of:
+ 1. Homepage: a simple profile area showing info of this professor.
+
+ 2. A left-side bar consists of:
+    2.1 Home: redirect to professor homepage
+
+    2.2 Make Quiz: direct to page for making and distributing quizzes:
+        2.2.1 Professor can type in a quiz name in 'quiz name' input field
+        2.2.2 Professor can type in and adjust time limit in 'time limit' input field (validation: integer >= 10)
+        2.2.3 Professor can select a group (which he must instruct) as the target to send quiz.
+        2.2.4 Professor can add as many questions into this quiz as he wants, by clicking the 'add question' below.
+              For each new question, professor can specify:
+              2.2.4.1 Whether students can check UR (a hint)
+              2.2.4.2 Whether students can check Phe (another hint)
+              2.2.4.3 Maximum number of set of additional contextual hints (much more hints!)
+              2.2.4.4 The rule (the answer)o
+          2.5 After setting up a quiz, professor can click the 'send quiz' button to send the quiz to the designated group.
+
+
