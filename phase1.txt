@@ -1,6 +1,9 @@
 ======PHASE 1 DESCRIPTIONS======
 
-===HARDCODED DATA===
+=====TESTING=====
+Since we are using React, we need TAs to build our app using the source code provided. Thank you!
+
+====HARDCODED DATA====
 User.js:
 users: a list of all users including admin, professors, and students
 groups: a list of all groups, showing relations between group, professor, and students
