@@ -14,26 +14,42 @@ import {withRouter} from "react-router-dom";
 
 import "./AdminPage.css";
 import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import {Select} from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 
 class AdminPage extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {currEdit: -1};
+		this.state = {
+			currEdit: -1,
+			usernameError: ""
+		};
 	}
 
 
 	state = {
 		redirect: null
 	};
-	addUser = e => {
+	addUser = () => {
+		if (getUserByUsername(this.state.username)) {
+			alert("Username must be unique!");
+			this.setState({usernameError: "unique username required"});
+			return;
+		} else {
+			this.setState({usernameError: ""});
+		}
+
 		users.push({
 			type: this.state.type,
 			name: this.state.name,
 			email: this.state.email,
 			username: this.state.username,
 			password: this.state.password,
-			groups: []
+			groups: [],
+			quizzes: []
 		});
 		this.setState({redirect: "/admin"});
 	};
@@ -71,6 +87,10 @@ class AdminPage extends React.Component {
 		});
 	};
 
+	onTypeChange = (e) => {
+		this.setState({type: e.target.value});
+	};
+
 	render() {
 		return (
 			<div>
@@ -78,11 +98,13 @@ class AdminPage extends React.Component {
 
 				<Grid container id="admin-add-user" direction="row" alignItems="center" justify="center" spacing={3}>
 					<Grid item><h3>Total User Count: <span id="userCount">{users.length}</span></h3></Grid>
-					<Grid item><TextField
-						id="type" variant="outlined"
-						label="Type"
-						onChange={this.handleTextFieldChange}
-					/></Grid>
+					<Grid item><FormControl variant="outlined">
+						<InputLabel className="text-field-label-off">Type</InputLabel>
+						<Select value={"student"} onChange={this.onTypeChange}>
+							<MenuItem value={"student"}>student</MenuItem>
+							<MenuItem value={"professor"}>professor</MenuItem>
+						</Select>
+					</FormControl></Grid>
 					<Grid item><TextField
 						id="name" variant="outlined"
 						label="Name"
@@ -95,7 +117,7 @@ class AdminPage extends React.Component {
 					/></Grid>
 					<Grid item><TextField
 						id="username" variant="outlined"
-						label="Username"
+						label="Username" error={this.state.usernameError !== ""} helperText={this.state.usernameError}
 						onChange={this.handleTextFieldChange}
 					/></Grid>
 					<Grid item><TextField
@@ -103,7 +125,8 @@ class AdminPage extends React.Component {
 						label="Password"
 						onChange={this.handleTextFieldChange}
 					/></Grid>
-					<Grid item><Button variant="contained" color="primary" onClick={this.addUser}>Add User</Button></Grid>
+					<Grid item><Button variant="contained" color="primary" onClick={this.addUser}>Add
+						User</Button></Grid>
 				</Grid>
 				<br/>
 				<hr/>
@@ -122,26 +145,29 @@ class AdminPage extends React.Component {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{users.map((row, i) => (
-								<TableRow key={row.name}>
+							{users.map((user, i) => (
+								<TableRow key={user.name}>
 									<TableCell align="center"><TextField variant="outlined" disabled
-									                                     align="center" defaultValue={row.type} required
-									                                     id={"edit-type".concat(i.toString())}>{row.type}</TextField></TableCell>
+									                                     align="center" defaultValue={user.type}
+									                                     required
+									                                     id={"edit-type".concat(i.toString())}>{user.type}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined"
 									                                     disabled={this.state.currEdit !== i}
-									                                     align="center" defaultValue={row.name} required
-									                                     id={"edit-name".concat(i.toString())}>{row.name}</TextField></TableCell>
+									                                     align="center" defaultValue={user.name}
+									                                     required
+									                                     id={"edit-name".concat(i.toString())}>{user.name}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined"
 									                                     disabled={this.state.currEdit !== i}
-									                                     align="center" defaultValue={row.email} required
-									                                     id={"edit-email".concat(i.toString())}>{row.email}</TextField></TableCell>
+									                                     align="center" defaultValue={user.email}
+									                                     required
+									                                     id={"edit-email".concat(i.toString())}>{user.email}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined" disabled required
-									                                     align="center" defaultValue={row.username}
-									                                     id={"edit-username".concat(i.toString())}>{row.username}</TextField></TableCell>
+									                                     align="center" defaultValue={user.username}
+									                                     id={"edit-username".concat(i.toString())}>{user.username}</TextField></TableCell>
 									<TableCell align="center"><TextField variant="outlined" required
 									                                     disabled={this.state.currEdit !== i}
-									                                     align="center" defaultValue={row.password}
-									                                     id={"edit-password".concat(i.toString())}>{row.password}</TextField></TableCell>
+									                                     align="center" defaultValue={user.password}
+									                                     id={"edit-password".concat(i.toString())}>{user.password}</TextField></TableCell>
 
 									<TableCell align="center">
 										{
@@ -153,7 +179,8 @@ class AdminPage extends React.Component {
 										}
 									</TableCell>
 									<TableCell align="center">
-										<Button variant="contained" onClick={this.removeUser.bind(this, i)}>
+										<Button variant="contained" disabled={user.type === "admin"}
+										        onClick={this.removeUser.bind(this, i)}>
 											Remove
 										</Button>
 									</TableCell>

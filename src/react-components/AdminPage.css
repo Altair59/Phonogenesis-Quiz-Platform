@@ -1,3 +1,8 @@
 #admin-add-user {
     margin-top: 30px;
 }
+
+.text-field-label-off {
+    margin-top: -7px;
+    margin-left: -12px;
+}
