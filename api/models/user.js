@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 1,
+    unique: true,
 		trim: true
 	},
 	password: {
@@ -61,15 +62,13 @@ UserSchema.pre('save', function (next) {
 	}
 });
 
+UserSchema.statics.findByUsernamePassword = function(username, password) {
+  const User = this
 
-UserSchema.statics.findByUsernamePassword = function (username, password) {
-	const User = this;
-
-
-	return User.findOne({username: username}).then((user) => {
-		if (!user) {
-			return Promise.reject()
-		}
+  return User.findOne({username: username}).then((user) => {
+    if (!user) {
+      return Promise.reject()
+    }
 
 		return new Promise((resolve, reject) => {
 			bcrypt.compare(password, user.password, (err, result) => {
