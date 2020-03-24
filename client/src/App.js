@@ -32,6 +32,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
+				<p>{this.state.apiResponse}</p>
 				<BrowserRouter>
 					<Switch>
 						<Route exact path='/' render={() => (<LoginPage/>)}/>
