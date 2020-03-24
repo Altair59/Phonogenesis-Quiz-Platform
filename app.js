@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors());
 
-app.get("/", function(req, res, next) {
+app.get("/", (req, res) => {
     res.send({message: "API is working properly"});
 });
 
@@ -17,6 +17,6 @@ app.get('*', (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
-app.listen(port, 90 => {
+app.listen(port, () => {
   console.log(`Listening on port ${port} ...`);
 });
