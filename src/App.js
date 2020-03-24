@@ -14,6 +14,21 @@ import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
 
 class App extends React.Component {
+	constructor(props) {
+    super(props);
+    this.state = { apiResponse: "" };
+	}
+
+	callAPI() {
+    fetch("http://localhost:5000/testAPI")
+        .then(res => res.text())
+        .then(res => this.setState({ apiResponse: res }));
+	}
+
+	componentWillMount() {
+	    this.callAPI();
+	}
+
 	render() {
 		return (
 			<div>
@@ -30,6 +45,7 @@ class App extends React.Component {
 						<Route exact path='/student/groups' render={() => (<StudentGroupPage/>)}/>
 					</Switch>
 				</BrowserRouter>
+				<p className="App-intro">{this.state.apiResponse}</p>
 			</div>
 
 
