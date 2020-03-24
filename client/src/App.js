@@ -15,20 +15,18 @@ import StudentGroupPage from "./react-components/StudentGroupPage"
 
 class App extends React.Component {
 	constructor(props) {
-    super(props);
-    this.state = {apiResponse: "" };
+		super(props);
+		this.state = { apiResponse: "" };
 	}
 
-
 	callAPI() {
-		//const port = process.env.PORT || 5000;
-    fetch("/api/test")
-			.then(res => res.json())
-			.then(json => this.setState({apiResponse: json.message}));
+		fetch("http://localhost:9000/testAPI")
+			.then(res => res.text())
+			.then(res => this.setState({ apiResponse: res }));
 	}
 
 	componentWillMount() {
-	    this.callAPI();
+		this.callAPI();
 	}
 
 	render() {
@@ -47,7 +45,6 @@ class App extends React.Component {
 						<Route exact path='/student/groups' render={() => (<StudentGroupPage/>)}/>
 					</Switch>
 				</BrowserRouter>
-				<p className="App-intro">{this.state.apiResponse}</p>
 			</div>
 
 
