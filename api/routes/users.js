@@ -12,11 +12,10 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  User.findByEmailPassword(email, password)
+  User.findByEmailPassword(username, password)
     .then(user => {
-      req.session.user = user._id;
-      req.session.email = user.email;
-      res.send({ currentUser: user.email })
+      req.session.user = user.username;
+      res.send({ currentUser: user})
     })
     .catch(error => {
       res.status(400).send()
