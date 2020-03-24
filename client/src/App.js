@@ -16,13 +16,13 @@ import StudentGroupPage from "./react-components/StudentGroupPage"
 class App extends React.Component {
 	constructor(props) {
     super(props);
-    this.state = { apiResponse: "" };
+    this.state = {apiResponse: "" };
 	}
 
 	callAPI() {
-    fetch("http://localhost:5000/testAPI")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
+    fetch("http://localhost:5000")
+			.then(res => res.json())
+			.then(json => this.setState({apiResponse: json.message}));
 	}
 
 	componentWillMount() {
