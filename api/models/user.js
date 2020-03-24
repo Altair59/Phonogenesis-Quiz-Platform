@@ -62,7 +62,6 @@ UserSchema.pre('save', function (next) {
 	}
 });
 
-<<<<<<< HEAD
 UserSchema.statics.findByUsernamePassword = function(username, password) {
   const User = this
 
@@ -70,17 +69,6 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
     if (!user) {
       return Promise.reject()
     }
-=======
-
-UserSchema.statics.findByUsernamePassword = function (username, password) {
-	const User = this;
-
-
-	return User.findOne({username: username}).then((user) => {
-		if (!user) {
-			return Promise.reject()
-		}
->>>>>>> f113d42d49a9a6ae87dbe488c684378e2fbcf686
 
 		return new Promise((resolve, reject) => {
 			bcrypt.compare(password, user.password, (err, result) => {

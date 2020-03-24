@@ -11,20 +11,6 @@ const {ObjectID} = require("mongodb");
 
 // Route to login and create a session
 router.post("/login", (req, res) => {
-<<<<<<< HEAD
-  const email = req.body.email;
-  const password = req.body.password;
-
-  User.findByUsernamePassword(username, password)
-    .then(user => {
-      req.session.user = user.username;
-      res.send({ currentUser: user})
-    })
-    .catch(error => {
-      res.status(400).send()
-    })
-})
-=======
 	const username = req.body.username;
 	const password = req.body.password;
 
@@ -35,7 +21,6 @@ router.post("/login", (req, res) => {
 		res.status(400).send();
 	});
 });
->>>>>>> f113d42d49a9a6ae87dbe488c684378e2fbcf686
 
 // Route to logout and remove the session
 router.get("/logout", (req, res) => {
