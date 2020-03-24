@@ -37,13 +37,13 @@ class LoginPage extends React.Component {
     };
 
 
-  handleTextFieldChange = e => {
+	handleTextFieldChange = e => {
 		this.setState({
 			[e.target.id]: e.target.value
 		});
 	};
 
-  render() {
+	render() {
 		return (
 			<div className="loginForm">
 				<Grid container spacing={1} alignItems="flex-end">
