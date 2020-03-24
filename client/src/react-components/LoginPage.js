@@ -14,46 +14,26 @@ class LoginPage extends React.Component {
       super(props);
       this.state = {
           err: false,
-          user: null
+          user: null,
+	      apiResponse: []
       };
     }
 
+	callAPI(email, password) {
+    	const info = {
+    		email: email,
+		    password: password
+	    };
+		fetch("http://localhost:9000/users/login", {method: 'POST', body: info})
+			.then(res => this.setState({ apiResponse: res }));
+	}
+
+	componentWillMount() {
+		this.callAPI();
+	}
+
     login = () => {
-        let filtered_user = users.filter(user => user.username === this.state.username);
-        if (filtered_user.length === 1) {
-            if (filtered_user[0].password === this.state.password) {
-              if (filtered_user[0].type === "student") {
-                this.props.history.push({
-                  pathname: '/' + filtered_user[0].type,
-                  state: {
-                    id: filtered_user[0].id,
-                    type: filtered_user[0].type,
-                    name: filtered_user[0].name,
-                    email: filtered_user[0].email,
-                    username: filtered_user[0].username,
-                    password: filtered_user[0].password,
-                    quizzes: []
-                  }
-                });
-              } else {
-                this.props.history.push({
-                  pathname: '/' + filtered_user[0].type,
-                  state: {
-                    id: filtered_user[0].id,
-                    type: filtered_user[0].type,
-                    name: filtered_user[0].name,
-                    email: filtered_user[0].email,
-                    username: filtered_user[0].username,
-                    password: filtered_user[0].password
-                  }
-                });
-              }
-            } else {
-                this.setState({err: true})
-            }
-        } else if (filtered_user.length === 0) {
-            this.setState({err: true})
-        }
+
     };
 
 
