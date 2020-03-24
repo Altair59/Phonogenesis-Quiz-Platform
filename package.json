@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "cd client && npm run-script build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "~4.16.1",
-    "heroku": "^7.39.1",
-    "react-scripts": "3.4.0"
+    "heroku": "^7.39.1"
   }
 }
