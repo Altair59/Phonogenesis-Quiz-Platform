@@ -35,7 +35,7 @@ router.get("/logout", (req, res) => {
 });
 
 // Route to check if a user is already logged in
-app.get("/check-session", (req, res) => {
+router.get("/check-session", (req, res) => {
     if (req.session.user) {
         res.send({ currentUser: req.session.email });
     } else {
