@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
-import {users} from "./User"
 import "./LoginPage.css";
 
 /* Component for the Home page */
@@ -15,25 +14,25 @@ class LoginPage extends React.Component {
       this.state = {
           err: false,
           user: null,
-	      apiResponse: []
+	      apiResponse: null
       };
     }
 
-	callAPI(email, password) {
+	callAPI(username, password) {
     	const info = {
-    		email: email,
+    		username: username,
 		    password: password
 	    };
-		fetch("http://localhost:9000/users/login", {method: 'POST', body: info})
+		fetch("http://localhost:9000/users/login", {method: 'POST', body: JSON.stringify(info)})
 			.then(res => this.setState({ apiResponse: res }));
 	}
 
-	componentWillMount() {
-		this.callAPI();
-	}
+	// componentWillMount() {
+	// 	this.callAPI();
+	// }
 
     login = () => {
-
+		this.callAPI(this.state.username, this.state.password)
     };
 
 
