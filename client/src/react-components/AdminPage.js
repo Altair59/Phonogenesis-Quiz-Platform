@@ -8,7 +8,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import {users, getUserByUsername} from "./User";
+import {getUserByUsername} from "./User";
+import User from "./User";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 

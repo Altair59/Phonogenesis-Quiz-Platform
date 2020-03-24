@@ -21,7 +21,6 @@ class App extends React.Component {
 
 
 	callAPI() {
-		//const port = process.env.PORT || 5000;
     fetch("/api/test")
 			.then(res => res.json())
 			.then(json => this.setState({apiResponse: json.message}));

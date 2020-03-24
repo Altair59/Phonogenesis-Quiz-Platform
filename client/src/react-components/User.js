@@ -65,3 +65,5 @@ export function getUserByUsername(username) {
 
 	return null;
 }
+
+module.exports = { Students }
