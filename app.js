@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/api/test", (req, res) => {
     res.send({message: "API is working properly"});
 });
 
