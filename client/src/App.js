@@ -19,8 +19,10 @@ class App extends React.Component {
     this.state = {apiResponse: "" };
 	}
 
+
 	callAPI() {
-    fetch("http://localhost:5000")
+		const port = process.env.PORT || 5000;
+    fetch(`http://localhost:${port}`)
 			.then(res => res.json())
 			.then(json => this.setState({apiResponse: json.message}));
 	}
