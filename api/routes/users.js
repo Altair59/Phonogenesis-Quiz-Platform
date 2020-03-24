@@ -12,7 +12,7 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  User.findByEmailPassword(username, password)
+  User.findByUsernamePassword(username, password)
     .then(user => {
       req.session.user = user.username;
       res.send({ currentUser: user})

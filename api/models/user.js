@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 1,
+    unique: true,
 		trim: true
 	},
 	password: {
@@ -61,10 +62,10 @@ UserSchema.pre('save', function(next) {
   }
 });
 
-UserSchema.statics.findByEmailPassword = function(email, password) {
+UserSchema.statics.findByUsernamePassword = function(username, password) {
   const User = this
 
-  return User.findOne({email: email}).then((user) => {
+  return User.findOne({username: username}).then((user) => {
     if (!user) {
       return Promise.reject()
     }
