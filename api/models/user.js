@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
 	type: {
@@ -54,9 +54,9 @@ UserSchema.pre('save', function (next) {
 		bcrypt.hash(user.password, 10).then(function (hash) {
 			user.password = hash;
 		});
-	} else {
-		next();
 	}
+
+  next();
 });
 
 UserSchema.statics.findByUsernamePassword = function(username, password) {
