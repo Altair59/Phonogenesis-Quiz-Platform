@@ -115,3 +115,15 @@ export const addUser = (page,username) =>{
   page.setState({currEdit: -1, apiResponse: null});
   getUsers(page)
 };
+
+export const editUser = (page, username, info) =>{
+	const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
+	fetch(newURL, {
+		method: 'PATCH',
+		body: JSON.stringify(info),
+		headers: new Headers({'Content-Type': 'application/json'})
+	}).catch(error => {
+		console.log(error)
+	});
+	getUsers(page)
+};
