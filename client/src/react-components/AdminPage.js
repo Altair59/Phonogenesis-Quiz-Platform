@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import {users, getUserByUsername} from "./User";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 
@@ -38,7 +37,7 @@ class AdminPage extends React.Component {
 		redirect: null
 	};
 	addUser = () => {
-		const InputId = JSON.stringify(this.state.users[i].username);
+		const InputId = JSON.stringify(this.state.username);
 		const newURL = "http://localhost:9000/users/" + InputId;
 		fetch(newURL, {
 			method: 'GET',
@@ -155,7 +154,7 @@ class AdminPage extends React.Component {
 				<TopBar {...this.props.location.state}/>
 
 				<Grid container id="admin-add-user" direction="row" alignItems="center" justify="center" spacing={3}>
-					<Grid item><h3>Total User Count: <span id="userCount">{users.length}</span></h3></Grid>
+					<Grid item><h3>Total User Count: <span id="userCount">{this.state.users.length}</span></h3></Grid>
 					<Grid item><FormControl variant="outlined">
 						<InputLabel className="text-field-label-off">Type</InputLabel>
 						<Select value={"student"} onChange={this.onTypeChange}>
