@@ -14,27 +14,9 @@ import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { apiResponse: "" };
-	}
-
-	callAPI() {
-		fetch("http://localhost:9000/testAPI")
-			.then(res => res.text())
-			.then(res => this.setState({ apiResponse: res }));
-
-
-	}
-
-	componentWillMount() {
-		this.callAPI();
-	}
-
 	render() {
 		return (
 			<div>
-				<p>{this.state.apiResponse}</p>
 				<BrowserRouter>
 					<Switch>
 						<Route exact path='/' render={() => (<LoginPage/>)}/>

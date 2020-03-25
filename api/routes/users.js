@@ -15,7 +15,13 @@ router.post("/login", (req, res) => {
 	const password = req.body.password;
 
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = user.username;
+		req.session.username = user.username;
+    req.session.type = user.type;
+    req.session.password = user.password;
+    req.session.email = user.email;
+    req.session.name = user.name;
+    req.session.groups = user.groups;
+    req.session.quizzes = user.quizzes;
 		res.send({currentUser: user});
 	}).catch(error => {
 		res.status(400).send();
