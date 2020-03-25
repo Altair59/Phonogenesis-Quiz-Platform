@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-const log = console.log;
 
 const UserSchema = new mongoose.Schema({
 	type: {
@@ -68,8 +67,6 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 		if (!user) {
 			return Promise.reject();
 		}
-
-		log(user);
 
 		return new Promise((resolve, reject) => {
 			bcrypt.compare(password, user.password).then(function (result) {
