@@ -64,6 +64,4 @@ db.once('open', function() {
 	});
 });
 
-var db = mongoose.connection;
-
 module.exports = { mongoose };
