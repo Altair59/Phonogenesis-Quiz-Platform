@@ -6,6 +6,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
 import "./LoginPage.css";
 
+const log = console.log;
+
 /* Component for the Home page */
 class LoginPage extends React.Component {
 
@@ -29,14 +31,10 @@ class LoginPage extends React.Component {
 			headers: new Headers({'Content-Type': 'application/json'})
 		}).then(res => {
 			res.json().then((result) => {
-				this.setState({apiResponse: result});
+				document.cookie = "username=" + JSON.stringify(result);
 			});
 		});
 	}
-
-	// componentWillMount() {
-	// 	this.callAPI();
-	// }
 
 	login = () => {
 		this.callAPI(this.state.username, this.state.password)
