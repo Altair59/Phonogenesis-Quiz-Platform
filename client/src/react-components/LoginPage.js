@@ -6,40 +6,19 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
 import "./LoginPage.css";
 
-const log = console.log;
+import {login} from "../actions/user";
 
-/* Component for the Home page */
-class LoginPage extends React.Component {
+class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.props.history.push("/login");
 		this.state = {
 			err: false,
 			username: "",
 			password: ""
 		};
 	}
-
-	login = (username, password) => {
-		const info = {
-			username: username,
-			password: password
-		};
-		fetch("http://localhost:9000/users/login", {
-			method: 'POST',
-			body: JSON.stringify(info),
-			headers: new Headers({'Content-Type': 'application/json'})
-		}).then(res => {
-			res.json().then((result) => {
-				document.cookie = "username=" + JSON.stringify(result);
-			});
-		});
-	}
-
-	login = () => {
-		this.callAPI(this.state.username, this.state.password)
-	};
-
 
 	handleTextFieldChange = e => {
 		this.setState({
@@ -48,6 +27,7 @@ class LoginPage extends React.Component {
 	};
 
 	render() {
+
 		return (
 			<div className="loginForm">
 				<Grid container spacing={1} alignItems="flex-end">
@@ -75,11 +55,11 @@ class LoginPage extends React.Component {
 					/>
 				</div>
 				<div className="loginButton">
-					<Button onClick={() => this.login(this.state.username, this.state.password)}>Login</Button>
+					<Button onClick={() => login(this, this.props)}>Login</Button>
 				</div>
 			</div>
 		);
 	}
 }
 
-export default withRouter(LoginPage);
+export default withRouter(Login);

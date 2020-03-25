@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users');
 const bodyParser = require("body-parser");
 const session = require("express-session");
 
+
 const app = express();
 
 //Make a session cookie

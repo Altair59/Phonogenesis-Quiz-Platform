@@ -1,24 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const log = console.log;
 
 const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);
-
 const {User} = require("../models/user");
-
 const {ObjectID} = require("mongodb");
-const log = console.log
+
+const parseClientUser = (user) => {
+	return {
+		username: user.username,
+		name: user.name,
+		email: user.email,
+		type: user.type,
+		groups: user.groups,
+		quizzes: user.quizzes
+	}
+};
 
 // Route to login and create a session
 router.post("/login", (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
 
-	console.log(username, password)
-
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = user.username;
-		res.send(user.username);
+		req.session.userid = user._id;
+		req.session.username = user.username;
+		res.send({currentUser: parseClientUser(user)});
 	}).catch(error => {
 		res.status(400).send();
 	});
