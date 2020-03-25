@@ -11,6 +11,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider'
 
 import {withRouter} from "react-router-dom"
+import {readCookie, logout} from "../actions/user";
 
 const studentNav = ['Home', 'Groups', 'Practice', 'Log Out'];
 const profNav = ['Home', 'Make Quiz', 'Groups', 'Log Out'];
@@ -21,6 +22,7 @@ class TopBar extends React.Component {
 		this.state = {
 			isOpen: false,
 		};
+		readCookie(this);
 	}
 
 	openDrawer = () => {
@@ -28,39 +30,48 @@ class TopBar extends React.Component {
 	};
 
 	navigate = (text) => {
-		let newPage = "/";
-		let stateToPush = {
-			id: this.props.id,
-			type: this.props.type,
-			name: this.props.name,
-			email: this.props.email,
-			username: this.props.username,
-			password: this.props.password
-		};
+		let destPath = "/";
+		const type = this.state.currentUser.type;
 
-		if (text === "Home") {
-			if (this.props.type === "student") {
-				newPage = "/student"
-			} else {
-				newPage = "/professor"
-			}
-		} else if (text === "Groups") {
-			if (this.props.type === "professor") {
-				newPage = "/professor/groups"
-			} else if(this.props.type === "student") {
-				newPage = "/student/groups"
-			}
-		} else if (text === "Practice") {
-			newPage = "/student/gen"
-		} else if (text === "Make Quiz") {
-			newPage = "/professor/quiz"
-		} else if (text === "Log Out") {
-			newPage = "/"
+		switch (text) {
+			case "Home":
+				if (type === "student") {
+					destPath = "/student"
+				} else if (type === "professor") {
+					destPath = "/professor"
+				} else {
+					console.log("ERROR type invalid");
+					destPath = '/';
+				}
+				break;
+
+			case "Groups":
+				if (type === "professor") {
+					destPath = "/professor/groups"
+				} else if (type === "student") {
+					destPath = "/student/groups"
+				} else {
+					console.log("ERROR type invalid");
+					destPath = '/';
+				}
+				break;
+
+			case "Practice":
+				destPath = "/student/gen";
+				break;
+
+			case "Make Quiz":
+				destPath = "/professor/quiz";
+				break;
+
+			case "Logout":
+				logout();
+				destPath = "/login";
+				break;
 		}
 
 		this.props.history.push({
-			pathname: newPage,
-			state: stateToPush
+			pathname: destPath
 		})
 	};
 
@@ -86,7 +97,7 @@ class TopBar extends React.Component {
 					</IconButton>
 					<Divider/>
 					<List>
-						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav :["Log Out"])).map((text) => (
+						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav : ["Log Out"])).map((text) => (
 							<ListItem button onClick={() => this.navigate(text)} key={text}>
 								<ListItemText primary={text}/>
 							</ListItem>

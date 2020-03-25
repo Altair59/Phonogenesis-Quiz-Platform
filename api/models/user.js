@@ -53,11 +53,12 @@ UserSchema.pre('save', function (next) {
 	if (user.isModified('password')) {
 		bcrypt.hash(user.password, 10).then(function (hash) {
 			user.password = hash;
-      next();
+			next();
 		});
 	} else {
-    next();
-  }
+		next();
+	}
+
 });
 
 UserSchema.statics.findByUsernamePassword = function(username, password) {
@@ -77,7 +78,8 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 			})
 		})
   })
-}
+};
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = {User};

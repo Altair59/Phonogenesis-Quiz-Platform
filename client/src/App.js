@@ -12,71 +12,80 @@ import StudentMain from './react-components/StudentMain';
 import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
-
-const readCookie = (app) => {
-  fetch("http://localhost:9000/users/check-session/")
-    .then(res => {
-      if(res.status === 200) {
-				console.log(res)
-        return res.json();
-      }
-    })
-    .then(json => {
-			console.log(json)
-      if (json && json.currentUser && json.userType) {
-        app.setState({ currentUser: json.currentUser, userType: json.userType});
-				console.log(app.state)
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-};
+import {readCookie} from "./actions/user";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {currentUser: null};
+
 		readCookie(this);
 	}
 
-	state = {
-		currentUser: null,
-		userType: ""
+	redirectMain(history) {
+		const {currentUser} = this.state;
+
+		if (!currentUser) {
+			return <LoginPage redir={true} history={history} app={this}/>
+		} else {
+			switch (currentUser.type) {
+				case "student":
+					return <StudentMain history={history} app={this}/>;
+
+				case "professor":
+					return <ProfessorHome history={history} app={this}/>;
+
+				case "admin":
+					return <AdminPage history={history} app={this}/>;
+
+				default:
+					console.log("ERROR user type is invalid");
+					return <LoginPage redir={true} history={history} app={this}/>;
+			}
+		}
 	}
 
 	render() {
+		const {currentUser} = this.state;
+
 		return (
-			<div>
-				<BrowserRouter>
-					<Switch>
-						<Route
-							exact path={['/', '/login']}
-							render={({ history }) => {
-								if (!this.state.currentUser) {
-									return (<LoginPage app={this}/>)
-								} else {
-									if (this.state.userType === "student") {
-										return (<StudentMain/>)
-									}
-									else if (this.state.userType === "professor") {
-										return (<ProfessorHome/>)
-									} else if (this.state.userType === "admin") {
-										return (<AdminPage/>)
-									}
-								}
-							}
-						}/>
-						<Route exact path='/admin' render={() => (<AdminPage/>)}/>
-						<Route exact path='/professor' render={() => (<ProfessorHome/>)}/>
-						<Route exact path='/professor/groups' render={() => (<GroupsPage/>)}/>
-						<Route exact path='/professor/quiz' render={() => (<QuizGenerator/>)}/>
-						<Route exact path='/student/gen' render={() => (<SimpleGenerator/>)}/>
-						<Route exact path='/student' render={() => (<StudentMain/>)}/>
-						<Route exact path='/student/quiz' render={() => (<QuizTaker/>)}/>
-						<Route exact path='/student/groups' render={() => (<StudentGroupPage/>)}/>
-					</Switch>
-				</BrowserRouter>
-			</div>
+			<BrowserRouter>
+				<Switch>
+					<React.Fragment>
+						<Route exact path='/' render={({history}) => (this.redirectMain(history))}/>
+						<Route exact path='/login'
+						       render={({history}) => (<LoginPage redir={false} history={history} app={this}/>)}/>
+
+						{currentUser ? (
+							<div>
+								<Route exact path='/admin'
+								       render={({history}) => (<AdminPage history={history} app={this}/>)}/>
+								<Route exact path='/professor'
+								       render={({history}) => (<ProfessorHome history={history} app={this}/>)}/>
+								<Route exact path='/professor/groups'
+								       render={({history}) => (<GroupsPage history={history} app={this}/>)}/>
+								<Route exact path='/professor/quiz'
+								       render={({history}) => (<QuizGenerator history={history} app={this}/>)}/>
+								<Route exact path='/student/gen'
+								       render={({history}) => (<SimpleGenerator history={history} app={this}/>)}/>
+								<Route exact path='/student'
+								       render={({history}) => (<StudentMain history={history} app={this}/>)}/>
+								<Route exact path='/student/quiz'
+								       render={({history}) => (<QuizTaker history={history} app={this}/>)}/>
+								<Route exact path='/student/groups'
+								       render={({history}) => (<StudentGroupPage history={history} app={this}/>)}/>
+							</div>
+						) : (
+							<Route exact
+							       path={['/admin', 'professor', '/professor/groups', '/professor/quiz', '/student/gen', '/student', '/student/quiz', '/student/groups']}
+							       render={({history}) => (<LoginPage redir={true} history={history} app={this}/>)}/>
+						)}
+
+						<Route render={() => <div>404 NOT FOUND</div>}/>
+					</React.Fragment>
+				</Switch>
+			</BrowserRouter>
+
 		);
 	}
 }
