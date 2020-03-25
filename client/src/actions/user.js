@@ -18,32 +18,28 @@ export const readCookie = (app) => {
     });
 };
 
-export const login = (loginComp, app) => {
-	fetch("http://localhost:9000/users/login", {
-		method: 'POST',
-		body: JSON.stringify(loginComp.state),
+export const login = (loginPage, loginProps) => {
+	const request = new Request("http://127.0.0.1:9000/users/login", {
+		method: "post",
+		body: JSON.stringify(loginPage.state),
 		headers: {
 			Accept: "application/json, text/plain, */*",
-					"Content-Type": "application/json"
+			"Content-Type": "application/json"
 		}
-	})
-	.then(res => {
-		if (res.status === 200) {
-			return res.json()
-		}
-	})
-	.then(json => {
-		const newCookie = "username="+json.username
-		document.cookie = newCookie;
-		if (json.currentUser !== undefined && json.userType !== "") {
-			console.log(app)
-			app.setState({ currentUser: json.currentUser, userType: json.userType});
-		}
-	})
-	.catch(error => {
-		console.log(error);
 	});
-}
+
+	fetch(request).then(res => {
+		res.json().then(result => {
+			if (result.currentUser !== undefined) {
+				loginProps.app.setState({currentUser: result.currentUser});
+				loginProps.history.push({pathname: '/' + result.currentUser.type});
+			}
+		}).catch(err => {
+			console.log(err);
+		});
+	});
+
+};
 
 export const logout = (app) => {
 	const url = "http://127.0.0.1:9000/users/logout";
