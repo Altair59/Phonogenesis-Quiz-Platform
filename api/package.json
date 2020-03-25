@@ -15,10 +15,10 @@
     "express-session": "^1.17.0",
     "http-errors": "~1.6.3",
     "jade": "^1.11.0",
+    "mongodb": "latest",
     "mongoose": "^5.9.6",
     "morgan": "~1.9.1",
-    "validator": "^13.0.0",
-    "mongodb": "latest"
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "bcrypt": "^4.0.1"

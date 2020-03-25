@@ -5,4 +5,6 @@ const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 
+var db = mongoose.connection;
+
 module.exports = { mongoose };

@@ -13,12 +13,12 @@ class LoginPage extends React.Component {
 		super(props);
 		this.state = {
 			err: false,
-			user: null,
-			apiResponse: null
+			username: "",
+			password: ""
 		};
 	}
 
-	callAPI(username, password) {
+	login = (username, password) => {
 		const info = {
 			username: username,
 			password: password
@@ -27,21 +27,13 @@ class LoginPage extends React.Component {
 			method: 'POST',
 			body: JSON.stringify(info),
 			headers: new Headers({'Content-Type': 'application/json'})
-		}).then(res => {
-			res.json().then((result) => {
-				this.setState({apiResponse: result});
-			});
-		});
+		})
+		.then(res => res.json())
+		.then(json => {
+				this.setState({currentUser: json.result});
+		})
+		.catch(error => console.log(error));
 	}
-
-	// componentWillMount() {
-	// 	this.callAPI();
-	// }
-
-	login = () => {
-		this.callAPI(this.state.username, this.state.password)
-	};
-
 
 	handleTextFieldChange = e => {
 		this.setState({
@@ -77,7 +69,7 @@ class LoginPage extends React.Component {
 					/>
 				</div>
 				<div className="loginButton">
-					<Button onClick={this.login}>Login</Button>
+					<Button onClick={() => this.login(this.state.username, this.state.password)}>Login</Button>
 				</div>
 			</div>
 		);
