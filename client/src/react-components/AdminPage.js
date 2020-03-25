@@ -25,8 +25,12 @@ class AdminPage extends React.Component {
 
 		this.state = {
 			currEdit: -1,
-			usernameError: ""
+			usernameError: "",
+			users: [],
+			apiResponse: null
 		};
+
+		this.callAPIGetUsers()
 	}
 
 
@@ -34,7 +38,16 @@ class AdminPage extends React.Component {
 		redirect: null
 	};
 	addUser = () => {
-		if (getUserByUsername(this.state.username)) {
+		const InputId = JSON.stringify(this.state.users[i].username);
+		const newURL = "http://localhost:9000/users/" + InputId;
+		fetch(newURL, {
+			method: 'GET',
+		}).then(res => {
+			res.json().then((result) => {
+				this.setState({apiResponse: result});
+			});
+		});
+		if (this.state.apiResponse) {
 			alert("Username must be unique!");
 			this.setState({usernameError: "unique username required"});
 			return;
@@ -42,44 +55,89 @@ class AdminPage extends React.Component {
 			this.setState({usernameError: ""});
 		}
 
-		users.push({
-			type: this.state.type,
+		const info = {
 			name: this.state.name,
+			type: this.state.type,
 			email: this.state.email,
 			username: this.state.username,
 			password: this.state.password,
 			groups: [],
 			quizzes: []
-		});
+		};
+		fetch(newURL, {
+			method: 'POST',
+			body: JSON.stringify(info),
+			headers: new Headers({'Content-Type': 'application/json'})
+		}).then(
+			this.callAPIGetUsers
+		);
+		this.setState({currEdit: -1, apiResponse: null});
+
 		this.setState({redirect: "/admin"});
 	};
 
 	editUser = i => {
-		console.log(this.state);
-
 		if (i === this.state.currEdit) {
 			const newName = document.getElementById("edit-name".concat(i.toString())).value;
 			const newEmail = document.getElementById("edit-email".concat(i.toString())).value;
 			const newPassword = document.getElementById("edit-password".concat(i.toString())).value;
 			const currUsername = document.getElementById("edit-username".concat(i.toString())).value;
 
-			const currUser = getUserByUsername(currUsername);
-			currUser.email = newEmail;
-			currUser.name = newName;
-			currUser.password = newPassword;
-
-			this.setState({currEdit: -1});
+			const toEditId = JSON.stringify(this.state.users[i].username);
+			const newURL = "http://localhost:9000/users/" + toEditId;
+			fetch(newURL, {
+				method: 'GET',
+			}).then(res => {
+				res.json().then((result) => {
+					this.setState({apiResponse: result});
+				});
+			});
+			const info = {
+				name: newName,
+				type: this.state.apiResponse.type,
+				username: currUsername,
+				password: newPassword,
+				email: newEmail,
+				groups: this.state.groups,
+				quizzes: this.state.quizzes
+			};
+			fetch(newURL, {
+				method: 'PATCH',
+				body: JSON.stringify(info),
+				headers: new Headers({'Content-Type': 'application/json'})
+			}).then(
+				this.callAPIGetUsers
+			);
+			this.setState({currEdit: -1, apiResponse: null});
 		} else {
 
 			this.setState({currEdit: i});
 		}
+		this.setState({redirect: "/admin"});
 
 	};
 
 	removeUser = i => {
-		users.splice(i, 1);
+		const toDeleteId = JSON.stringify(this.state.users[i].username);
+		const newURL = "http://localhost:9000/users/" + toDeleteId;
+		fetch(newURL, {
+			method: 'DELETE',
+		}).then(
+			this.callAPIGetUsers
+		);
 		this.setState({redirect: "/admin"});
 	};
+
+
+	callAPIGetUsers(){
+		fetch("http://localhost:9000/users", {
+			method: 'GET',
+		}).then(res => {
+			res.json().then((result) => {
+				this.setState({users: result});
+			});
+		});
+	}
 
 	handleTextFieldChange = e => {
 		this.setState({
