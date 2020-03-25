@@ -15,8 +15,8 @@ router.post("/login", (req, res) => {
 	const password = req.body.password;
 
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = user;
-		res.send(user);
+		req.session.user = user.username;
+		res.send(user.username);
 	}).catch(error => {
 		res.status(400).send();
 	});
@@ -146,54 +146,3 @@ router.patch("/:id", (req, res) => {
 });
 
 module.exports = router;
-
-// const defaultAdmin = new User({
-// 	type: "admin",
-// 	name: "admin_name",
-// 	email: "admin@pg.com",
-// 	username: "admin",
-// 	password: "admin",
-// 	groups: [],
-// 	quizzes: []
-// });
-// defaultAdmin.save().then((result) => {
-// 	log("added admin");
-// 	log(result);
-// }, (error) => {
-// 	log("ERROR admin creation failed");
-// 	log(error);
-// });
-//
-// const defaultStudent = new User({
-// 	type: "student",
-// 	name: "stu_name",
-// 	email: "stu@pg.com",
-// 	username: "stu",
-// 	password: "stu",
-// 	groups: [],
-// 	quizzes: []
-// });
-// defaultStudent.save().then((result) => {
-// 	log("added student");
-// 	log(result);
-// }, (error) => {
-// 	log("ERROR default student creation failed");
-// 	log(error);
-// });
-//
-// const defaultProf = new User({
-// 	type: "professor",
-// 	name: "prof_name",
-// 	email: "prof@pg.com",
-// 	username: "prof",
-// 	password: "prof",
-// 	groups: [],
-// 	quizzes: []
-// });
-// defaultProf.save().then((result) => {
-// 	log("added prof");
-// 	log(result);
-// }, (error) => {
-// 	log("ERROR default prof creation failed");
-// 	log(error);
-// });

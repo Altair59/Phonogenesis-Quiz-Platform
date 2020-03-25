@@ -56,7 +56,7 @@ UserSchema.pre('save', function (next) {
 		});
 	}
 
-  next();
+	next();
 });
 
 UserSchema.statics.findByUsernamePassword = function(username, password) {
@@ -78,4 +78,5 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
   })
 }
 const User = mongoose.model('User', UserSchema);
+
 module.exports = {User};

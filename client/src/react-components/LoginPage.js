@@ -6,6 +6,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
 import "./LoginPage.css";
 
+const log = console.log;
+
 /* Component for the Home page */
 class LoginPage extends React.Component {
 
@@ -30,9 +32,11 @@ class LoginPage extends React.Component {
 		})
 		.then(res => res.json())
 		.then(json => {
-				this.setState({currentUser: json.result});
+				document.cookie = "username=" + json.username;
 		})
-		.catch(error => console.log(error));
+		.catch(error => {
+			console.log(error);
+		});
 	}
 
 	handleTextFieldChange = e => {
