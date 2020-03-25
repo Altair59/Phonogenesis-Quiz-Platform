@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
+import {getUsers, removeUser, addUser} from "../actions/user";
 
 import "./AdminPage.css";
 import Grid from "@material-ui/core/Grid";
@@ -29,51 +30,8 @@ class AdminPage extends React.Component {
 			apiResponse: null
 		};
 
-		this.callAPIGetUsers()
+		getUsers(this);
 	}
-
-
-	state = {
-		redirect: null
-	};
-	addUser = () => {
-		const InputId = JSON.stringify(this.state.username);
-		const newURL = "http://localhost:9000/users/" + InputId;
-		fetch(newURL, {
-			method: 'GET',
-		}).then(res => {
-			res.json().then((result) => {
-				this.setState({apiResponse: result});
-			});
-		});
-		if (this.state.apiResponse) {
-			alert("Username must be unique!");
-			this.setState({usernameError: "unique username required"});
-			return;
-		} else {
-			this.setState({usernameError: ""});
-		}
-
-		const info = {
-			name: this.state.name,
-			type: this.state.type,
-			email: this.state.email,
-			username: this.state.username,
-			password: this.state.password,
-			groups: [],
-			quizzes: []
-		};
-		fetch(newURL, {
-			method: 'POST',
-			body: JSON.stringify(info),
-			headers: new Headers({'Content-Type': 'application/json'})
-		}).then(
-			this.callAPIGetUsers
-		);
-		this.setState({currEdit: -1, apiResponse: null});
-
-		this.setState({redirect: "/admin"});
-	};
 
 	editUser = i => {
 		if (i === this.state.currEdit) {
@@ -112,31 +70,7 @@ class AdminPage extends React.Component {
 
 			this.setState({currEdit: i});
 		}
-		this.setState({redirect: "/admin"});
-
 	};
-
-	removeUser = i => {
-		const toDeleteId = JSON.stringify(this.state.users[i].username);
-		const newURL = "http://localhost:9000/users/" + toDeleteId;
-		fetch(newURL, {
-			method: 'DELETE',
-		}).then(
-			this.callAPIGetUsers
-		);
-		this.setState({redirect: "/admin"});
-	};
-
-
-	callAPIGetUsers(){
-		fetch("http://localhost:9000/users", {
-			method: 'GET',
-		}).then(res => {
-			res.json().then((result) => {
-				this.setState({users: result});
-			});
-		});
-	}
 
 	handleTextFieldChange = e => {
 		this.setState({
@@ -182,7 +116,7 @@ class AdminPage extends React.Component {
 						label="Password"
 						onChange={this.handleTextFieldChange}
 					/></Grid>
-					<Grid item><Button variant="contained" color="primary" onClick={this.addUser}>Add
+					<Grid item><Button variant="contained" color="primary" onClick={addUser(this,this.state.username)}>Add
 						User</Button></Grid>
 				</Grid>
 				<br/>
@@ -237,7 +171,7 @@ class AdminPage extends React.Component {
 									</TableCell>
 									<TableCell align="center">
 										<Button variant="contained" disabled={user.type === "admin"}
-										        onClick={this.removeUser.bind(this, i)}>
+										        onClick={removeUser(this, user.username)}>
 											Remove
 										</Button>
 									</TableCell>
