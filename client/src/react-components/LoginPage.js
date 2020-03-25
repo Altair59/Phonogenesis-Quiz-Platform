@@ -4,23 +4,44 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
-//import {users} from "./User"
-import {login} from "../actions/user";
 import "./LoginPage.css";
 
 /* Component for the Home page */
 class LoginPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.props.history.push("/");
-    this.state = {
-        err: false,
-        username: "",
-        password: "",
-        currentUser: undefined
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			err: false,
+			user: null,
+			apiResponse: null
+		};
+	}
+
+	callAPI(username, password) {
+		const info = {
+			username: username,
+			password: password
+		};
+		fetch("http://localhost:9000/users/login", {
+			method: 'POST',
+			body: JSON.stringify(info),
+			headers: new Headers({'Content-Type': 'application/json'})
+		}).then(res => {
+			res.json().then((result) => {
+				this.setState({apiResponse: result});
+			});
+		});
+	}
+
+	// componentWillMount() {
+	// 	this.callAPI();
+	// }
+
+	login = () => {
+		this.callAPI(this.state.username, this.state.password)
+	};
+
 
 	handleTextFieldChange = e => {
 		this.setState({
@@ -56,7 +77,7 @@ class LoginPage extends React.Component {
 					/>
 				</div>
 				<div className="loginButton">
-					<Button onClick={() => login(this, this.props)}>Login</Button>
+					<Button onClick={this.login}>Login</Button>
 				</div>
 			</div>
 		);

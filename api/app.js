@@ -7,10 +7,24 @@ const cors = require("cors");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const testAPIRouter = require("./routes/testAPI");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 
 const app = express();
+
+//Make a session cookie
+app.use(
+    session({
+        secret: "oursecret",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 60000,
+            httpOnly: true
+        }
+    })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,24 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-//Make a session cookie
-app.use(
-  session({
-    secret: "oursecret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        expires: 60000,
-        httpOnly: true
-    }
-  })
-);
-
-
-app.use(cors());
-
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use("/testAPI", testAPIRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));

@@ -19,5 +19,8 @@
     "morgan": "~1.9.1",
     "validator": "^13.0.0",
     "mongodb": "latest"
+  },
+  "devDependencies": {
+    "bcrypt": "^4.0.1"
   }
 }
