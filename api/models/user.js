@@ -53,10 +53,11 @@ UserSchema.pre('save', function (next) {
 	if (user.isModified('password')) {
 		bcrypt.hash(user.password, 10).then(function (hash) {
 			user.password = hash;
+      next();
 		});
-	}
-
-	next();
+	} else {
+    next();
+  }
 });
 
 UserSchema.statics.findByUsernamePassword = function(username, password) {
