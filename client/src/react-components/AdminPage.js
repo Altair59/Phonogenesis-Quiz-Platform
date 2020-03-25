@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
-import {getUsers, removeUser, addUser} from "../actions/user";
+import {getUsers, removeUser, addUser, editUser} from "../actions/user";
 
 import "./AdminPage.css";
 import Grid from "@material-ui/core/Grid";
@@ -40,34 +40,18 @@ class AdminPage extends React.Component {
 			const newPassword = document.getElementById("edit-password".concat(i.toString())).value;
 			const currUsername = document.getElementById("edit-username".concat(i.toString())).value;
 
-			const toEditId = this.state.users[i].username;
-			const newURL = "http://localhost:9000/users/" + toEditId;
-			fetch(newURL, {
-				method: 'GET',
-			}).then(res => {
-				res.json().then((result) => {
-					this.setState({apiResponse: result});
-				});
-			});
 			const info = {
 				name: newName,
-				type: this.state.apiResponse.type,
+				type: this.state.users[i].type,
 				username: currUsername,
 				password: newPassword,
 				email: newEmail,
-				groups: this.state.groups,
-				quizzes: this.state.quizzes
+				groups: this.state.users[i].groups,
+				quizzes: this.state.users[i].quizzes
 			};
-			fetch(newURL, {
-				method: 'PATCH',
-				body: JSON.stringify(info),
-				headers: new Headers({'Content-Type': 'application/json'})
-			}).then(
-				this.callAPIGetUsers
-			);
-			this.setState({currEdit: -1, apiResponse: null});
+			editUser(this, this.state.users[i].username, info);
+			this.setState({currEdit: -1});
 		} else {
-
 			this.setState({currEdit: i});
 		}
 	};
