@@ -14,11 +14,11 @@ router.post("/login", (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
 
-	console.log(username, password)
-
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = user.username;
-		res.send(user.username);
+		req.session.user = user._id;
+		req.session.email = user.email;
+		req.session.type = user.type;
+		res.send({currentUser: user.email, userType: user.type});
 	}).catch(error => {
 		res.status(400).send();
 	});
@@ -38,7 +38,10 @@ router.get("/logout", (req, res) => {
 // Route to check if a user is already logged in
 router.get("/check-session", (req, res) => {
 	if (req.session.user) {
-		res.send({currentUser: req.session.user});
+		res.send({
+			currentUser: req.session.email,
+			userType: req.session.type
+		});
 	} else {
 		res.status(401).send();
 	}

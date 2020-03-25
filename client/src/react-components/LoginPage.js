@@ -28,11 +28,23 @@ class LoginPage extends React.Component {
 		fetch("http://localhost:9000/users/login", {
 			method: 'POST',
 			body: JSON.stringify(info),
-			headers: new Headers({'Content-Type': 'application/json'})
+			headers: {
+				Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+			}
 		})
-		.then(res => res.json())
+		.then(res => {
+			if (res.status === 200) {
+				return res.json()
+			}
+		})
 		.then(json => {
-				document.cookie = "username=" + json.username;
+			const newCookie = "username="+json.username
+			document.cookie = newCookie;
+			if (json.currentUser !== undefined && json.userType !== "") {
+				this.props.app.setState({ currentUser: json.currentUser, userType: json.userType});
+				console.log(this.props.app.state)
+			}
 		})
 		.catch(error => {
 			console.log(error);

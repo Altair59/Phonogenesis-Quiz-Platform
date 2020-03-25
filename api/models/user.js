@@ -62,13 +62,13 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.statics.findByUsernamePassword = function(username, password) {
 	const User = this;
-	return User.find().findOne({username: username}).then(user => {
+	return User.findOne({username: username}).then(user => {
 		if (!user) {
 			return Promise.reject();
 		}
 
 		return new Promise((resolve, reject) => {
-			bcrypt.compare(password, user.password).then(function (err, result) {
+			bcrypt.compare(password, user.password, (err, result) => {
 				if (result) {
 					resolve(user);
 				} else {

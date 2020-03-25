@@ -202,7 +202,7 @@ class AdminPage extends React.Component {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{users.map((user, i) => (
+							{this.state.users.map((user, i) => (
 								<TableRow key={user.name}>
 									<TableCell align="center"><TextField variant="outlined" disabled
 									                                     align="center" defaultValue={user.type}
