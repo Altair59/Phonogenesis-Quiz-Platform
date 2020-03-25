@@ -18,10 +18,8 @@ db.once('open', function() {
 		groups: [],
 		quizzes: []
 	});
-	defaultAdmin.markModified("password");
 	defaultAdmin.save().then(function (result) {
 		log("added admin");
-		log(result);
 	}, function (error) {
 		log("ERROR admin creation failed");
 		log(error);
@@ -36,10 +34,8 @@ db.once('open', function() {
 		groups: [],
 		quizzes: []
 	});
-	defaultStudent.markModified('password');
 	defaultStudent.save().then(function (result) {
 		log("added student");
-		log(result);
 	}, function(error) {
 		log("ERROR default student creation failed");
 		log(error);
@@ -54,10 +50,8 @@ db.once('open', function() {
 		groups: [],
 		quizzes: []
 	});
-	defaultProf.markModified('password');
 	defaultProf.save().then(function(result) {
 		log("added prof");
-		log(result);
 	}, function(error) {
 		log("ERROR default prof creation failed");
 		log(error);

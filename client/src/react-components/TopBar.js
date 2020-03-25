@@ -29,14 +29,6 @@ class TopBar extends React.Component {
 
 	navigate = (text) => {
 		let newPage = "/";
-		let stateToPush = {
-			id: this.props.id,
-			type: this.props.type,
-			name: this.props.name,
-			email: this.props.email,
-			username: this.props.username,
-			password: this.props.password
-		};
 
 		if (text === "Home") {
 			if (this.props.type === "student") {
@@ -59,8 +51,7 @@ class TopBar extends React.Component {
 		}
 
 		this.props.history.push({
-			pathname: newPage,
-			state: stateToPush
+			pathname: newPage
 		})
 	};
 
