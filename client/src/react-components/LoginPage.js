@@ -29,17 +29,15 @@ class LoginPage extends React.Component {
 			method: 'POST',
 			body: JSON.stringify(info),
 			headers: new Headers({'Content-Type': 'application/json'})
-		}).then(res => {
-			res.json().then((result) => {
-				document.cookie = "username=" + JSON.stringify(result);
-			});
+		})
+		.then(res => res.json())
+		.then(json => {
+				document.cookie = "username=" + json.username;
+		})
+		.catch(error => {
+			console.log(error);
 		});
 	}
-
-	login = () => {
-		this.callAPI(this.state.username, this.state.password)
-	};
-
 
 	handleTextFieldChange = e => {
 		this.setState({

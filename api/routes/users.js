@@ -14,8 +14,6 @@ router.post("/login", (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
 
-	console.log(username, password)
-
 	User.findByUsernamePassword(username, password).then(user => {
 		req.session.user = user.username;
 		res.send(user.username);
