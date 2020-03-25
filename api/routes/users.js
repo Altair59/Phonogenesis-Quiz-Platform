@@ -1,18 +1,20 @@
-const log = console.log;
-
 const express = require('express');
 const router = express.Router();
 
 const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);
+
 const {User} = require("../models/user");
 
 const {ObjectID} = require("mongodb");
+const log = console.log
 
 // Route to login and create a session
 router.post("/login", (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
+
+	console.log(username, password)
 
 	User.findByUsernamePassword(username, password).then(user => {
 		req.session.user = user.username;
@@ -36,7 +38,7 @@ router.get("/logout", (req, res) => {
 // Route to check if a user is already logged in
 router.get("/check-session", (req, res) => {
 	if (req.session.user) {
-		res.send({currentUser: req.session.email});
+		res.send({currentUser: req.session.user});
 	} else {
 		res.status(401).send();
 	}
@@ -81,7 +83,7 @@ router.get("/:id", (req, res) => {
 	const id = req.params.id;
 
 	if (!ObjectID.isValid(id)) {
-		res.status(404).send(); // if invalid id, definitely can't find resource, 404.
+		res.status(404).send(); // if invFlid id, definitely can't find resource, 404.
 		return;
 	}
 

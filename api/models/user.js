@@ -2,8 +2,7 @@
 
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcrypt');
-const log = console.log;
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
 	type: {
@@ -43,7 +42,7 @@ const UserSchema = new mongoose.Schema({
 		default: null
 	},
 	quizzes: {
-		type: [String],
+		type: [mongoose.Schema.Types.ObjectId],
 		default: null
 	}
 });
@@ -60,15 +59,15 @@ UserSchema.pre('save', function (next) {
 	next();
 });
 
-UserSchema.statics.findByUsernamePassword = function (username, password) {
+UserSchema.statics.findByUsernamePassword = function(username, password) {
 	const User = this;
-	return User.findOne({username: username}).then((user) => {
+	return User.find().findOne({username: username}).then(user => {
 		if (!user) {
-			return null;
+			return Promise.reject();
 		}
 
 		return new Promise((resolve, reject) => {
-			bcrypt.compare(password, user.password).then(function (result) {
+			bcrypt.compare(password, user.password).then(function (err, result) {
 				if (result) {
 					resolve(user);
 				} else {
@@ -76,9 +75,8 @@ UserSchema.statics.findByUsernamePassword = function (username, password) {
 				}
 			})
 		})
-	})
-};
-
+  })
+}
 const User = mongoose.model('User', UserSchema);
 
 module.exports = {User};

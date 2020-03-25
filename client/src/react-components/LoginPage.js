@@ -15,12 +15,12 @@ class LoginPage extends React.Component {
 		super(props);
 		this.state = {
 			err: false,
-			user: null,
-			apiResponse: null
+			username: "",
+			password: ""
 		};
 	}
 
-	callAPI(username, password) {
+	login = (username, password) => {
 		const info = {
 			username: username,
 			password: password
@@ -75,7 +75,7 @@ class LoginPage extends React.Component {
 					/>
 				</div>
 				<div className="loginButton">
-					<Button onClick={this.login}>Login</Button>
+					<Button onClick={() => this.login(this.state.username, this.state.password)}>Login</Button>
 				</div>
 			</div>
 		);
