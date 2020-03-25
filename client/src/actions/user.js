@@ -1,4 +1,3 @@
-
 export const readCookie = (app) => {
 	const url = "http://127.0.0.1:9000/users/check-session";
 
@@ -30,7 +29,7 @@ export const login = (loginPage, loginProps) => {
 
 	fetch(request).then(res => {
 		res.json().then(result => {
-			if (result.currentUser !== undefined){
+			if (result.currentUser !== undefined) {
 				loginProps.app.setState({currentUser: result.currentUser});
 				loginProps.history.push({pathname: '/' + result.currentUser.type});
 			}
@@ -44,74 +43,68 @@ export const login = (loginPage, loginProps) => {
 export const logout = (app) => {
 	const url = "http://127.0.0.1:9000/users/logout";
 
-  fetch(url)
-    .then(res => {
-      app.setState({
-        currentUser: null,
-        message: {
-          type: "",
-          body: ""
-        }
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    })
+	fetch(url).then(res => {
+		app.setState({
+			currentUser: null
+		});
+	}).catch(error => {
+		console.log(error);
+	})
 };
 
-export const getUsers = (page) =>{
-  fetch("http://localhost:9000/users", {
-    method: 'GET',
-  }).then(res => {
-    res.json().then((result) => {
-      page.setState({users: result});
-    });
-  });
+export const getUsers = (page) => {
+	fetch("http://localhost:9000/users", {
+		method: 'GET',
+	}).then(res => {
+		res.json().then((result) => {
+			page.setState({users: result});
+		});
+	});
 };
 
-export const removeUser = (page,username) =>{
-  const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
-  fetch(newURL, {
-    method: 'DELETE',
-  }).catch(error => {
-    console.log(error)
-  });
-  getUsers(page);
+export const removeUser = (page, username) => {
+	const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
+	fetch(newURL, {
+		method: 'DELETE',
+	}).catch(error => {
+		console.log(error)
+	});
+	getUsers(page);
 };
 
-export const addUser = (page,username) =>{
-  const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
-  fetch(newURL, {
-    method: 'GET',
-  }).then(res => {
-    res.json().then((result) => {
-      page.setState({apiResponse: result});
-    });
-  });
-  if (page.state.apiResponse) {
-    alert("Username must be unique!");
-    this.setState({usernameError: "unique username required"});
-    return;
-  } else {
-    page.setState({usernameError: ""});
-  }
+export const addUser = (page, username) => {
+	const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
+	fetch(newURL, {
+		method: 'GET',
+	}).then(res => {
+		res.json().then((result) => {
+			page.setState({apiResponse: result});
+		});
+	});
+	if (page.state.apiResponse) {
+		alert("Username must be unique!");
+		this.setState({usernameError: "unique username required"});
+		return;
+	} else {
+		page.setState({usernameError: ""});
+	}
 
-  const info = {
-    name: page.state.name,
-    type: page.state.type,
-    email: page.state.email,
-    username: page.state.username,
-    password: page.state.password,
-    groups: [],
-    quizzes: []
-  };
-  fetch(newURL, {
-    method: 'POST',
-    body: JSON.stringify(info),
-    headers: new Headers({'Content-Type': 'application/json'})
-  }).catch(error =>{
-    console.log(error)
-  });
-  page.setState({currEdit: -1, apiResponse: null});
-  getUsers(page)
+	const info = {
+		name: page.state.name,
+		type: page.state.type,
+		email: page.state.email,
+		username: page.state.username,
+		password: page.state.password,
+		groups: [],
+		quizzes: []
+	};
+	fetch(newURL, {
+		method: 'POST',
+		body: JSON.stringify(info),
+		headers: new Headers({'Content-Type': 'application/json'})
+	}).catch(error => {
+		console.log(error)
+	});
+	page.setState({currEdit: -1, apiResponse: null});
+	getUsers(page)
 };

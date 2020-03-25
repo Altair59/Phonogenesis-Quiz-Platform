@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const log = console.log;
 
 const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);

@@ -40,7 +40,7 @@ class AdminPage extends React.Component {
 			const newPassword = document.getElementById("edit-password".concat(i.toString())).value;
 			const currUsername = document.getElementById("edit-username".concat(i.toString())).value;
 
-			const toEditId = JSON.stringify(this.state.users[i].username);
+			const toEditId = this.state.users[i].username;
 			const newURL = "http://localhost:9000/users/" + toEditId;
 			fetch(newURL, {
 				method: 'GET',
@@ -85,7 +85,7 @@ class AdminPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<TopBar {...this.props.location.state}/>
+				<TopBar/>
 
 				<Grid container id="admin-add-user" direction="row" alignItems="center" justify="center" spacing={3}>
 					<Grid item><h3>Total User Count: <span id="userCount">{this.state.users.length}</span></h3></Grid>
