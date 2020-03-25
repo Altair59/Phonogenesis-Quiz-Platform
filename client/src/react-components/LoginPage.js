@@ -9,31 +9,38 @@ import "./LoginPage.css";
 /* Component for the Home page */
 class LoginPage extends React.Component {
 
-    constructor(props) {
-      super(props);
-      this.state = {
-          err: false,
-          user: null,
-	      apiResponse: null
-      };
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			err: false,
+			user: null,
+			apiResponse: null
+		};
+	}
 
 	callAPI(username, password) {
-    	const info = {
-    		username: username,
-		    password: password
-	    };
-		fetch("http://localhost:9000/users/login", {method: 'POST', body: JSON.stringify(info)})
-			.then(res => this.setState({ apiResponse: res }));
+		const info = {
+			username: username,
+			password: password
+		};
+		fetch("http://localhost:9000/users/login", {
+			method: 'POST',
+			body: JSON.stringify(info),
+			headers: new Headers({'Content-Type': 'application/json'})
+		}).then(res => {
+			res.json().then((result) => {
+				this.setState({apiResponse: result});
+			});
+		});
 	}
 
 	// componentWillMount() {
 	// 	this.callAPI();
 	// }
 
-    login = () => {
+	login = () => {
 		this.callAPI(this.state.username, this.state.password)
-    };
+	};
 
 
 	handleTextFieldChange = e => {

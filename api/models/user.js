@@ -2,7 +2,8 @@
 
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
+const log = console.log;
 
 const UserSchema = new mongoose.Schema({
 	type: {
@@ -28,7 +29,7 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 1,
-    unique: true,
+		unique: true,
 		trim: true
 	},
 	password: {
@@ -51,31 +52,27 @@ UserSchema.pre('save', function (next) {
 	const user = this;
 
 	if (user.isModified('password')) {
-		bcrypt.genSalt(10, (err, salt) => {
-			bcrypt.hash(user.password, salt, (err, hash) => {
-				user.password = hash;
-				next();
-			});
+		bcrypt.hash(user.password, 10).then(function (hash) {
+			user.password = hash;
 		});
 	} else {
 		next();
 	}
 });
 
-UserSchema.statics.findByUsernamePassword = function(username, password) {
-  const User = this
-
-  return User.findOne({username: username}).then((user) => {
-    if (!user) {
-      return Promise.reject()
-    }
+UserSchema.statics.findByUsernamePassword = function (username, password) {
+	const User = this;
+	return User.findOne({username: username}).then((user) => {
+		if (!user) {
+			return null;
+		}
 
 		return new Promise((resolve, reject) => {
-			bcrypt.compare(password, user.password, (err, result) => {
+			bcrypt.compare(password, user.password).then(function (result) {
 				if (result) {
-					resolve(user)
+					resolve(user);
 				} else {
-					reject()
+					reject();
 				}
 			})
 		})
