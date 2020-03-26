@@ -14,7 +14,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {users, getUserByUsername, groups} from "./User";
 
 
 import "./ProfGroupPage.css";
@@ -110,7 +109,7 @@ class ProfGroupPage extends React.Component {
 
 		return (
 			<div>
-				<TopBar {...state} />
+				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item>
 						<h2>Create Group</h2>

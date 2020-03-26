@@ -35,9 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const groupRouter = require('./routes/groups');
 
 app.use('/users', usersRouter);
 app.use('/', indexRouter);
+app.use('/groups', groupRouter);
 
 app.use(express.static(__dirname + "/client/build"));
 app.get('*', (req, res) => {

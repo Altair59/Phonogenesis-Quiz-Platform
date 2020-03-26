@@ -90,7 +90,7 @@ class QuizGenerator extends React.Component {
 	render() {
 		return (
 			<div id="main">
-				<TopBar {...this.props.location.state}> </TopBar>
+				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 
 				<Grid container direction="column" spacing={4} justify="center" alignItems="center">
