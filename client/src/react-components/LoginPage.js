@@ -27,7 +27,6 @@ class Login extends React.Component {
 	};
 
 	render() {
-
 		return (
 			<div className="loginForm">
 				<Grid container spacing={1} alignItems="flex-end">
