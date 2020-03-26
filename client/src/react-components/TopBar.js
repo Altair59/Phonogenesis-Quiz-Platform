@@ -22,7 +22,6 @@ class TopBar extends React.Component {
 		this.state = {
 			isOpen: false,
 		};
-		readCookie(this);
 	}
 
 	openDrawer = () => {
@@ -30,54 +29,58 @@ class TopBar extends React.Component {
 	};
 
 	navigate = (text) => {
-		let destPath = "/";
-		const type = this.state.currentUser.type;
+		let destPath;
+		const currentUser = this.props.app.state.currentUser;
 
-		switch (text) {
-			case "Home":
-				if (type === "student") {
-					destPath = "/student"
-				} else if (type === "professor") {
-					destPath = "/professor"
-				} else {
-					console.log("ERROR type invalid");
+		if (!currentUser) {
+			destPath = '/';
+		} else {
+			const type = currentUser.type;
+
+			switch (text) {
+				case "Home":
+					if (type === "student") {
+						destPath = "/student"
+					} else if (type === "professor") {
+						destPath = "/professor"
+					} else {
+						console.log("ERROR type invalid");
+						destPath = '/';
+					}
+					break;
+
+				case "Groups":
+					if (type === "professor") {
+						destPath = "/professor/groups"
+					} else if (type === "student") {
+						destPath = "/student/groups"
+					} else {
+						console.log("ERROR type invalid");
+						destPath = '/';
+					}
+					break;
+
+				case "Practice":
+					destPath = "/student/gen";
+					break;
+
+				case "Make Quiz":
+					destPath = "/professor/quiz";
+					break;
+
+				case "Log Out":
+					logout(this.props.app);
+					destPath = "/login";
+					break;
+
+				default:
+					console.log("UNKNOWN TOP BAR BRANCH");
 					destPath = '/';
-				}
-				break;
-
-			case "Groups":
-				if (type === "professor") {
-					destPath = "/professor/groups"
-				} else if (type === "student") {
-					destPath = "/student/groups"
-				} else {
-					console.log("ERROR type invalid");
-					destPath = '/';
-				}
-				break;
-
-			case "Practice":
-				destPath = "/student/gen";
-				break;
-
-			case "Make Quiz":
-				destPath = "/professor/quiz";
-				break;
-
-			case "Logout":
-				logout(this);
-				destPath = "/login";
-				break;
-
-			default:
-				console.log("UNKNOWN TOP BAR BRANCH");
-				destPath = '/';
-				break;
+					break;
+			}
 		}
 
-		this.props.history.push({
-			pathname: destPath
-		})
+		this.props.history.push(destPath);
 	};
 
 	closeDrawer = () => {

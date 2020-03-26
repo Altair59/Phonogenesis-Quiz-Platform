@@ -46,8 +46,6 @@ router.get("/logout", (req, res) => {
 
 // Route to check if a user is already logged in
 router.get("/check-session", (req, res) => {
-	console.log("SESSION CHECK");
-	console.log(req.session);
 	if (req.session.user) {
 		res.send({currentUser: req.session.user});
 	} else {
@@ -66,13 +64,13 @@ router.post("/", (req, res) => {
 		groups: [],
 		quizzes: []
 	});
-	user.save().then(result => {
+	user.save().then(
+		result => {
 			res.send({result: true});
-		},
-		error => {
-			res.status(400).send(error);
 		}
-	);
+	).catch(err => {
+		console.log(err);
+	});
 });
 
 // Route to get all users
@@ -105,7 +103,6 @@ router.get("/:username", (req, res) => {
 /// Route to remove a student by their username
 router.delete("/:username", (req, res) => {
 	const username = req.params.username;
-
 	User.findOneAndRemove({username: username}).then(student => {
 		if (!student) {
 			res.status(404).send();
@@ -122,13 +119,22 @@ router.patch("/:username", (req, res) => {
 	const targetUsername = req.params.username;
 
 	const {name, type, username, password, email, groups, quizzes} = req.body;
-	const body = {name, type, username, password, email, groups, quizzes};
 
-	User.findOneAndUpdate({username: targetUsername}, {$set: body}, {new: true}).then(student => {
+	User.findOne({username: targetUsername}).then(student => {
 		if (!student) {
 			res.status(404).send();
 		} else {
-			res.send(student);
+			student.name = name;
+			student.password = password;
+			student.email = email;
+			// student.groups = groups;
+			// student.quizzes = quizzes;
+
+			student.save().then(result => {
+				res.send(student);
+			}).catch(err => {
+				console.log(err);
+			});
 		}
 	}).catch(error => {
 		res.status(400).send();

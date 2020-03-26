@@ -33,8 +33,13 @@ class App extends React.Component {
 		return (
 			<BrowserRouter>
 				<React.Fragment>
-					{!currentUser ?
-						<Route render={({history}) => (<LoginPage history={history} app={this}/>)}/> :
+					{!currentUser ? (<Switch>
+							<Route exact path={['/', '/login']}
+							       render={({history}) => (<LoginPage history={history} app={this}/>)}/>
+							<Route render={({history}) => {
+								alert("Access Denied! Redirected back to login page.");
+								return <LoginPage history={history} app={this}/>
+							}}/></Switch>) :
 						(currentUser.type === 'admin' ?
 								(<Switch>
 									<Route exact path={['/', '/admin', '/login']}
