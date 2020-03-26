@@ -4,6 +4,111 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
+const RuleSchema = new mongoose.Schema({
+	templates: {
+		type: [String],
+		required: true
+	},
+	poi: {
+		type: String,
+		required: true,
+		minlength: 1
+	},
+	ruleType: {
+		type: String,
+		required: true,
+		minlength: 1
+	},
+	phoneme: {
+		type: String,
+		required: true,
+		minlength: 1
+	},
+	ruleTxt: {
+		type: String,
+		required: true,
+		minlength: 1
+	},
+	gloss: {
+		type: [String],
+		required: true
+	},
+	SR: {
+		type: [String],
+		required: true
+	},
+	UR: {
+		type: [String],
+		required: true
+	},
+});
+
+const PastResultSchema = new mongoose.Schema({
+	score: {
+		type: Number,
+		required: true
+	},
+	answer: {
+		type: String,
+		required: true,
+		trim: true
+	}
+});
+
+const QuestionSchema = new mongoose.Schema({
+	rule: RuleSchema,
+	size: {
+		type: Number,
+		required: true,
+		default: 20
+	},
+	canUR: {
+		type: Boolean,
+		required: true
+	},
+	canPhoneme: {
+		type: Boolean,
+		required: true
+	},
+	maxCADT: {
+		type: Number,
+		required: true
+	}
+});
+
+const QuizSchema = new mongoose.Schema({
+	timeLim: {
+		type: Number,
+		required: true,
+	},
+	name: {
+		type: String,
+		required: true,
+		unique: true,
+		trim: true,
+		minlength: 1
+	},
+	past_results: {
+		type: [PastResultSchema],
+		default: []
+	},
+	questions: {
+		type: [QuestionSchema],
+		default: []
+	}
+});
+
+QuizSchema.statics.findByUsernamePassword = function (quizNameList) {
+	const Quiz = this;
+
+	Quiz.find({name: {$in: quizNameList}}).then(res => {
+		return res;
+	}).catch(err => {
+		console.log(err);
+		return [];
+	});
+};
+
 const UserSchema = new mongoose.Schema({
 	type: {
 		type: String,
@@ -39,11 +144,11 @@ const UserSchema = new mongoose.Schema({
 	},
 	groups: {
 		type: [String],
-		default: null
+		default: []
 	},
 	quizzes: {
-		type: [mongoose.Schema.Types.ObjectId],
-		default: null
+		type: [QuizSchema],
+		default: []
 	}
 });
 
