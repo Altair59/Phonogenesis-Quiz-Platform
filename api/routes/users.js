@@ -44,7 +44,9 @@ router.get("/check-session", (req, res) => {
 	console.log("check session");
 	console.log(req.session);
 	if (req.session.user) {
-		res.status(200).send({currentUser: req.session.user});
+		res.send({
+			currentUser: req.session.email
+		});
 	} else {
 		res.status(401).send({currentUser: null});
 	}

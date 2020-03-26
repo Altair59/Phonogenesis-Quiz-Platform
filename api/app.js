@@ -29,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', usersRouter);
 app.use('/', indexRouter);
 
+
+app.use(express.static(__dirname + "/client/build"));
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });

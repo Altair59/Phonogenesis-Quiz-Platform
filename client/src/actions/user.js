@@ -1,15 +1,21 @@
 export const readCookie = (app) => {
-	const url = "http://localhost:9000/users/check-session";
-
-	fetch(url, {credentials: "same-origin"}).then(res => {
-		res.json().then(json => {
-			if (json && json.currentUser) {
-				app.setState({currentUser: json.currentUser});
-			}
-		})
-	}).catch(err => {
-		console.log(err);
-	});
+  fetch("http://localhost:9000/users/check-session/")
+    .then(res => {
+      if(res.status === 200) {
+				console.log(res)
+        return res.json();
+      }
+    })
+    .then(json => {
+			console.log(json)
+      if (json && json.currentUser) {
+        app.setState({ currentUser: json.currentUser});
+				console.log(app.state)
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };
 
 export const login = (loginPage, loginProps) => {
