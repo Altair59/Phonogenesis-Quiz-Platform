@@ -1,5 +1,6 @@
 const axios = require('axios');
 axios.defaults.withCredentials = true;
+const qs = require('qs');
 
 export const readCookie = (app) => {
 	axios.get("http://127.0.0.1:9000/users/check-session/").then(function (res) {
@@ -40,9 +41,7 @@ export const logout = (app) => {
 
 export const getUsers = (page) => {
 	axios.get("http://127.0.0.1:9000/users").then(res => {
-		res.json().then((result) => {
-			page.setState({users: result.users});
-		})
+		page.setState({users: res.data.users});
 	})
 };
 
@@ -59,7 +58,6 @@ export const removeUser = (page, username) => {
 
 export const addUser = (app) => {
 	axios.post("http://127.0.0.1:9000/users/", {
-		body: {
 			name: app.state.name,
 			type: app.state.type,
 			email: app.state.email,
@@ -68,7 +66,7 @@ export const addUser = (app) => {
 			groups: [],
 			quizzes: []
 		}
-	}).then(result => {
+	).then(result => {
 		app.setState({currEdit: -1})
 	}).catch(error => {
 		console.log(error)
@@ -77,11 +75,8 @@ export const addUser = (app) => {
 };
 
 export const editUser = (page, username, info) => {
-	axios({
-		method: 'patch',
-		url: "http://127.0.0.1:9000/users/",
+	axios.patch("http://127.0.0.1:9000/users/", info, {
 		params: username,
-		body: info
 	}).catch(error => {
 		console.log(error)
 	});
