@@ -35,7 +35,13 @@ router.post("/login", (req, res) => {
 
 // Route to logout and remove the session
 router.get("/logout", (req, res) => {
-	req.session = null;
+	req.session.destroy(error => {
+		if (error) {
+			res.status(500).send(error);
+		} else {
+			res.send()
+		}
+	});
 });
 
 // Route to check if a user is already logged in

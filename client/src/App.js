@@ -13,79 +13,77 @@ import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
 import {readCookie} from "./actions/user";
-import {keys} from "@material-ui/core/styles/createBreakpoints";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {};
+	}
+
+	componentDidMount() {
 		readCookie(this);
 	}
 
-	state = {
-		currentUser: null
-	};
-
 	render() {
-		console.log("main render");
 		const {currentUser} = this.state;
+		if (currentUser === undefined){
+			return <div/>
+		}
 
 		return (
-			<div>
-				<p>{JSON.stringify(currentUser)}</p>
-				<BrowserRouter>
-					<Switch>
-						<React.Fragment>
-							{!currentUser ?
-								<Route
-									path={['/', 'login', '/admin', 'professor', '/professor/groups', '/professor/quiz', '/student/gen', '/student', '/student/quiz', '/student/groups']}
-									render={({history}) => (<LoginPage history={history} app={this}/>)}/> :
-								(currentUser.type === 'admin' ?
-										<Route exact path={['/', '/admin', '/login']}
-										       render={({history}) => (<AdminPage history={history} app={this}/>)}/> :
-										(currentUser.type === 'student' ?
-												(<React.Fragment>
+			<BrowserRouter>
+				<Switch>
+					<React.Fragment>
+						{!currentUser ?
+							<Route
+								path={['/', 'login', '/admin', 'professor', '/professor/groups', '/professor/quiz', '/student/gen', '/student', '/student/quiz', '/student/groups']}
+								render={({history}) => (<LoginPage history={history} app={this}/>)}/> :
+							(currentUser.type === 'admin' ?
+									(<Route exact path={['/', '/admin', '/login']}
+									        render={({history}) => (<AdminPage history={history} app={this}/>)}/>) :
+									(currentUser.type === 'student' ?
+											(<React.Fragment>
+												<Route path='/:(?!student).+' render={({history}) => {
+													alert("Access Denied! Redirected back to your main page.");
+													return <StudentMain history={history} app={this}/>
+												}}/>
+												<Route exact path={['/student', '/']} render={({history}) => (
+													<StudentMain history={history} app={this}/>)}/>
+												<Route exact path='/student/gen' render={({history}) => (
+													<SimpleGenerator history={history} app={this}/>)}/>
+												<Route exact path='/student/quiz' render={({history}) => (
+													<QuizTaker history={history} app={this}/>)}/>
+												<Route exact path='/student/groups' render={({history}) => (
+													<StudentGroupPage history={history} app={this}/>)}/>
+											</React.Fragment>)
+											:
+											(currentUser.type === 'professor' ? (<React.Fragment>
 													<Route path='/:(?!student).+' render={({history}) => {
 														alert("Access Denied! Redirected back to your main page.");
-														return <StudentMain history={history} app={this}/>
+														return <ProfessorHome history={history} app={this}/>
 													}}/>
-													<Route exact path={['/student', '/']} render={({history}) => (
-														<StudentMain history={history} app={this}/>)}/>
-													<Route exact path='/student/gen' render={({history}) => (
-														<SimpleGenerator history={history} app={this}/>)}/>
-													<Route exact path='/student/quiz' render={({history}) => (
-														<QuizTaker history={history} app={this}/>)}/>
-													<Route exact path='/student/groups' render={({history}) => (
-														<StudentGroupPage history={history} app={this}/>)}/>
-												</React.Fragment>)
-												:
-												(currentUser.type === 'professor' ? (<React.Fragment>
-														<Route path='/:(?!student).+' render={({history}) => {
-															alert("Access Denied! Redirected back to your main page.");
-															return <ProfessorHome history={history} app={this}/>
-														}}/>
-														<Route exact path={['/professor', '/']} render={({history}) =>
-															(<ProfessorHome history={history} app={this}/>)}/>
-														<Route exact path='/professor/groups' render={({history}) => (
-															<GroupsPage history={history} app={this}/>)}/>
-														<Route exact path='/professor/quiz' render={({history}) => (
-															<QuizGenerator history={history} app={this}/>)}/>
-													</React.Fragment>) : (
-														<Route exact path='/login' render={({history}) => {
-															alert("Invalid user type! Redirecting to login page.");
-															return <LoginPage redir={true} history={history}
-															                  app={this}/>
-														}}/>
-													)
+													<Route exact path={['/professor', '/']} render={({history}) =>
+														(<ProfessorHome history={history} app={this}/>)}/>
+													<Route exact path='/professor/groups' render={({history}) => (
+														<GroupsPage history={history} app={this}/>)}/>
+													<Route exact path='/professor/quiz' render={({history}) => (
+														<QuizGenerator history={history} app={this}/>)}/>
+												</React.Fragment>) : (
+													<Route exact path='/login' render={({history}) => {
+														alert("Invalid user type! Redirecting to login page.");
+														return <LoginPage redir={true} history={history}
+														                  app={this}/>
+													}}/>
 												)
+											)
 
 
-										)
-								)
-							}
-						</React.Fragment>
-					</Switch>
-				</BrowserRouter>
-			</div>
+									)
+							)
+						}
+					</React.Fragment>
+				</Switch>
+			</BrowserRouter>
 		);
 	}
 }

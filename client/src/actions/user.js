@@ -4,10 +4,9 @@ axios.defaults.withCredentials = true;
 export const readCookie = (app) => {
 	axios.get("http://127.0.0.1:9000/users/check-session/").then(function (res) {
 		if (res.data.currentUser) {
-			console.log("SESSION CHECK PASSED");
-			console.log(res.data.currentUser);
 			app.setState({currentUser: res.data.currentUser});
-			return res.data.currentUser;
+		} else {
+			app.setState({currentUser: null});
 		}
 	}).catch(err => {
 		console.log(err);
@@ -23,7 +22,6 @@ export const login = (loginPage, loginProps) => {
 		if (user) {
 			console.log(`Logged in as ${user.username}`);
 			loginProps.app.setState({currentUser: user});
-			loginProps.history.push({pathname: '/' + user.type});
 		}
 	}).catch(err => {
 		console.log(err);
