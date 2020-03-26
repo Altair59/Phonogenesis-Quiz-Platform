@@ -45,13 +45,13 @@ class StudentMain extends React.Component {
 		//const currStudent = getUserByUsername(state.username);
 		let {app} = this.props;
 		console.log(app)
-		const currStudent = app.currentUser;
+		const currStudent = app.state.currentUser;
 		console.log(currStudent)
 		const quizList = currStudent.quizzes;
 
 		return (
 			<div>
-				<TopBar {...app}/>
+				<TopBar app={app}/>
 				<div className="main-area">
 					<h1>{currStudent.name ? currStudent.name : "Anonymous"}</h1>
 					<h3>Email: <span className="text">{currStudent.email ? currStudent.email : "Undefined"}</span></h3>

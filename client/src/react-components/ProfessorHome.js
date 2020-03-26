@@ -4,7 +4,6 @@ import TopBar from "./TopBar.js"
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import "./mainstyle.css"
-import {getUserByUsername} from "./User";
 import mark from "./avatars/mark_avatar.jpg";
 
 class ProfessorHome extends React.Component {
@@ -25,11 +24,11 @@ class ProfessorHome extends React.Component {
 		},
 	}));
 	render() {
-		let { state } = this.props.location;
-		const prof = getUserByUsername(state.username);
+		let { app } = this.props;
+		const prof = app.state.currentUser;
 		return (
 			<div>
-				<TopBar {...state}/>
+				<TopBar app={app}/>
 				<div className="main-area">
 					<Avatar alt={prof.name} src={mark} className={this.classes.large}/>
 					<h1>{prof.name ? prof.name : "Anonymous"}</h1>
