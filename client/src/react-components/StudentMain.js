@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid"
 import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
-import {getUserByUsername} from "./User";
 import Paper from "@material-ui/core/Paper";
 
 class StudentMain extends React.Component {
@@ -42,13 +41,17 @@ class StudentMain extends React.Component {
 	};
 
 	render() {
-		let {state} = this.props.location;
-		const currStudent = getUserByUsername(state.username);
+		//let {state} = this.props.location;
+		//const currStudent = getUserByUsername(state.username);
+		let {app} = this.props;
+		console.log(app)
+		const currStudent = app.state.currentUser;
+		console.log(currStudent)
 		const quizList = currStudent.quizzes;
 
 		return (
 			<div>
-				<TopBar {...state}/>
+				<TopBar app={app}/>
 				<div className="main-area">
 					<h1>{currStudent.name ? currStudent.name : "Anonymous"}</h1>
 					<h3>Email: <span className="text">{currStudent.email ? currStudent.email : "Undefined"}</span></h3>
