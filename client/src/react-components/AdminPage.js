@@ -24,6 +24,7 @@ class AdminPage extends React.Component {
 		super(props);
 		this.props.history.push("/admin");
 		this.state = {
+			type: "student",
 			currEdit: -1,
 			usernameError: "",
 			users: []
@@ -68,7 +69,7 @@ class AdminPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<TopBar/>
+				<TopBar history={this.props.history} app={this.props.app}/>
 
 				<Grid container id="admin-add-user" direction="row" alignItems="center" justify="center" spacing={3}>
 					<Grid item><h3>Total User Count: <span id="userCount">{this.state.users.length}</span></h3></Grid>

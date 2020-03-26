@@ -40,26 +40,20 @@ export const logout = (app) => {
 
 export const getUsers = (page) => {
 	axios.get("http://127.0.0.1:9000/users").then(res => {
-		res.json().then((result) => {
-			page.setState({users: result.users});
-		})
+		page.setState({users: res.data.users});
 	})
 };
 
 export const removeUser = (page, username) => {
-	axios.delete("http://127.0.0.1:9000/users/", {
-		params: {
-			username: username
-		}
-	}).catch(error => {
-		console.log(error)
+	axios.delete(`http://127.0.0.1:9000/users/${username}`).then(res => {
+		getUsers(page);
+	}).catch(err => {
+		console.log(err);
 	});
-	getUsers(page);
 };
 
 export const addUser = (app) => {
 	axios.post("http://127.0.0.1:9000/users/", {
-		body: {
 			name: app.state.name,
 			type: app.state.type,
 			email: app.state.email,
@@ -68,22 +62,18 @@ export const addUser = (app) => {
 			groups: [],
 			quizzes: []
 		}
-	}).then(result => {
-		app.setState({currEdit: -1})
+	).then(res => {
+		getUsers(app);
+		app.setState({currEdit: -1});
 	}).catch(error => {
 		console.log(error)
 	});
-	getUsers(app)
 };
 
 export const editUser = (page, username, info) => {
-	axios({
-		method: 'patch',
-		url: "http://127.0.0.1:9000/users/",
-		params: username,
-		body: info
-	}).catch(error => {
-		console.log(error)
+	axios.patch(`http://127.0.0.1:9000/users/${username}`, info).then(res => {
+		getUsers(page);
+	}).catch(err => {
+		console.log(err);
 	});
-	getUsers(page)
 };
