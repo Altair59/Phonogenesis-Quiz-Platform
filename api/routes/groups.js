@@ -6,9 +6,10 @@ mongoose.set('useFindAndModify', false);
 const {Group} = require("../models/group");
 const {ObjectID} = require("mongodb");
 
-// Route to get all groups
-router.get("/", (req, res) => {
-	Group.find().then(
+// Route to get all groups of this prof
+router.get("/prof/:name", (req, res) => {
+	const prof = req.params.name;
+	Group.find({owner: prof}).then(
 		groups => {
 			res.send({groups: groups});
 		},
@@ -19,14 +20,14 @@ router.get("/", (req, res) => {
 });
 
 /// Route to get a group by their name
-router.get("/:name", (req, res) => {
+router.get("/group/:name", (req, res) => {
 	const name = req.params.name;
 
-	Group.findOne({ame: name}).then(group => {
+	Group.findOne({name: name}).then(group => {
 		if (!group) {
-			res.status(404).send();
+			res.status(404).send({result:null});
 		} else {
-			res.send(group);
+			res.send({result:group});
 		}
 	}).catch(error => {
 		res.status(500).send();

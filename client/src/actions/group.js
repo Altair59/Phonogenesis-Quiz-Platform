@@ -4,7 +4,7 @@ const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export const getGroups = (page) => {
-	axios.get("http://127.0.0.1:9000/groups").then(res => {
+	axios.get(`http://127.0.0.1:9000/groups/prof/${page.props.app.state.currentUser.username}`).then(res => {
 		page.setState({groups: res.data.groups});
 	})
 };
@@ -17,11 +17,8 @@ export const removeGroup = (page, name) => {
 	});
 };
 
-export const addGroup= (page) => {
-	axios.post("http://127.0.0.1:9000/groups/", {
-			name: page.state.name,
-			owner: page.state.owner
-		}
+export const addGroup= (page, info) => {
+	axios.post("http://127.0.0.1:9000/groups/", info
 	).then(res => {
 		getGroups(page);
 	}).catch(error => {
@@ -35,4 +32,10 @@ export const editGroup = (page, name, info) => {
 	}).catch(err => {
 		console.log(err);
 	});
+};
+
+export const findUGroup = (page, name) => {
+	axios.get(`http://127.0.0.1:9000/users/${name}`).then(res => {
+		return res.result;
+	})
 };
