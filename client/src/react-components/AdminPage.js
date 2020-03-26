@@ -26,14 +26,13 @@ class AdminPage extends React.Component {
 		this.state = {
 			currEdit: -1,
 			usernameError: "",
-			users: [],
-			apiResponse: null
+			users: []
 		};
 
 		getUsers(this);
 	}
 
-	editUser = i => {
+	onEditUser = i => {
 		if (i === this.state.currEdit) {
 			const newName = document.getElementById("edit-name".concat(i.toString())).value;
 			const newEmail = document.getElementById("edit-email".concat(i.toString())).value;
@@ -100,7 +99,7 @@ class AdminPage extends React.Component {
 						label="Password"
 						onChange={this.handleTextFieldChange}
 					/></Grid>
-					<Grid item><Button variant="contained" color="primary" onClick={addUser(this,this.state.username)}>Add
+					<Grid item><Button variant="contained" color="primary" onClick={addUser.bind(this, this)}>Add
 						User</Button></Grid>
 				</Grid>
 				<br/>
@@ -120,7 +119,7 @@ class AdminPage extends React.Component {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{users.map((user, i) => (
+							{this.state.users.map((user, i) => (
 								<TableRow key={user.name}>
 									<TableCell align="center"><TextField variant="outlined" disabled
 									                                     align="center" defaultValue={user.type}
@@ -147,15 +146,15 @@ class AdminPage extends React.Component {
 									<TableCell align="center">
 										{
 											i === this.state.currEdit ?
-												<Button variant="contained" onClick={this.editUser.bind(this, i)}
+												<Button variant="contained" onClick={this.onEditUser.bind(this, i)}
 												        className={"admin-apply-but"}>Apply</Button> :
-												<Button variant="contained" onClick={this.editUser.bind(this, i)}
+												<Button variant="contained" onClick={this.onEditUser.bind(this, i)}
 												        className={"admin-edit-but"}>Edit</Button>
 										}
 									</TableCell>
 									<TableCell align="center">
 										<Button variant="contained" disabled={user.type === "admin"}
-										        onClick={removeUser(this, user.username)}>
+										        onClick={removeUser.bind(this, this, user.username)}>
 											Remove
 										</Button>
 									</TableCell>

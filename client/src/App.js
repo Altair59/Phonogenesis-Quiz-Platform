@@ -80,8 +80,6 @@ class App extends React.Component {
 							       path={['/admin', 'professor', '/professor/groups', '/professor/quiz', '/student/gen', '/student', '/student/quiz', '/student/groups']}
 							       render={({history}) => (<LoginPage redir={true} history={history} app={this}/>)}/>
 						)}
-
-						<Route render={() => <div>404 NOT FOUND</div>}/>
 					</React.Fragment>
 				</Switch>
 			</BrowserRouter>

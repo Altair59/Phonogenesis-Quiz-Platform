@@ -65,8 +65,13 @@ class TopBar extends React.Component {
 				break;
 
 			case "Logout":
-				logout();
+				logout(this);
 				destPath = "/login";
+				break;
+
+			default:
+				console.log("UNKNOWN TOP BAR BRANCH");
+				destPath = '/';
 				break;
 		}
 
