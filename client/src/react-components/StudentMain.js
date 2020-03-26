@@ -5,10 +5,19 @@ import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
 import Paper from "@material-ui/core/Paper";
+import {getQuizByUser} from "../actions/quiz";
 
 class StudentMain extends React.Component {
+	constructor(props){
+		super(props);
+		this.props.history.push("/student");
+		this.state = {
+			userQuizzes: []
+		};
+		getQuizByUser(this.props.app.state.currentUser.username, this);
+	}
 
-	onReview(quiz)  {
+	onReview(quiz) {
 		const {state} = this.props.location;
 		this.props.history.push({
 			pathname: "/student/quiz",
@@ -40,26 +49,18 @@ class StudentMain extends React.Component {
 		})
 	};
 
-	constructor(props) {
-		super(props);
-		this.props.history.push("/student");
-	}
-
 	render() {
-		//let {state} = this.props.location;
-		//const currStudent = getUserByUsername(state.username);
-		let {app} = this.props;
-		const currStudent = app.state.currentUser;
-		const quizList = currStudent.quizzes;
+		const student = this.props.app.state.currentUser;
+		const quizList = this.state.userQuizzes;
 
 		return (
 			<div>
-				<TopBar app={app}/>
+				<TopBar history={this.props.history} app={this.props.app}/>
 				<div className="main-area">
-					<h1>{currStudent.name ? currStudent.name : "Anonymous"}</h1>
-					<h3>Email: <span className="text">{currStudent.email ? currStudent.email : "Undefined"}</span></h3>
+					<h1>{student.name ? student.name : "Anonymous"}</h1>
+					<h3>Email: <span className="text">{student.email ? student.email : "Undefined"}</span></h3>
 					<h3>Enrolled: <span
-						className="text">{currStudent.groups.length > 0 ? currStudent.groups.join(", ") : "None"}</span>
+						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
 					</h3>
 					<br/>
 					<hr/>
@@ -73,7 +74,8 @@ class StudentMain extends React.Component {
 										<Grid item key={i}>
 											<Paper elevation={3}>
 												<h4>Quiz: {quiz.name}</h4>
-												<p>Score: {quiz.pastScore}/{quiz.questions.length}</p>
+												<p>Last Score: {quiz.past_results[quiz.past_results.length - 1].score}/
+													{quiz.questions.length}</p>
 												<Button onClick={this.onReview.bind(this, quiz)}>Review</Button>
 											</Paper>
 										</Grid>
@@ -92,12 +94,10 @@ class StudentMain extends React.Component {
 					<div className="tileContainer">
 						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
 							{quizList.map((quiz, i) => {
-								if (currStudent.groups.includes(quiz.group) && !quiz.isCompleted) {
-									return (
-										<Grid item key={i}>
-											<Button onClick={() => this.takeQuiz(quiz)}>Take Quiz: {quiz.name}</Button>
-										</Grid>
-									);
+								if (quiz.past_results.length <= 0) {
+									return (<Grid item key={i}>
+										<Button onClick={() => this.takeQuiz(quiz)}>Take Quiz: {quiz.name}</Button>
+									</Grid>);
 								} else {
 									return null;
 								}
