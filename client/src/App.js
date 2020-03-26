@@ -12,6 +12,7 @@ import StudentMain from './react-components/StudentMain';
 import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
+import SignUp from "./react-components/SignUp"
 import {readCookie} from "./actions/user";
 
 class App extends React.Component {
@@ -36,8 +37,11 @@ class App extends React.Component {
 					{!currentUser ? (<Switch>
 							<Route exact path={['/', '/login']}
 							       render={({history}) => (<LoginPage history={history} app={this}/>)}/>
+							<Route exact path='/signup' render={({history}) => (
+								<SignUp history={history} app={this}/>)}/>
 							<Route render={({history}) => {
 								alert("Access Denied! Redirected back to login page.");
+								history.push('/login')
 								return <LoginPage history={history} app={this}/>
 							}}/></Switch>) :
 						(currentUser.type === 'admin' ?
