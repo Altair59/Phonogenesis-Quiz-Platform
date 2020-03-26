@@ -91,9 +91,9 @@ router.get("/:username", (req, res) => {
 
 	User.findOne({username: username}).then(student => {
 		if (!student) {
-			res.status(404).send();
+			res.status(404).send({result: null});
 		} else {
-			res.send(student);
+			res.send({result: student});
 		}
 	}).catch(error => {
 		res.status(500).send();
@@ -127,7 +127,7 @@ router.patch("/:username", (req, res) => {
 			student.name = name;
 			student.password = password;
 			student.email = email;
-			// student.groups = groups;
+			student.groups = groups;
 			// student.quizzes = quizzes;
 
 			student.save().then(result => {

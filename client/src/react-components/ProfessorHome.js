@@ -26,7 +26,6 @@ class ProfessorHome extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.props.history.push("/professor");
 	}
 	render() {
 		let { app } = this.props;

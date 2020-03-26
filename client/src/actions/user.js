@@ -38,6 +38,23 @@ export const logout = (app) => {
 	})
 };
 
+export const signUp = (signUpPage, signUpProps) => {
+	axios.post("http://127.0.0.1:9000/users", JSON.stringify(signUpProps))
+	.then(res => {
+		if (res.status === 200) {
+			console.log('Sign up successful');
+			signUpPage.setState({isSignedUp: true})
+		}
+	})
+	.catch(err => console.log(err));
+}
+
+export const handleTextFieldChange = (e, props) => {
+	props.setState({
+		[e.target.id]: e.target.value
+	});
+};
+
 export const getUsers = (page) => {
 	axios.get("http://127.0.0.1:9000/users").then(res => {
 		page.setState({users: res.data.users});
@@ -76,4 +93,10 @@ export const editUser = (page, username, info) => {
 	}).catch(err => {
 		console.log(err);
 	});
+};
+
+export const findUser = (page, username) => {
+	axios.get(`http://127.0.0.1:9000/users/${username}`).then(res => {
+		return res.result;
+	})
 };
