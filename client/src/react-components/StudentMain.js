@@ -40,13 +40,16 @@ class StudentMain extends React.Component {
 		})
 	};
 
+	constructor(props) {
+		super(props);
+		this.props.history.push("/student");
+	}
+
 	render() {
 		//let {state} = this.props.location;
 		//const currStudent = getUserByUsername(state.username);
 		let {app} = this.props;
-		console.log(app)
 		const currStudent = app.state.currentUser;
-		console.log(currStudent)
 		const quizList = currStudent.quizzes;
 
 		return (

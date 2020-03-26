@@ -4,18 +4,17 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import {withRouter} from "react-router-dom";
 import TopBar from "./TopBar.js";
-import {getUserByUsername} from "./User.js";
 
 import "./StudentGroupPage.css";
 
 class StudentGroupPage extends React.Component {
 	render() {
-		const student = getUserByUsername(this.props.location.state.username);
-		console.log(student.groups);
+		const { app } = this.props;
+		const student = app.state.currentUser;
 		return (
 
 			<div>
-				<TopBar {...this.props.location.state}/>
+				<TopBar app={app}/>
 				<h1 className="title">Enrolled Groups</h1>
 				<Divider/>
 				<div id="groupsList">

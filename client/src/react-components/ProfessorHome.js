@@ -23,6 +23,11 @@ class ProfessorHome extends React.Component {
 			height: theme.spacing(7),
 		},
 	}));
+
+	constructor(props) {
+		super(props);
+		this.props.history.push("/professor");
+	}
 	render() {
 		let { app } = this.props;
 		const prof = app.state.currentUser;

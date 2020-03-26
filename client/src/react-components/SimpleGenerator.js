@@ -118,10 +118,10 @@ class SimpleGenerator extends React.Component {
 
 	render() {
 		const isValidSize = this.state.sizeSelectWarn !== "";
-
+		const {app} = this.props;
 		return (
 			<div>
-				<TopBar {...this.props.location.state}/>
+				<TopBar app={app}/>
 				<Grid container direction="row" justify="center" alignItems="flex-start" spacing={4} id={"gen-form"}>
 					<Grid item>
 						<FormControl variant="outlined">

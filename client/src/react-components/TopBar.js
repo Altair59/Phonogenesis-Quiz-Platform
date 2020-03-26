@@ -88,6 +88,7 @@ class TopBar extends React.Component {
 	};
 
 	render() {
+		const type = this.props.app.state.currentUser.type;
 		return (
 			<div>
 				<AppBar position="static">
@@ -105,7 +106,7 @@ class TopBar extends React.Component {
 					</IconButton>
 					<Divider/>
 					<List>
-						{(this.props.type === "student" ? studentNav : (this.props.type === "professor" ? profNav : ["Log Out"])).map((text) => (
+						{(type === "student" ? studentNav : (type === "professor" ? profNav : ["Log Out"])).map((text) => (
 							<ListItem button onClick={() => this.navigate(text)} key={text}>
 								<ListItemText primary={text}/>
 							</ListItem>
