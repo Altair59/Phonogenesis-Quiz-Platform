@@ -23,11 +23,10 @@ router.post("/login", (req, res) => {
 	const password = req.body.password;
 
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = user.username;
-		console.log("login session");
-		console.log(req.session);
-		res.send({currentUser: parseClientUser(user)});
-		res.end();
+		req.session.user = parseClientUser(user);
+		req.session.save(err => {
+			res.send({currentUser: req.session.user});
+		});
 	}).catch(error => {
 		console.log(error);
 		res.status(400).send();
@@ -41,14 +40,12 @@ router.get("/logout", (req, res) => {
 
 // Route to check if a user is already logged in
 router.get("/check-session", (req, res) => {
-	console.log("check session");
+	console.log("SESSION CHECK");
 	console.log(req.session);
 	if (req.session.user) {
-		res.send({
-			currentUser: req.session.email
-		});
+		res.send({currentUser: req.session.user});
 	} else {
-		res.status(401).send({currentUser: null});
+		res.send({currentUser: null});
 	}
 });
 

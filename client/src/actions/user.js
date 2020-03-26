@@ -1,48 +1,38 @@
+const axios = require('axios');
+axios.defaults.withCredentials = true;
+
 export const readCookie = (app) => {
-  fetch("http://localhost:9000/users/check-session/")
-    .then(res => {
-      if(res.status === 200) {
-				console.log(res)
-        return res.json();
-      }
-    })
-    .then(json => {
-			console.log(json)
-      if (json && json.currentUser) {
-        app.setState({ currentUser: json.currentUser});
-				console.log(app.state)
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
+	axios.get("http://127.0.0.1:9000/users/check-session/").then(function (res) {
+		if (res.data.currentUser) {
+			console.log("SESSION CHECK PASSED");
+			console.log(res.data.currentUser);
+			app.setState({currentUser: res.data.currentUser});
+			return res.data.currentUser;
+		}
+	}).catch(err => {
+		console.log(err);
+	});
 };
 
 export const login = (loginPage, loginProps) => {
-	const request = new Request("http://localhost:9000/users/login", {
-		method: "post",
-		body: JSON.stringify(loginPage.state),
-		headers: {
-			Accept: "application/json, text/plain, */*",
-			"Content-Type": "application/json"
+	axios.post("http://127.0.0.1:9000/users/login", {
+		username: loginPage.state.username,
+		password: loginPage.state.password
+	}).then(function (res) {
+		const user = res.data.currentUser;
+		if (user) {
+			console.log(`Logged in as ${user.username}`);
+			loginProps.app.setState({currentUser: user});
+			loginProps.history.push({pathname: '/' + user.type});
 		}
-	});
-
-	fetch(request, {credentials: "same-origin"}).then(res => {
-		res.json().then(result => {
-			if (result.currentUser !== undefined) {
-				loginProps.app.setState({currentUser: result.currentUser});
-				loginProps.history.push({pathname: '/' + result.currentUser.type});
-			}
-		}).catch(err => {
-			console.log(err);
-		});
+	}).catch(err => {
+		console.log(err);
 	});
 
 };
 
 export const logout = (app) => {
-	const url = "http://localhost:9000/users/logout";
+	const url = "http://127.0.0.1:9000/users/logout";
 
 	fetch(url, {credentials: 'same-origin'}).then(res => {
 		app.setState({
@@ -54,7 +44,7 @@ export const logout = (app) => {
 };
 
 export const getUsers = (page) => {
-	fetch("http://localhost:9000/users", {
+	fetch("http://127.0.0.1:9000/users", {
 		method: 'GET',
 		credentials: 'same-origin'
 	}).then(res => {
@@ -65,7 +55,7 @@ export const getUsers = (page) => {
 };
 
 export const removeUser = (page, username) => {
-	const newURL = "http://localhost:9000/users/" + username;
+	const newURL = "http://127.0.0.1:9000/users/" + username;
 	fetch(newURL, {
 		method: 'DELETE',
 		credentials: 'same-origin'
@@ -86,7 +76,7 @@ export const addUser = (app) => {
 		quizzes: []
 	};
 
-	fetch("http://localhost:9000/users/", {
+	fetch("http://127.0.0.1:9000/users/", {
 		method: 'post',
 		credentials: 'same-origin',
 		body: JSON.stringify(info),
@@ -103,7 +93,7 @@ export const addUser = (app) => {
 };
 
 export const editUser = (page, username, info) => {
-	const newURL = "http://localhost:9000/users/" + JSON.stringify(username);
+	const newURL = "http://127.0.0.1:9000/users/" + JSON.stringify(username);
 	fetch(newURL, {
 		method: 'PATCH',
 		credentials: 'same-origin',

@@ -1,34 +1,43 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cors = require("cors");
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const cookieSession = require("cookie-session");
-
+const express = require("express");
 const app = express();
-app.set('trust proxy', true);app.use(cookieSession({
-	name: 'session'
-	, secret: "dfasdlkfjsaldfa"
-	, httpOnly: true
-	, maxAge: 30 * 60 * 1000
-	, secure: false
-	, overwrite: false
-}));
+
+const createError = require('http-errors');
+const path = require('path');
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+const session = require("express-session");
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(cors({credentials: true}));
+
+app.set('trust proxy', true);
+const cors = require("cors");
+app.use(cors({credentials: true, origin: true}));
+app.use(
+	session({
+		secret: "oursecret",
+		resave: true,
+		saveUninitialized: true,
+		cookie: {
+			path: "/",
+			expires: 60000,
+			httpOnly: false
+		}
+	})
+);
+
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
 app.use('/users', usersRouter);
 app.use('/', indexRouter);
-
 
 app.use(express.static(__dirname + "/client/build"));
 app.get('*', (req, res) => {
