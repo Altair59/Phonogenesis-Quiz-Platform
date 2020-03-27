@@ -159,13 +159,13 @@ class ProfGroupPage extends React.Component {
 	};
 
 	render() {
-		let {state} = this.props.location;
-		const prof = getUserByUsername(state.username);
+		let {app} = this.props;
+		const prof = app.state.currentUser;
 		const profGroups = prof.groups;
 		const groupMap = {};
 
 		for (let gi = 0; gi < profGroups.length; gi++) {
-			groupMap[profGroups[gi]] = groups[profGroups[gi]];
+			groupMap[profGroups[gi]] = this.state.groups[profGroups[gi]];
 		}
 
 		return (

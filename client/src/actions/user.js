@@ -39,14 +39,16 @@ export const logout = (app) => {
 };
 
 export const signUp = (signUpPage, signUpProps) => {
-	axios.post("http://127.0.0.1:9000/users", JSON.stringify(signUpProps))
+	axios.post("http://127.0.0.1:9000/users", signUpProps)
 	.then(res => {
 		if (res.status === 200) {
 			console.log('Sign up successful');
 			signUpPage.setState({isSignedUp: true})
 		}
 	})
-	.catch(err => console.log(err));
+	.catch(err => {
+		console.log(err)
+	});
 }
 
 export const handleTextFieldChange = (e, props) => {

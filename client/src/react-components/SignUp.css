@@ -1,0 +1,37 @@
+.signUpForm {
+  display: block;
+  position: absolute;
+  top: 10%;
+  bottom: 40%;
+  left: 25%;
+  height: 80%;
+  width: 50%;
+  padding: 15px 25px 10px;
+  border: 2px solid lightgrey;
+  border-radius: 5%;
+}
+
+.form {
+  display: inline-block;
+  position: relative;
+  top: 100px;
+  overflow-wrap: wrap;
+  margin-bottom: 30px;
+  padding-left: 30px;
+}
+
+.signUpButton {
+  display: block;
+  position: relative;
+  left: 33%;
+  width: 150px;
+  padding-left: 60px;
+  border: 2px solid darkgrey;
+}
+
+.typeButton {
+  border: 2px solid darkgrey;
+  width: 140px;
+  padding-left: 10px;
+
+}
