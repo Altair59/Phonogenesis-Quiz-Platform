@@ -47,7 +47,7 @@ const RuleSchema = new mongoose.Schema({
 		required: true,
 		default: []
 	}
-})
+});
 
 const Rule = mongoose.model("Rule", RuleSchema);
 module.exports = {Rule};
