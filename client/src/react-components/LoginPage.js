@@ -52,7 +52,7 @@ class Login extends React.Component {
 					</div>
 				</div>
 
-				<div className="signUpButton">
+				<div className="makeAccountButton">
 					<Button onClick={() => this.props.history.push("/signup")}>Don't have an account? Sign up here.</Button>
 				</div>
 			</div>

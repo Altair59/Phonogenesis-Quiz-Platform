@@ -1,11 +1,20 @@
-import {getUsers} from "./user";
-
+import {findUser} from "../actions/user";
 const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export const getGroups = (page) => {
 	axios.get(`http://127.0.0.1:9000/groups/prof/${page.props.app.state.currentUser.username}`).then(res => {
-		page.setState({groups: res.data.groups});
+		const groups = res.data;
+		console.log(groups);
+		groups.map((group) => {
+			const students = [];
+			group.students.map((stuName) => {
+				students.push(findUser(page, stuName));
+			});
+			group.students = students;
+		});
+		console.log(groups);
+		page.setState({groupsWithStuObj: groups, groupsWithStuName: res.data.groups})
 	})
 };
 
@@ -28,7 +37,7 @@ export const addGroup= (page, info) => {
 
 export const editGroup = (page, name, info) => {
 	axios.patch(`http://127.0.0.1:9000/users/${name}`, info).then(res => {
-		getUsers(page);
+		getGroups(page);
 	}).catch(err => {
 		console.log(err);
 	});

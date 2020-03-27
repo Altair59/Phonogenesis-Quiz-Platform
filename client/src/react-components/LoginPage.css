@@ -26,8 +26,9 @@
   margin-top: 20%;
 }
 
-.signUpButton {
+.makeAccountButton {
   display: block;
   position: absolute;
-  top: 50%;
+  top: 60%;
+  left: 39%;
 }
