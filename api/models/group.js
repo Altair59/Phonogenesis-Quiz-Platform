@@ -12,7 +12,7 @@ const GroupSchema = new mongoose.Schema({
 	},
 	students: {
 		type: [String],
-		default: []
+		required: true
 	},
 	owner: {
 		type: String,

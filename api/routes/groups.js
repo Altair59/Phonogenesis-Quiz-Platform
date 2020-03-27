@@ -11,7 +11,8 @@ router.get("/prof/:name", (req, res) => {
 	const prof = req.params.name;
 	Group.find({owner: prof}).then(
 		groups => {
-			res.send({groups: groups});
+			console.log(groups);
+			res.send(groups);
 		},
 		error => {
 			res.status(500).send(error); // server error

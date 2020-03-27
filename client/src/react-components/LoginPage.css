@@ -13,6 +13,7 @@
 .passwordForm {
   margin-bottom: 30px;
   padding-left: 30px;
+  width: 200px;
 }
 
 .loginButton {
@@ -24,4 +25,11 @@
   border: 2px solid darkgrey;
   border-radius: 10%;
   margin-top: 20%;
+}
+
+.makeAccountButton {
+  display: block;
+  position: absolute;
+  top: 60%;
+  left: 39%;
 }

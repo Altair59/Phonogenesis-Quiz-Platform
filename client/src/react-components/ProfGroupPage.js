@@ -29,15 +29,17 @@ class ProfGroupPage extends React.Component {
 			newGroupName: '',
 			err: false,
 			trig: 0,
-			groups: [],
+			groupsWithStuObj: [],
+			groupsWithStuName: [],
 			users: []
 		};
 		getUsers(this);
 		getGroups(this);
+		console.log(this.state.groupsWithStuName)
 	}
 
 	addToGroup = (group) => {
-		const username = document.getElementById("add-input-".concat(group)).value;
+		const username = document.getElementById("add-input-".concat(group.name)).value;
 		const user = findUser(this,username);
 
 		if (!user) {
@@ -50,11 +52,11 @@ class ProfGroupPage extends React.Component {
 			return;
 		}
 
-		if (user.groups.includes(group)) {
+		if (user.groups.includes(group.name)) {
 			alert("Student already in group!");
 			return;
 		}
-		user.groups.push(group);
+		user.groups.push(group.name);
 		const userInfo = {
 			name: user.name,
 			type: user.type,
@@ -66,14 +68,13 @@ class ProfGroupPage extends React.Component {
 		};
 		editUser(this,user.username, userInfo);
 
-		const theGroup = findUGroup(this,group);
-		theGroup.students.push(username);
+		group.students.push(username);
 		const groupInfo = {
-			name: theGroup.name,
-			students: theGroup.students,
-			owner: theGroup.owner
+			name: group.name,
+			students: group.students,
+			owner: group.owner
 		};
-		editGroup(this,group,groupInfo);
+		editGroup(this,group.name,groupInfo);
 
 		alert("Student Added!");
 		this.setState({trig: this.state.trig + 1});
@@ -81,7 +82,7 @@ class ProfGroupPage extends React.Component {
 	};
 
 	removeStudent = (group, user) => {
-		user.groups = user.groups.filter(e => e !== group);
+		user.groups = user.groups.filter(e => e !== group.name);
 		const userInfo = {
 			name: user.name,
 			type: user.type,
@@ -93,14 +94,13 @@ class ProfGroupPage extends React.Component {
 		};
 		editUser(this,user.username, userInfo);
 
-		const theGroup = findUGroup(this,group);
-		theGroup.students = theGroup.students.filter(e => e !== user.username);
+		group.students = group.students.filter(e => e !== user.username);
 		const groupInfo = {
-			name: theGroup.name,
-			students: theGroup.students,
-			owner: theGroup.owner
+			name: group.name,
+			students: group.students,
+			owner: group.owner
 		};
-		editGroup(this,group,groupInfo);
+		editGroup(this,group.name,groupInfo);
 
 		this.forceUpdate();
 	};
@@ -139,8 +139,8 @@ class ProfGroupPage extends React.Component {
 	};
 
 	removeGroup = (group) => {
-		for (let i = 0; i < this.state.users.length; i++) {
-			const user = this.state.users[i];
+		for (let i = 0; i < group.students.length; i++) {
+			const user = group.students[i];
 			if (user.type === "student" || user.type === "professor") {
 				const info = {
 					name: user.name,
@@ -148,87 +148,78 @@ class ProfGroupPage extends React.Component {
 					username: user.username,
 					password: user.password,
 					email: user.email,
-					groups: user.groups.filter(e => e !== group),
+					groups: user.groups.filter(e => e !== group.name),
 					quizzes: user.quizzes
 				};
 				editUser(this, user.username, info);
 			}
 		}
-		removeGroup(this,group);
+		removeGroup(this,group.name);
 		this.forceUpdate();
 	};
 
 	render() {
-		return <div/>
-		// let {state} = this.props.location;
-		// const prof = getUserByUsername(state.username);
-		// const profGroups = prof.groups;
-		// const groupMap = {};
-		//
-		// for (let gi = 0; gi < profGroups.length; gi++) {
-		// 	groupMap[profGroups[gi]] = groups[profGroups[gi]];
-		// }
-		//
-		// return (
-		// 	<div>
-		// 		<TopBar history={this.props.history} app={this.props.app}/>
-		// 		<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
-		// 			<Grid item>
-		// 				<h2>Create Group</h2>
-		// 				<TextField id="new-group-name-field" label="Name" error={this.state.err}
-		// 				           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
-		//
-		// 				<IconButton onClick={this.createGroup}><AddIcon>Create Group</AddIcon></IconButton>
-		// 			</Grid>
-		// 			{
-		// 				profGroups.map((group) => (
-		// 					<Grid item key={group}>
-		// 						<Grid container spacing={2} direction="row" justify="flex-start" alignItems="center">
-		// 							<Grid item><h2>{group}</h2></Grid>
-		// 							<Grid item>
-		// 								<IconButton onClick={this.removeGroup.bind(this, group)}>
-		// 									<DeleteIcon>Remove</DeleteIcon></IconButton>
-		// 							</Grid>
-		// 						</Grid>
-		// 						<TableContainer component={Paper}>
-		// 							<Table aria-label="student table">
-		// 								<TableHead>
-		// 									<TableRow>
-		// 										<TableCell>Name</TableCell>
-		// 										<TableCell>Email</TableCell>
-		// 										<TableCell>Username</TableCell>
-		// 										<TableCell>Remove Student</TableCell>
-		// 									</TableRow>
-		// 								</TableHead>
-		// 								<TableBody>
-		// 									{
-		// 										groupMap[group].slice(1).map((stuObj) => (
-		// 											<TableRow key={stuObj.username}>
-		// 												<TableCell>{stuObj.name}</TableCell>
-		// 												<TableCell>{stuObj.email}</TableCell>
-		// 												<TableCell>{stuObj.username}</TableCell>
-		// 												<TableCell>
-		// 													<IconButton
-		// 														onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-		// 												</TableCell>
-		// 											</TableRow>
-		// 										))
-		// 									}
-		// 								</TableBody>
-		// 							</Table>
-		//
-		// 							<form>
-		// 								<TextField id={"add-input-".concat(group)} label="Name">Name</TextField>
-		// 								<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
-		// 									Student</AddIcon></IconButton>
-		// 							</form>
-		// 						</TableContainer>
-		// 					</Grid>
-		// 				))
-		// 			}
-		// 		</Grid>
-		// 	</div>
-		// )
+		return (
+			<div>
+				<TopBar history={this.props.history} app={this.props.app}/>
+				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
+					<Grid item>
+						<h2>Create Group</h2>
+						<TextField id="new-group-name-field" label="Name" error={this.state.err}
+						           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
+
+						<IconButton onClick={this.createGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
+					</Grid>
+					{
+						this.state.groupsWithStuObj.map((group) => (
+							<Grid item key={group.name}>
+								<Grid container spacing={2} direction="row" justify="flex-start" alignItems="center">
+									<Grid item><h2>{group.name}</h2></Grid>
+									<Grid item>
+										<IconButton onClick={this.removeGroup.bind(this, group)}>
+											<DeleteIcon>Remove</DeleteIcon></IconButton>
+									</Grid>
+								</Grid>
+								<TableContainer component={Paper}>
+									<Table aria-label="student table">
+										<TableHead>
+											<TableRow>
+												<TableCell>Name</TableCell>
+												<TableCell>Email</TableCell>
+												<TableCell>Username</TableCell>
+												<TableCell>Remove Student</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{
+												group.students.map((stuObj) => (
+													<TableRow key={stuObj.username}>
+														<TableCell>{stuObj.name}</TableCell>
+														<TableCell>{stuObj.email}</TableCell>
+														<TableCell>{stuObj.username}</TableCell>
+														<TableCell>
+															<IconButton
+																onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+														</TableCell>
+													</TableRow>
+												))
+											}
+										</TableBody>
+									</Table>
+
+									<form>
+										<TextField id={"add-input-".concat(group.name)} label="Name">Name</TextField>
+										<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
+											Student</AddIcon></IconButton>
+									</form>
+								</TableContainer>
+							</Grid>
+						))
+					}
+				</Grid>
+			</div>
+		)
+
 	}
 }
 
