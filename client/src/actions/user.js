@@ -43,7 +43,7 @@ export const signUp = (signUpPage, signUpProps) => {
 	.then(res => {
 		if (res.status === 200) {
 			console.log('Sign up successful');
-			signUpPage.setState({isSignedUp: true})
+			signUpPage.props.history.push('/login');
 		}
 	})
 	.catch(err => {

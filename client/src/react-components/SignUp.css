@@ -3,9 +3,9 @@
   position: absolute;
   top: 10%;
   bottom: 40%;
-  left: 25%;
+  left: 40%;
   height: 80%;
-  width: 50%;
+  width: 20%;
   padding: 15px 25px 10px;
   border: 2px solid lightgrey;
   border-radius: 5%;
@@ -15,15 +15,21 @@
   display: inline-block;
   position: relative;
   top: 100px;
+  left: 60px;
   overflow-wrap: wrap;
   margin-bottom: 30px;
   padding-left: 30px;
 }
 
+.formList {
+  position: relative;
+  height: 80%;
+}
+
 .signUpButton {
   display: block;
   position: relative;
-  left: 33%;
+  left: 80px;
   width: 150px;
   padding-left: 60px;
   border: 2px solid darkgrey;

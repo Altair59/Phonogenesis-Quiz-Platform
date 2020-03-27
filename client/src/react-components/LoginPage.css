@@ -13,6 +13,7 @@
 .passwordForm {
   margin-bottom: 30px;
   padding-left: 30px;
+  width: 200px;
 }
 
 .loginButton {
