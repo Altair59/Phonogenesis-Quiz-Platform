@@ -219,6 +219,7 @@ class ProfGroupPage extends React.Component {
 				</Grid>
 			</div>
 		)
+
 	}
 }
 

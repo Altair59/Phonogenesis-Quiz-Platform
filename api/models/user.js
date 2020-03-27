@@ -48,10 +48,15 @@ const PastResultSchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
-	answer: {
+	answers: {
+		type: [String],
+		required: true
+	},
+	timeStamp: {
 		type: String,
 		required: true,
-		trim: true
+		trim: true,
+		unique: true
 	}
 });
 
@@ -95,6 +100,10 @@ const QuizSchema = new mongoose.Schema({
 	questions: {
 		type: [QuestionSchema],
 		default: []
+	},
+	isCompleted: {
+		type: Boolean,
+		default: false
 	}
 });
 

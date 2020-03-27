@@ -5,53 +5,30 @@ import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
 import Paper from "@material-ui/core/Paper";
-import {getQuizByUser} from "../actions/quiz";
 
 class StudentMain extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.props.history.push("/student");
-		this.state = {
-			userQuizzes: []
-		};
-		getQuizByUser(this.props.app.state.currentUser.username, this);
+		this.state = {};
 	}
 
 	onReview(quiz) {
-		const {state} = this.props.location;
-		this.props.history.push({
-			pathname: "/student/quiz",
-			state: {
-				quiz: quiz,
-				id: state.id,
-				type: state.type,
-				name: state.name,
-				email: state.email,
-				password: state.password,
-				username: state.username
-			}
-		})
+		localStorage.setItem("quiz", JSON.stringify(quiz));
+		localStorage.setItem("quizPastStamp", "0");
+		this.props.history.push("/student/quiz");
+		this.props.app.forceUpdate();
 	};
 
-	takeQuiz = (quiz) => {
-		const {state} = this.props.location;
-		this.props.history.push({
-			pathname: "/student/quiz",
-			state: {
-				quiz: quiz,
-				id: state.id,
-				type: state.type,
-				name: state.name,
-				email: state.email,
-				password: state.password,
-				username: state.username
-			}
-		})
+	takeQuiz(quiz) {
+		localStorage.setItem("quiz", JSON.stringify(quiz));
+		localStorage.setItem("quizPastStamp", "0");
+		this.props.history.push("/student/quiz");
+		this.props.app.forceUpdate();
 	};
 
 	render() {
 		const student = this.props.app.state.currentUser;
-		const quizList = this.state.userQuizzes;
 
 		return (
 			<div>
@@ -68,8 +45,8 @@ class StudentMain extends React.Component {
 					<h2>Activity History</h2>
 					<div className="tileContainer">
 						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-							{quizList.map((quiz, i) => {
-								if (quiz.isCompleted) {
+							{student.quizzes.map((quiz, i) => {
+								if (quiz.past_results.length > 0) {
 									return (
 										<Grid item key={i}>
 											<Paper elevation={3}>
@@ -93,10 +70,11 @@ class StudentMain extends React.Component {
 					<h2>Pending Quizzes</h2>
 					<div className="tileContainer">
 						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-							{quizList.map((quiz, i) => {
+							{student.quizzes.map((quiz, i) => {
 								if (quiz.past_results.length <= 0) {
 									return (<Grid item key={i}>
-										<Button onClick={() => this.takeQuiz(quiz)}>Take Quiz: {quiz.name}</Button>
+										<Button onClick={this.takeQuiz.bind(this, quiz)}>Take
+											Quiz: {quiz.name}</Button>
 									</Grid>);
 								} else {
 									return null;

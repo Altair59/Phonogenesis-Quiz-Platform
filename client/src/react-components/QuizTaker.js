@@ -6,7 +6,7 @@ import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
-import {getQuizByName} from "./QuizData";
+import {registerPastResult, fetchPastResult} from "../actions/quiz";
 
 // Get answers from server
 // Code below requires server call
@@ -15,15 +15,31 @@ const answerPool = ['word-final obstruent devoicing', 'word-initial aspiration o
 class QuizTaker extends React.Component {
 	constructor(props) {
 		super(props);
-		const quiz = getQuizByName(this.props.location.state.quiz.name);
+		const quiz = JSON.parse(localStorage.getItem("quiz"));
 
-		this.state = {
-			questionIndex: 0,
-			choices: this.genChoicesFromPool(quiz.questions[0].rule.ruleTxt, 4),
-			score: 0,
-			studentAnswers: [],
-			qKey: 0
-		};
+		if (!quiz) {
+			this.state = {};
+			alert("No active/selected quiz! Redirecting back to your main page.");
+			this.props.history.push("/student");
+		} else {
+			this.state = {
+				quiz: quiz,
+				pastResult: null,
+				questionIndex: 0,
+				choices: this.genChoicesFromPool(quiz.questions[0].rule.ruleTxt, 4),
+				score: 0,
+				studentAnswers: [],
+				qKey: 0,
+				needFetch: true
+			};
+
+		}
+	}
+
+	componentDidMount() {
+		const quiz = this.state.quiz;
+		const quizPastStamp = localStorage.getItem("quizPastStamp");
+		fetchPastResult(quizPastStamp, quiz.name, this.props.app.state.currentUser.username, this);
 	}
 
 	genChoicesFromPool(answer, size) {
@@ -49,9 +65,8 @@ class QuizTaker extends React.Component {
 	};
 
 	onSubmitAnswer = (e) => {
-		const quiz = getQuizByName(this.props.location.state.quiz.name);
+		const quiz = this.state.quiz;
 		const choice = this.state.choices[e.currentTarget.id];
-		quiz.pastAnswer.push(choice);
 
 		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
@@ -70,42 +85,46 @@ class QuizTaker extends React.Component {
 	};
 
 	onTimeUp = () => {
-		const quiz = getQuizByName(this.props.location.state.quiz.name);
 		alert("You've used up all your time!");
-		this.setState({questionIndex: quiz.questions.length});
+		this.setState({questionIndex: this.state.quiz.questions.length});
 	};
 
 	onBackToMain = (e) => {
-		const {state} = this.props.location;
-		this.props.history.push({
-			pathname: '/student',
-			state: {
-				id: state.id,
-				type: state.type,
-				name: state.name,
-				email: state.email,
-				password: state.password,
-				username: state.username
-			}
-		});
+		this.props.history.push("/student");
 		e.preventDefault();
 	};
 
+	getTimeStamp = () => {
+		const today = new Date();
+		return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}-${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}:${today.getMilliseconds()}`;
+	};
+
 	render() {
-		const quiz = getQuizByName(this.props.location.state.quiz.name);
+		if (this.state.quiz === undefined || this.state.pastResult === undefined) {
+			return <div/>;
+		}
+
+		const quiz = this.state.quiz;
 		const size = quiz.questions.length;
 		const index = this.state.questionIndex;
 		const score = this.state.score;
 		const choices = this.state.choices;
-		const studentAnswers = this.state.studentAnswers;
-		const pastAnswers = quiz.pastAnswer;
+		const pastStamp = this.state.pastStamp;
 		const qKey = this.state.qKey;
 		const currQuestion = quiz.questions[index];
+		const isActive = !pastStamp || pastStamp === "0";
 
-		if (index < size && currQuestion && !quiz.isCompleted) {
+		let studentAnswers;
+		if (isActive){
+			studentAnswers = this.state.studentAnswers;
+		} else {
+			studentAnswers = this.state.pastResult;
+		}
+
+		if (index < size && currQuestion && isActive) {
 			return (
 				<div>
-					<TopBar {...this.props.location.state}/>
+					<TopBar history={this.props.history} app={this.props.app}/>
 					<br/>
 					<h3 id="quiz-title">Quiz: {quiz.name}</h3>
 					<hr className="qtaker-hr"/>
@@ -134,22 +153,25 @@ class QuizTaker extends React.Component {
 								                   onClick={this.onSubmitAnswer}>{choices[3]}</Button></Grid>
 							</Grid>
 						</Grid>
-
 					</Grid>
-
 				</div>
 			);
 		} else {
-			if (!quiz.isCompleted) {
-				quiz.pastScore = score;
-				quiz.isCompleted = true;
+			if (isActive){
+				const quizResult = {
+					score: score,
+					answers: studentAnswers,
+					timeStamp: this.getTimeStamp()
+				};
+				registerPastResult(quizResult, this.props.app.state.currentUser.username, quiz.name);
 			}
+
 			return (
 				<div>
-					<TopBar {...this.props.location.state}/>
+					<TopBar history={this.props.history} app={this.props.app}/>
 					<Grid container direction="column" justify="flex-start" alignItems="center">
 						<Grid item>
-							<h2>You've Completed the Quiz!<br/> Score: {quiz.pastScore}/{size}</h2><br/>
+							<h2>You've Completed the Quiz!<br/> Score: {score}/{size}</h2><br/>
 							<Button variant="contained" onClick={this.onBackToMain}>Back to Main Page</Button>
 							<br/>
 						</Grid>
@@ -162,9 +184,7 @@ class QuizTaker extends React.Component {
 									               genMoreLimit={question.maxCADT} isQuiz={false}/>
 									<p><span id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</span></p>
 									<p><span id="studentAnswerTxt">Your Answer: {
-										studentAnswers[index] ? studentAnswers[index] : (
-											pastAnswers[index] ? pastAnswers[index] : "Timed Out"
-										)
+										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
 									}</span></p>
 									<br/>
 									<hr/>
