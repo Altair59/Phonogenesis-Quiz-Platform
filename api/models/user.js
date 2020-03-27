@@ -93,17 +93,13 @@ const QuizSchema = new mongoose.Schema({
 		trim: true,
 		minlength: 1
 	},
-	past_results: {
-		type: [PastResultSchema],
-		default: []
+	pastResult: {
+		type: PastResultSchema,
+		default: null
 	},
 	questions: {
 		type: [QuestionSchema],
 		default: []
-	},
-	isCompleted: {
-		type: Boolean,
-		default: false
 	}
 });
 

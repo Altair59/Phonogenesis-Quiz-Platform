@@ -6,7 +6,7 @@ import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
-import {registerPastResult, fetchPastResult} from "../actions/quiz";
+import {registerPastResult} from "../actions/quiz";
 
 // Get answers from server
 // Code below requires server call
@@ -24,22 +24,16 @@ class QuizTaker extends React.Component {
 		} else {
 			this.state = {
 				quiz: quiz,
-				pastResult: null,
 				questionIndex: 0,
 				choices: this.genChoicesFromPool(quiz.questions[0].rule.ruleTxt, 4),
 				score: 0,
+				isActive: localStorage.getItem("isActive") === "1",
+				quizResult: quiz.pastResult,
 				studentAnswers: [],
 				qKey: 0,
 				needFetch: true
 			};
-
 		}
-	}
-
-	componentDidMount() {
-		const quiz = this.state.quiz;
-		const quizPastStamp = localStorage.getItem("quizPastStamp");
-		fetchPastResult(quizPastStamp, quiz.name, this.props.app.state.currentUser.username, this);
 	}
 
 	genChoicesFromPool(answer, size) {
@@ -71,7 +65,6 @@ class QuizTaker extends React.Component {
 		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
 		}
-		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
 
 		const newIndex = this.state.questionIndex + 1;
 		this.setState({questionIndex: newIndex});
@@ -81,7 +74,17 @@ class QuizTaker extends React.Component {
 			this.setState({choices: this.genChoicesFromPool(quiz.questions[newIndex].rule.ruleTxt, 4)});
 		}
 
-		e.preventDefault();
+		if (newIndex >= quiz.questions.length){
+			const quizResult = {
+				score: this.state.score,
+				answers: this.state.studentAnswers.concat(choice),
+				timeStamp: this.getTimeStamp()
+			};
+			this.setState({quizResult: quizResult});
+			registerPastResult(quizResult, this.props.app.state.currentUser.username, quiz.name, this.props.app);
+		}
+
+		this.setState({studentAnswers: this.state.studentAnswers.concat(choice)});
 	};
 
 	onTimeUp = () => {
@@ -90,17 +93,17 @@ class QuizTaker extends React.Component {
 	};
 
 	onBackToMain = (e) => {
+		localStorage.clear();
 		this.props.history.push("/student");
-		e.preventDefault();
 	};
 
 	getTimeStamp = () => {
 		const today = new Date();
-		return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}-${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}:${today.getMilliseconds()}`;
+		return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}:${today.getMilliseconds()}`;
 	};
 
 	render() {
-		if (this.state.quiz === undefined || this.state.pastResult === undefined) {
+		if (this.state.quiz === undefined) {
 			return <div/>;
 		}
 
@@ -109,17 +112,9 @@ class QuizTaker extends React.Component {
 		const index = this.state.questionIndex;
 		const score = this.state.score;
 		const choices = this.state.choices;
-		const pastStamp = this.state.pastStamp;
 		const qKey = this.state.qKey;
 		const currQuestion = quiz.questions[index];
-		const isActive = !pastStamp || pastStamp === "0";
-
-		let studentAnswers;
-		if (isActive){
-			studentAnswers = this.state.studentAnswers;
-		} else {
-			studentAnswers = this.state.pastResult;
-		}
+		const isActive = this.state.isActive;
 
 		if (index < size && currQuestion && isActive) {
 			return (
@@ -157,14 +152,7 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		} else {
-			if (isActive){
-				const quizResult = {
-					score: score,
-					answers: studentAnswers,
-					timeStamp: this.getTimeStamp()
-				};
-				registerPastResult(quizResult, this.props.app.state.currentUser.username, quiz.name);
-			}
+			const displayAns = this.state.quizResult.answers;
 
 			return (
 				<div>
@@ -184,7 +172,7 @@ class QuizTaker extends React.Component {
 									               genMoreLimit={question.maxCADT} isQuiz={false}/>
 									<p><span id="correctAnswerTxt">Correct Answer: {question.rule.ruleTxt}</span></p>
 									<p><span id="studentAnswerTxt">Your Answer: {
-										studentAnswers[index] ? studentAnswers[index] : "Timed Out"
+										displayAns[index] ? displayAns[index] : "Timed Out"
 									}</span></p>
 									<br/>
 									<hr/>

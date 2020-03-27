@@ -5,6 +5,7 @@ import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
 import Paper from "@material-ui/core/Paper";
+import {readCookie} from "../actions/user";
 
 class StudentMain extends React.Component {
 	constructor(props) {
@@ -15,16 +16,14 @@ class StudentMain extends React.Component {
 
 	onReview(quiz) {
 		localStorage.setItem("quiz", JSON.stringify(quiz));
-		localStorage.setItem("quizPastStamp", "0");
+		localStorage.setItem("isActive", "0");
 		this.props.history.push("/student/quiz");
-		this.props.app.forceUpdate();
 	};
 
 	takeQuiz(quiz) {
 		localStorage.setItem("quiz", JSON.stringify(quiz));
-		localStorage.setItem("quizPastStamp", "0");
+		localStorage.setItem("isActive", "1");
 		this.props.history.push("/student/quiz");
-		this.props.app.forceUpdate();
 	};
 
 	render() {
@@ -46,13 +45,14 @@ class StudentMain extends React.Component {
 					<div className="tileContainer">
 						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
 							{student.quizzes.map((quiz, i) => {
-								if (quiz.past_results.length > 0) {
+								if (quiz.pastResult) {
 									return (
 										<Grid item key={i}>
 											<Paper elevation={3}>
 												<h4>Quiz: {quiz.name}</h4>
-												<p>Last Score: {quiz.past_results[quiz.past_results.length - 1].score}/
-													{quiz.questions.length}</p>
+												<h4>Completed at {quiz.pastResult.timeStamp}</h4>
+												<h4>Last Score: {quiz.pastResult.score}/
+													{quiz.questions.length}</h4>
 												<Button onClick={this.onReview.bind(this, quiz)}>Review</Button>
 											</Paper>
 										</Grid>
@@ -71,7 +71,7 @@ class StudentMain extends React.Component {
 					<div className="tileContainer">
 						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
 							{student.quizzes.map((quiz, i) => {
-								if (quiz.past_results.length <= 0) {
+								if (!quiz.pastResult) {
 									return (<Grid item key={i}>
 										<Button onClick={this.takeQuiz.bind(this, quiz)}>Take
 											Quiz: {quiz.name}</Button>
