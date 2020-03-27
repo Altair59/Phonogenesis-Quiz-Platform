@@ -23,7 +23,6 @@ db.once('open', function () {
 		log("added default admin");
 	}, function (error) {
 		log("default admin exists");
-		log(error);
 	});
 
 	const defaultStudent = new User({

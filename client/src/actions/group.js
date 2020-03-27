@@ -2,6 +2,24 @@ import {findUser} from "../actions/user";
 const axios = require('axios');
 axios.defaults.withCredentials = true;
 
+export const getGroupUserList = (page, user) => {
+	user.groups.map(groupName => {
+		axios.get(`http://127.0.0.1:9000/groups/objectify/${groupName}`).then(res => {
+			const userList = res.data;
+			console.log(userList);
+
+			if (userList){
+				page.setState({[groupName]: userList})
+			} else {
+				console.log("NO USER LIST RETURNED");
+			}
+		}).catch(err => {
+			console.log(err);
+		})
+	});
+
+};
+
 export const getGroups = (page) => {
 	axios.get(`http://127.0.0.1:9000/groups/prof/${page.props.app.state.currentUser.username}`).then(res => {
 		const groups = res.data;

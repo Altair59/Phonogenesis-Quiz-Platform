@@ -5,7 +5,6 @@ import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
 import Paper from "@material-ui/core/Paper";
-import {readCookie} from "../actions/user";
 
 class StudentMain extends React.Component {
 	constructor(props) {
