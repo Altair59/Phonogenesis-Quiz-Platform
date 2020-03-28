@@ -40,7 +40,10 @@ class ProfGroupPage extends React.Component {
 
 	addToGroup = (group) => {
 		const username = document.getElementById("add-input-".concat(group.name)).value;
-		const user = findUser(this,username);
+		findUser(username);
+
+		const user = this.state.newUser;
+		console.log(user)
 
 		if (!user) {
 			alert("No user with given username found!");

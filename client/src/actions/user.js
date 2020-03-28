@@ -99,6 +99,7 @@ export const editUser = (page, username, info) => {
 
 export const findUser = (page, username) => {
 	axios.get(`http://127.0.0.1:9000/users/${username}`).then(res => {
-		return res.result;
-	})
+		console.log(res)
+		page.setState({newUser: res.data})
+	}).catch(err => console.log(err))
 };
