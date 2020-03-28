@@ -6,35 +6,75 @@ import {withRouter} from "react-router-dom";
 import TopBar from "./TopBar.js";
 
 import "./StudentGroupPage.css";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import TableContainer from "@material-ui/core/TableContainer";
+import {getGroupUserList} from "../actions/group";
 
 class StudentGroupPage extends React.Component {
-	render() {
-		const { app } = this.props;
-		const student = app.state.currentUser;
-		return (
+	constructor(props) {
+		super(props);
+		this.state = {};
+		getGroupUserList(this, this.props.app.state.currentUser);
+	}
 
+	render() {
+		const student = this.props.app.state.currentUser;
+
+		return (
 			<div>
-				<TopBar history={this.props.history} app={app}/>
+				<TopBar history={this.props.history} app={this.props.app}/>
+
 				<h1 className="title">Enrolled Groups</h1>
 				<Divider/>
 				<div id="groupsList">
-					<Grid
-						container
-						spacing={3}
-						justify="flex-start"
-						alignItems="flex-start"
-					>
-						{student.groups.map((group, i) => (
-							<Grid item key={i}>
-								<Paper className="groupItem">
-									<h3 id="groupName">{group}</h3>
-								</Paper>
-							</Grid>
-						))}
+					<Grid container spacing={3} justify="flex-start" alignItems="flex-start">{
+						student.groups.map(group => {
+							if (this.state[group]) {
+								return <Grid item key={group}>
+									<Paper className="groupItem">
+										<TableContainer component={Paper}><Table aria-label={group}>
+											<TableHead>
+												<TableRow>
+													<TableCell>Name</TableCell>
+													<TableCell>Email</TableCell>
+												</TableRow>
+											</TableHead>
+											<TableBody>{
+												this.state[group].map((userObj, index) => {
+													if (index === 0) {
+														return <TableRow key={userObj.username}>
+															<TableCell><span
+																className={"ownerTxt"}>{userObj.name}</span></TableCell>
+															<TableCell><span
+																className={"ownerTxt"}>{userObj.email}</span></TableCell>
+														</TableRow>
+													} else {
+														return <TableRow key={userObj.username}>
+															<TableCell>{userObj.name}</TableCell>
+															<TableCell>{userObj.email}</TableCell>
+														</TableRow>
+													}
+												})}
+											</TableBody>
+										</Table></TableContainer>
+
+
+									</Paper>
+								</Grid>
+							} else {
+								return null;
+							}
+						})}
 					</Grid>
 				</div>
 			</div>
 		);
+
+
 	}
 }
 

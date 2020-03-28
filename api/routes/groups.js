@@ -4,7 +4,41 @@ const router = express.Router();
 const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);
 const {Group} = require("../models/group");
+const {User} = require("../models/user");
 const {ObjectID} = require("mongodb");
+
+router.get("/objectify/:name", (req, res) => {
+	const groupName = req.params.name;
+	console.log(groupName);
+
+	Group.findOne({name: groupName}).then(group => {
+		if (!group) {
+			res.send(null);
+		} else {
+			const users = [];
+
+			User.findOne({username: group.owner}).then(prof => {
+				users.push(prof);
+			});
+
+
+			let count = 0;
+			group.students.map(username => {
+				User.findOne({username: username}).then(stu => {
+					users.push(stu);
+					count++;
+
+					if (count >= group.students.length){
+						res.send(users);
+						res.end();
+					}
+				});
+			});
+		}
+	}).catch(error => {
+		console.log("group not found");
+	});
+});
 
 // Route to get all groups of this prof
 router.get("/prof/:name", (req, res) => {

@@ -23,7 +23,6 @@ db.once('open', function () {
 		log("added default admin");
 	}, function (error) {
 		log("default admin exists");
-		log(error);
 	});
 
 	const defaultStudent = new User({
@@ -36,7 +35,7 @@ db.once('open', function () {
 		quizzes: [{
 			timeLim: 120,
 			name: "test-quiz",
-			past_results: [],
+			pastResult: null,
 			questions: [
 				{
 					size: 20,
@@ -105,7 +104,7 @@ db.once('open', function () {
 		quizzes: [{
 			timeLim: 120,
 			name: "test-quiz",
-			past_results: [],
+			pastResult: null,
 			questions: [
 				{
 					size: 20,
