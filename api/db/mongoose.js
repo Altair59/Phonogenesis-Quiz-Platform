@@ -35,7 +35,6 @@ db.once('open', function () {
 		quizzes: [{
 			timeLim: 120,
 			name: "test-quiz",
-			pastResult: null,
 			questions: [
 				{
 					size: 20,
@@ -104,7 +103,6 @@ db.once('open', function () {
 		quizzes: [{
 			timeLim: 120,
 			name: "test-quiz",
-			pastResult: null,
 			questions: [
 				{
 					size: 20,

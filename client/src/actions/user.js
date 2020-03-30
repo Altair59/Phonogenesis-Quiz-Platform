@@ -49,7 +49,7 @@ export const signUp = (signUpPage, signUpProps) => {
 	.catch(err => {
 		console.log(err)
 	});
-}
+};
 
 export const handleTextFieldChange = (e, props) => {
 	props.setState({
