@@ -129,7 +129,7 @@ router.patch("/:username", (req, res) => {
 			student.password = password;
 			student.email = email;
 			student.groups = groups;
-			// student.quizzes = quizzes;
+			student.quizzes = quizzes;
 
 			student.save().then(result => {
 				res.send(student);

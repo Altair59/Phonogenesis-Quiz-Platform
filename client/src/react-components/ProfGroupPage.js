@@ -14,8 +14,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {removeGroup, getGroups, addGroup, editGroup, findUGroup} from "../actions/group";
-import {getUsers, editUser, findUser} from "../actions/user";
+import {removeGroup, addGroup, editGroup, findUGroup, getGroupUserList} from "../actions/group";
+import {editUser, findUser} from "../actions/user";
 
 
 import "./ProfGroupPage.css";
@@ -28,59 +28,14 @@ class ProfGroupPage extends React.Component {
 		this.state = {
 			newGroupName: '',
 			err: false,
-			trig: 0,
-			groupsWithStuObj: [],
-			groupsWithStuName: [],
-			users: []
+			trig: 0
 		};
-		getUsers(this);
-		getGroups(this);
-		console.log(this.state.groupsWithStuName)
+		console.log(this.props.app.state.currentUser);
+		getGroupUserList(this, this.props.app.state.currentUser);
 	}
 
 	addToGroup = (group) => {
 		const username = document.getElementById("add-input-".concat(group.name)).value;
-		findUser(username);
-
-		const user = this.state.newUser;
-		console.log(user)
-
-		if (!user) {
-			alert("No user with given username found!");
-			return;
-		}
-
-		if (user.type !== "student") {
-			alert("Only student can be invited to group!");
-			return;
-		}
-
-		if (user.groups.includes(group.name)) {
-			alert("Student already in group!");
-			return;
-		}
-		user.groups.push(group.name);
-		const userInfo = {
-			name: user.name,
-			type: user.type,
-			username: user.username,
-			password: user.password,
-			email: user.email,
-			groups: user.groups,
-			quizzes: user.quizzes
-		};
-		editUser(this,user.username, userInfo);
-
-		group.students.push(username);
-		const groupInfo = {
-			name: group.name,
-			students: group.students,
-			owner: group.owner
-		};
-		editGroup(this,group.name,groupInfo);
-
-		alert("Student Added!");
-		this.setState({trig: this.state.trig + 1});
 		this.forceUpdate();
 	};
 
@@ -95,7 +50,7 @@ class ProfGroupPage extends React.Component {
 			groups: user.groups,
 			quizzes: user.quizzes
 		};
-		editUser(this,user.username, userInfo);
+		editUser(this, user.username, userInfo);
 
 		group.students = group.students.filter(e => e !== user.username);
 		const groupInfo = {
@@ -103,7 +58,7 @@ class ProfGroupPage extends React.Component {
 			students: group.students,
 			owner: group.owner
 		};
-		editGroup(this,group.name,groupInfo);
+		editGroup(this, group.name, groupInfo);
 
 		this.forceUpdate();
 	};
@@ -111,33 +66,7 @@ class ProfGroupPage extends React.Component {
 
 	createGroup = () => {
 		const name = document.getElementById("new-group-name-field").value;
-
-		let reg = /^[0-9a-zA-Z]+[-]?[0-9a-zA-Z]+$/;
-
-		if (!reg.test(name)) {
-			alert("Group must be alphanumeric strings with an optional - in the middle!");
-			this.setState({err: true});
-		} else {
-			const info = {
-				name: name,
-				owner: this.props.app.state.currentUser.username
-			};
-			addGroup(this, info);
-			const prof = this.props.app.state.currentUser;
-			prof.groups.push(name);
-			const profInfo = {
-				name: prof.name,
-				type: prof.type,
-				username: prof.username,
-				password: prof.password,
-				email: prof.email,
-				groups: prof.groups,
-				quizzes: prof.quizzes
-			};
-			editUser(this, prof.username, profInfo);
-			alert("Successfully added group");
-			this.setState({err: false})
-		}
+		addGroup(this, name);
 		this.forceUpdate();
 	};
 
@@ -157,11 +86,13 @@ class ProfGroupPage extends React.Component {
 				editUser(this, user.username, info);
 			}
 		}
-		removeGroup(this,group.name);
+		removeGroup(this, group.name);
 		this.forceUpdate();
 	};
 
 	render() {
+		console.log(this.state);
+		const prof = this.props.app.state.currentUser;
 		return (
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
@@ -174,50 +105,56 @@ class ProfGroupPage extends React.Component {
 						<IconButton onClick={this.createGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
 					</Grid>
 					{
-						this.state.groupsWithStuObj.map((group) => (
-							<Grid item key={group.name}>
-								<Grid container spacing={2} direction="row" justify="flex-start" alignItems="center">
-									<Grid item><h2>{group.name}</h2></Grid>
-									<Grid item>
-										<IconButton onClick={this.removeGroup.bind(this, group)}>
-											<DeleteIcon>Remove</DeleteIcon></IconButton>
+						prof.groups.map((group) => {
+							if (this.state[group]) {
+								return <Grid item key={group}>
+									<Grid container spacing={2} direction="row" justify="flex-start"
+									      alignItems="center">
+										<Grid item><h2>{group}</h2></Grid>
+										<Grid item>
+											<IconButton onClick={this.removeGroup.bind(this, group)}>
+												<DeleteIcon>Remove</DeleteIcon></IconButton>
+										</Grid>
 									</Grid>
-								</Grid>
-								<TableContainer component={Paper}>
-									<Table aria-label="student table">
-										<TableHead>
-											<TableRow>
-												<TableCell>Name</TableCell>
-												<TableCell>Email</TableCell>
-												<TableCell>Username</TableCell>
-												<TableCell>Remove Student</TableCell>
-											</TableRow>
-										</TableHead>
-										<TableBody>
-											{
-												group.students.map((stuObj) => (
-													<TableRow key={stuObj.username}>
-														<TableCell>{stuObj.name}</TableCell>
-														<TableCell>{stuObj.email}</TableCell>
-														<TableCell>{stuObj.username}</TableCell>
-														<TableCell>
-															<IconButton
-																onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-														</TableCell>
-													</TableRow>
-												))
-											}
-										</TableBody>
-									</Table>
+									<TableContainer component={Paper}>
+										<Table aria-label="student table">
+											<TableHead>
+												<TableRow>
+													<TableCell>Name</TableCell>
+													<TableCell>Email</TableCell>
+													<TableCell>Username</TableCell>
+													<TableCell>Remove Student</TableCell>
+												</TableRow>
+											</TableHead>
+											<TableBody>
+												{
+													this.state[group].map((stuObj) => (
+														<TableRow key={stuObj.username}>
+															<TableCell>{stuObj.name}</TableCell>
+															<TableCell>{stuObj.email}</TableCell>
+															<TableCell>{stuObj.username}</TableCell>
+															<TableCell>
+																<IconButton
+																	onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+															</TableCell>
+														</TableRow>
+													))
+												}
+											</TableBody>
+										</Table>
 
-									<form>
-										<TextField id={"add-input-".concat(group.name)} label="Name">Name</TextField>
-										<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
-											Student</AddIcon></IconButton>
-									</form>
-								</TableContainer>
-							</Grid>
-						))
+										<form>
+											<TextField id={"add-input-".concat(group)}
+											           label="Name">Name</TextField>
+											<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
+												Student</AddIcon></IconButton>
+										</form>
+									</TableContainer>
+								</Grid>
+							} else {
+								return null;
+							}
+						})
 					}
 				</Grid>
 			</div>
