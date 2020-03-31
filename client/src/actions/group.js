@@ -3,10 +3,8 @@ import {findUser, editUser, readCookie} from "./user";
 const axios = require('axios');
 axios.defaults.withCredentials = true;
 
-export const getGroupUserList = (page, user) => {
-	axios.post(`http://127.0.0.1:9000/groups/objectify`, {
-		user: user
-	}).then(res => {
+export const getGroupUserList = (page, username) => {
+	axios.get(`http://127.0.0.1:9000/groups/objectify/${username}`).then(res => {
 		const groupToUser = res.data;
 
 		if (groupToUser){
@@ -36,7 +34,7 @@ export const getGroupUserList = (page, user) => {
 
 export const removeGroup = (page, name) => {
 	axios.delete(`http://127.0.0.1:9000/groups/${name}`).then(res => {
-		getGroupUserList(page.page.props.app.state.currentUser);
+		getGroupUserList(page.page.props.app.state.currentUser.username);
 	}).catch(err => {
 		console.log(err);
 	});
@@ -61,7 +59,7 @@ export const addGroup = (page, name) => {
 				page.setState({err: true});
 			} else {
 				alert("Group added!");
-				getGroupUserList(page, res.data.result);
+				getGroupUserList(page, res.data.result.username);
 				page.setState({err: false});
 			}
 		}).catch(error => {
@@ -81,7 +79,7 @@ export const addToGroup = (page, username, groupName) => {
 			alert("Student Added!");
 			page.setState({trig: this.state.trig + 1});
 		}
-		getGroupUserList(page.page.props.app.state.currentUser);
+		getGroupUserList(page.page.props.app.state.currentUser.username);
 	}).catch(err => {
 		console.log(err);
 	});

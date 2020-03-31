@@ -7,56 +7,61 @@ const {Group} = require("../models/group");
 const {User} = require("../models/user");
 const {ObjectID} = require("mongodb");
 
-router.post("/objectify", (req, res) => {
-	const user = req.body.user;
-	Group.find({name: {$in: user.groups}}).then(groups => {
-		if (!groups || groups.length === 0) {
-			res.send(null);
-		} else {
-			const groupToUsers = {};
+router.get("/objectify/:username", (req, res) => {
+	const username = req.params.username;
 
-			let groupCt = 0;
-			groups.map(group => {
-				const users = [];
+	User.findOne({username: username}).then(user => {
+		Group.find({name: {$in: user.groups}}).then(groups => {
+			if (!groups || groups.length === 0) {
+				res.send(null);
+			} else {
+				const groupToUsers = {};
 
-				User.findOne({username: group.owner}).then(prof => {
-					users.push(prof);
+				let groupCt = 0;
+				groups.map(group => {
+					const users = [];
 
-					const exec = () => {
-						groupToUsers[group.name] = users;
-						groupCt++;
+					User.findOne({username: group.owner}).then(prof => {
+						users.push(prof);
 
-						if (groupCt >= Object.keys(groups).length) {
-							res.send(groupToUsers);
-							res.end();
-						}
-					};
+						const exec = () => {
+							groupToUsers[group.name] = users;
+							groupCt++;
 
-					if (group.students.length === 0) {
-						exec();
-					} else {
-						let userCt = 0;
-						group.students.map(username => {
-							User.findOne({username: username}).then(stu => {
-								users.push(stu);
-								userCt++;
+							if (groupCt >= Object.keys(groups).length) {
+								res.send(groupToUsers);
+								res.end();
+							}
+						};
 
-								if (userCt >= group.students.length) {
-									exec();
-								}
+						if (group.students.length === 0) {
+							exec();
+						} else {
+							let userCt = 0;
+							group.students.map(username => {
+								User.findOne({username: username}).then(stu => {
+									users.push(stu);
+									userCt++;
+
+									if (userCt >= group.students.length) {
+										exec();
+									}
+								});
 							});
-						});
-					}
-				}).catch(err => {
-					console.log("OWNER DATA ERR USER NOT FOUND");
-					console.log(err);
-				});
+						}
+					}).catch(err => {
+						console.log("OWNER DATA ERR USER NOT FOUND");
+						console.log(err);
+					});
 
-			});
-		}
-	}).catch(error => {
-		console.log("group not found");
-	});
+				});
+			}
+		}).catch(error => {
+			console.log("group not found");
+		});
+	}).catch(err => {
+		console.log("given user DNE");
+	})
 });
 
 // Route to get all groups of this prof
