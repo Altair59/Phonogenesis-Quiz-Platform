@@ -63,7 +63,6 @@ export const addGroup = (page, name) => {
 				alert("Group added!");
 				getGroupUserList(page, res.data.result);
 				page.setState({err: false});
-				readCookie(page.props.app);
 			}
 		}).catch(error => {
 			console.log(error)

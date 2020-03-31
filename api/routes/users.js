@@ -39,7 +39,7 @@ router.get("/logout", (req, res) => {
 		if (error) {
 			res.status(500).send(error);
 		} else {
-			res.send()
+			res.send();
 		}
 	});
 });
@@ -55,7 +55,6 @@ router.get("/check-session", (req, res) => {
 
 // Route to add a new users
 router.post("/", (req, res) => {
-	console.log(req.body)
 	const user = new User({
 		name: req.body.name,
 		type: req.body.type,

@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
 import {removeGroup, addGroup, getGroupUserList, addToGroup} from "../actions/group";
-import {editUser, findUser} from "../actions/user";
+import {editUser, findUser, readCookie} from "../actions/user";
 
 
 import "./ProfGroupPage.css";
@@ -69,7 +69,6 @@ class ProfGroupPage extends React.Component {
 	createGroup = () => {
 		const name = document.getElementById("new-group-name-field").value;
 		addGroup(this, name);
-		this.forceUpdate();
 	};
 
 	removeGroup = (group) => {
@@ -93,8 +92,6 @@ class ProfGroupPage extends React.Component {
 	};
 
 	render() {
-		console.log(this.state);
-		const prof = this.props.app.state.currentUser;
 		return (
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
@@ -107,7 +104,7 @@ class ProfGroupPage extends React.Component {
 						<IconButton onClick={this.createGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
 					</Grid>
 					{
-						prof.groups.map((group) => {
+						Object.keys(this.state.g2u).sort().map((group) => {
 							if (this.state.g2u[group]) {
 								return <Grid item key={group}>
 									<Grid container spacing={2} direction="row" justify="flex-start"
