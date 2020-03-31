@@ -14,8 +14,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {removeGroup, addGroup, getGroupUserList, addToGroup} from "../actions/group";
-import {editUser, findUser, readCookie} from "../actions/user";
+import {removeGroup, addGroup, getGroupUserList, addToGroup, removeFromGroup} from "../actions/group";
+import {editUser, readCookie} from "../actions/user";
 
 
 import "./ProfGroupPage.css";
@@ -28,11 +28,9 @@ class ProfGroupPage extends React.Component {
 		this.state = {
 			newGroupName: '',
 			err: false,
-			trig: 0,
 			g2u: {}
 		};
-		console.log(this.props.app.state.currentUser);
-		getGroupUserList(this, this.props.app.state.currentUser);
+		getGroupUserList(this, this.props.app.state.currentUser.username);
 	}
 
 	addToGroup = (group) => {
@@ -42,26 +40,7 @@ class ProfGroupPage extends React.Component {
 	};
 
 	removeStudent = (group, user) => {
-		user.groups = user.groups.filter(e => e !== group.name);
-		const userInfo = {
-			name: user.name,
-			type: user.type,
-			username: user.username,
-			password: user.password,
-			email: user.email,
-			groups: user.groups,
-			quizzes: user.quizzes
-		};
-		editUser(this, user.username, userInfo);
-
-		group.students = group.students.filter(e => e !== user.username);
-		const groupInfo = {
-			name: group.name,
-			students: group.students,
-			owner: group.owner
-		};
-		//editGroup(this, group.name, groupInfo);
-
+		removeFromGroup(this, user, group);
 		this.forceUpdate();
 	};
 
@@ -72,22 +51,7 @@ class ProfGroupPage extends React.Component {
 	};
 
 	removeGroup = (group) => {
-		for (let i = 0; i < group.students.length; i++) {
-			const user = group.students[i];
-			if (user.type === "student" || user.type === "professor") {
-				const info = {
-					name: user.name,
-					type: user.type,
-					username: user.username,
-					password: user.password,
-					email: user.email,
-					groups: user.groups.filter(e => e !== group.name),
-					quizzes: user.quizzes
-				};
-				editUser(this, user.username, info);
-			}
-		}
-		removeGroup(this, group.name);
+		removeGroup(this, group);
 		this.forceUpdate();
 	};
 
@@ -135,7 +99,7 @@ class ProfGroupPage extends React.Component {
 																<TableCell>{stuObj.username}</TableCell>
 																<TableCell>
 																	<IconButton
-																		onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+																		onClick={this.removeStudent.bind(this, group, stuObj.username)}><DeleteIcon>Remove</DeleteIcon></IconButton>
 																</TableCell>
 															</TableRow>
 														}

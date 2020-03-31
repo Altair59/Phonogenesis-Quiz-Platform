@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import "./mainstyle.css"
 import mark from "./avatars/mark_avatar.jpg";
+import {readCookie, findUser} from "../actions/user";
 
 class ProfessorHome extends React.Component {
 	classes = makeStyles(theme => ({
@@ -27,13 +28,17 @@ class ProfessorHome extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.history.push("/professor");
+		this.state = {currentUser: this.props.app.state.currentUser};
+		findUser(this, this.props.app.state.currentUser.username);
 	}
+
+
 	render() {
-		let { app } = this.props;
-		const prof = app.state.currentUser;
+		const prof = this.state.currentUser;
+
 		return (
 			<div>
-				<TopBar app={app}/>
+				<TopBar history={this.props.history} app={this.props.app}/>
 				<div className="main-area">
 					<Avatar alt={prof.name} src={mark} className={this.classes.large}/>
 					<h1>{prof.name ? prof.name : "Anonymous"}</h1>

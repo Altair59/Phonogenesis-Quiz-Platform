@@ -18,23 +18,9 @@ export const getGroupUserList = (page, username) => {
 
 };
 
-// export const getGroups = (page) => {
-// 	axios.get(`http://127.0.0.1:9000/groups/prof/${page.props.app.state.currentUser.username}`).then(res => {
-// 		const groups = res.data;
-// 		groups.map((group) => {
-// 			const students = [];
-// 			group.students.map((stuName) => {
-// 				students.push(findUser(page, stuName));
-// 			});
-// 			group.students = students;
-// 		});
-// 		page.setState({groupsWithStuObj: groups, groupsWithStuName: res.data.groups})
-// 	})
-// };
-
 export const removeGroup = (page, name) => {
 	axios.delete(`http://127.0.0.1:9000/groups/${name}`).then(res => {
-		getGroupUserList(page.page.props.app.state.currentUser.username);
+		getGroupUserList(page, page.props.app.state.currentUser.username);
 	}).catch(err => {
 		console.log(err);
 	});
@@ -74,12 +60,27 @@ export const addToGroup = (page, username, groupName) => {
 		groupName: groupName
 	}).then(res => {
 		if (!res.data.result) {
-			alert("Student must be present and not enrolled in this group yet")
+			alert("Student must be present and not enrolled in this group yet");
 		} else {
-			alert("Student Added!");
-			page.setState({trig: this.state.trig + 1});
+			alert(`Student ${username} Added to group ${groupName}!`);
 		}
-		getGroupUserList(page.page.props.app.state.currentUser.username);
+		getGroupUserList(page, page.props.app.state.currentUser.username);
+	}).catch(err => {
+		console.log(err);
+	});
+};
+
+export const removeFromGroup = (page, username, groupName) => {
+	axios.patch("http://127.0.0.1:9000/groups/remove", {
+		studentName: username,
+		groupName: groupName
+	}).then(res => {
+		if (!res.data.result) {
+			alert("Student must be present and enrolled in this group yet");
+		} else {
+			alert(`Student ${username} Removed from group ${groupName}!`);
+		}
+		getGroupUserList(page, page.props.app.state.currentUser.username);
 	}).catch(err => {
 		console.log(err);
 	});

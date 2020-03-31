@@ -64,19 +64,6 @@ router.get("/objectify/:username", (req, res) => {
 	})
 });
 
-// Route to get all groups of this prof
-router.get("/prof/:name", (req, res) => {
-	const prof = req.params.name;
-	Group.find({owner: prof}).then(
-		groups => {
-			res.send(groups);
-		},
-		error => {
-			res.status(500).send(error); // server error
-		}
-	);
-});
-
 /// Route to get a group by their name
 router.get("/group/:name", (req, res) => {
 	const name = req.params.name;
@@ -84,20 +71,6 @@ router.get("/group/:name", (req, res) => {
 	Group.findOne({name: name}).then(group => {
 		if (!group) {
 			res.status(404).send(null);
-		} else {
-			res.send(group);
-		}
-	}).catch(error => {
-		res.status(500).send(null);
-	});
-});
-
-/// Check whether a group exists
-router.get("/group/check/:name", (req, res) => {
-	const name = req.params.name;
-	Group.findOne({name: name}).then(group => {
-		if (!group) {
-			res.send(null);
 		} else {
 			res.send(group);
 		}
@@ -132,15 +105,38 @@ router.post("/", (req, res) => {
 
 /// Route to remove a group by their name
 router.delete("/:name", (req, res) => {
-	const name = req.params.name;
-	Group.findOneAndRemove({name: name}).then(group => {
+	const groupName = req.params.name;
+	console.log(groupName)
+	Group.findOneAndDelete({name: groupName}).then(group => {
 		if (!group) {
-			res.status(404).send();
+			res.status(404).send({result: false});
 		} else {
-			res.send(group);
+			User.findOne({username: group.owner}).then(prof => {
+				prof.groups = prof.groups.filter(group => group !== groupName);
+				prof.save().then(savedProf => {
+						if (group.students.length === 0) {
+							res.send({result: true});
+						} else {
+							let studentCt = 0;
+							group.students.map(student => {
+								User.findOne({username: student}).then(stuObj => {
+									studentCt++;
+									stuObj.groups = stuObj.groups.filter(group => group !== groupName);
+									stuObj.save();
+									if (studentCt >= group.students.length) {
+										res.send({result: true});
+									}
+								})
+							})
+						}
+					}
+				)
+			}).catch(error => {
+				console.log(error)
+			});
 		}
 	}).catch(error => {
-		res.status(500).send();
+		res.status(502).send({result: false});
 	});
 });
 
@@ -148,14 +144,11 @@ router.delete("/:name", (req, res) => {
 router.patch("/add", (req, res) => {
 	const studentName = req.body.studentName;
 	const groupName = req.body.groupName;
-	console.log(studentName)
 	User.findOne({username: studentName}).then(student => {
 		if (!student) {
-			console.log("student dne");
 			res.send({result: false})
 		} else {
-			if (student.groups.includes(groupName)){
-				console.log("student already enrolled");
+			if (student.groups.includes(groupName)) {
 				res.send({result: false})
 			} else {
 				student.groups.push(groupName);
@@ -176,28 +169,38 @@ router.patch("/add", (req, res) => {
 	});
 });
 
-// Route to edit the properties of a group
-router.patch("/:name", (req, res) => {
-	const targetName = req.params.name;
-
-	const {name, students, owner} = req.body;
-
-	Group.findOne({name: targetName}).then(group => {
-		if (!group) {
-			res.status(404).send();
+// Route to remove a student from a group
+router.patch("/remove", (req, res) => {
+	const studentName = req.body.studentName;
+	const groupName = req.body.groupName;
+	User.findOne({username: studentName}).then(student => {
+		if (!student) {
+			console.log("student dne");
+			res.send({result: false})
 		} else {
-			group.name = name;
-			group.students = students;
-			group.owner = owner;
-
-			group.save().then(result => {
-				res.send(group);
-			}).catch(err => {
-				console.log(err);
-			});
+			if (!student.groups.includes(groupName)) {
+				console.log("student not enrolled");
+				res.send({result: false})
+			} else {
+				student.groups = student.groups.filter(function (group) {
+					return group !== groupName
+				});
+				student.save().then(saveStudent => {
+					Group.findOne({name: groupName}).then(group => {
+						group.students = group.students.filter(function (student) {
+							return student !== studentName
+						});
+						group.save().then(saveGroup => {
+							res.send({result: true});
+						})
+					}).catch(error => {
+						console.log(error);
+					});
+				});
+			}
 		}
 	}).catch(error => {
-		res.status(400).send();
+		console.log(error);
 	});
 });
 

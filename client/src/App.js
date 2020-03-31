@@ -18,7 +18,7 @@ import {readCookie} from "./actions/user";
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {currentUser: null};
 	}
 
 	componentDidMount() {
