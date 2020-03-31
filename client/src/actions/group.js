@@ -1,4 +1,4 @@
-import {findUser, editUser} from "./user";
+import {findUser, editUser, readCookie} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
@@ -64,6 +64,7 @@ export const addGroup = (page, name) => {
 				alert("Group added!");
 				getGroupUserList(page, res.data.result);
 				page.setState({err: false});
+				readCookie(page.props.app);
 			}
 		}).catch(error => {
 			console.log(error)
@@ -71,54 +72,19 @@ export const addGroup = (page, name) => {
 	}
 };
 
-export const editGroup = (page, name, info) => {
-	axios.patch(`http://127.0.0.1:9000/groups/${name}`, info).then(res => {
+export const addToGroup = (page, username, groupName) => {
+	axios.patch("http://127.0.0.1:9000/groups/add", {
+		username: username,
+		groupName: groupName
+	}).then(res => {
+		if (!res.data.result) {
+			alert("Student must be present and not enrolled in this group yet")
+		} else {
+			alert("Student Added!");
+			page.setState({trig: this.state.trig + 1});
+		}
 		getGroupUserList(page.page.props.app.state.currentUser);
 	}).catch(err => {
 		console.log(err);
 	});
-};
-
-export const addToGroup = (page, username, groupName) => {
-	const group = findUGroup(groupName);
-	findUser(page, username);
-	const user = page.state.newUser;
-
-	if (!user) {
-		alert("Student does not exist!");
-		return;
-	}
-
-	if (user.type !== "student") {
-		alert("Only student can be invited to group!");
-		return;
-	}
-
-	if (user.groups.includes(groupName)) {
-		alert("Student already in group!");
-		return;
-	}
-
-	user.groups.push(groupName);
-
-	group.students.push(username);
-	const groupInfo = {
-		name: group.name,
-		students: group.students,
-		owner: group.owner
-	};
-	editGroup(this, group.name, groupInfo);
-
-	alert("Student Added!");
-	this.setState({trig: this.state.trig + 1});
-};
-
-
-export const findUGroup = (name) => {
-	axios.get(`http://127.0.0.1:9000/groups/group/${name}`).then(res => {
-		console.log(res.data)
-		return "1";
-	}).catch(err => {
-		console.log("failed to find group")
-	})
 };

@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {removeGroup, addGroup, editGroup, findUGroup, getGroupUserList} from "../actions/group";
+import {removeGroup, addGroup, editGroup, findUGroup, getGroupUserList, addToGroup} from "../actions/group";
 import {editUser, findUser} from "../actions/user";
 
 
@@ -28,7 +28,8 @@ class ProfGroupPage extends React.Component {
 		this.state = {
 			newGroupName: '',
 			err: false,
-			trig: 0
+			trig: 0,
+			g2u: {}
 		};
 		console.log(this.props.app.state.currentUser);
 		getGroupUserList(this, this.props.app.state.currentUser);
@@ -36,6 +37,7 @@ class ProfGroupPage extends React.Component {
 
 	addToGroup = (group) => {
 		const username = document.getElementById("add-input-".concat(group.name)).value;
+		addToGroup(page, username, group);
 		this.forceUpdate();
 	};
 
@@ -106,7 +108,7 @@ class ProfGroupPage extends React.Component {
 					</Grid>
 					{
 						prof.groups.map((group) => {
-							if (this.state[group]) {
+							if (this.state.g2u[group]) {
 								return <Grid item key={group}>
 									<Grid container spacing={2} direction="row" justify="flex-start"
 									      alignItems="center">
@@ -128,17 +130,19 @@ class ProfGroupPage extends React.Component {
 											</TableHead>
 											<TableBody>
 												{
-													this.state[group].map((stuObj) => (
-														<TableRow key={stuObj.username}>
-															<TableCell>{stuObj.name}</TableCell>
-															<TableCell>{stuObj.email}</TableCell>
-															<TableCell>{stuObj.username}</TableCell>
-															<TableCell>
-																<IconButton
-																	onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-															</TableCell>
-														</TableRow>
-													))
+													this.state.g2u[group].map((stuObj, index) => {
+														if (index > 0) {
+															return <TableRow key={stuObj.username}>
+																<TableCell>{stuObj.name}</TableCell>
+																<TableCell>{stuObj.email}</TableCell>
+																<TableCell>{stuObj.username}</TableCell>
+																<TableCell>
+																	<IconButton
+																		onClick={this.removeStudent.bind(this, group, stuObj)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+																</TableCell>
+															</TableRow>
+														}
+													})
 												}
 											</TableBody>
 										</Table>

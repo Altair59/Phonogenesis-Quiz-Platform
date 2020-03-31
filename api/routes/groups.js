@@ -54,7 +54,6 @@ router.post("/objectify", (req, res) => {
 				});
 
 			});
-
 		}
 	}).catch(error => {
 		console.log("group not found");
@@ -138,6 +137,35 @@ router.delete("/:name", (req, res) => {
 		}
 	}).catch(error => {
 		res.status(500).send();
+	});
+});
+
+// route to add a student to a group
+router.patch("/add", (req, res) => {
+	const studentName = req.body.studentName;
+	const groupName = req.body.groupName;
+	User.findOne({username: studentName}).then(student => {
+		if (!student) {
+			res.send({result: false})
+		} else {
+			if (student.groups.includes(groupName)){
+				res.send({result: false})
+			} else {
+				student.groups.push(groupName);
+				student.save().then(saveStudent => {
+					Group.findOne({name: groupName}).then(group => {
+						group.students.push(studentName);
+						group.save().then(saveGroup => {
+							res.send({result: true});
+						})
+					}).catch(error => {
+						console.log(error);
+					});
+				});
+			}
+		}
+	}).catch(error => {
+		console.log(error);
 	});
 });
 
