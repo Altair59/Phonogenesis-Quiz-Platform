@@ -143,11 +143,14 @@ router.delete("/:name", (req, res) => {
 router.patch("/add", (req, res) => {
 	const studentName = req.body.studentName;
 	const groupName = req.body.groupName;
+	console.log(studentName)
 	User.findOne({username: studentName}).then(student => {
 		if (!student) {
+			console.log("student dne");
 			res.send({result: false})
 		} else {
 			if (student.groups.includes(groupName)){
+				console.log("student already enrolled");
 				res.send({result: false})
 			} else {
 				student.groups.push(groupName);

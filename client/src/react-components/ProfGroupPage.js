@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js"
 import {withRouter} from "react-router-dom"
-import {removeGroup, addGroup, editGroup, findUGroup, getGroupUserList, addToGroup} from "../actions/group";
+import {removeGroup, addGroup, getGroupUserList, addToGroup} from "../actions/group";
 import {editUser, findUser} from "../actions/user";
 
 
@@ -36,8 +36,8 @@ class ProfGroupPage extends React.Component {
 	}
 
 	addToGroup = (group) => {
-		const username = document.getElementById("add-input-".concat(group.name)).value;
-		addToGroup(page, username, group);
+		const username = document.getElementById("add-input-".concat(group)).value;
+		addToGroup(this, username, group);
 		this.forceUpdate();
 	};
 
@@ -60,7 +60,7 @@ class ProfGroupPage extends React.Component {
 			students: group.students,
 			owner: group.owner
 		};
-		editGroup(this, group.name, groupInfo);
+		//editGroup(this, group.name, groupInfo);
 
 		this.forceUpdate();
 	};

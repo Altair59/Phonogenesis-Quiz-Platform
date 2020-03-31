@@ -73,7 +73,7 @@ export const addGroup = (page, name) => {
 
 export const addToGroup = (page, username, groupName) => {
 	axios.patch("http://127.0.0.1:9000/groups/add", {
-		username: username,
+		studentName: username,
 		groupName: groupName
 	}).then(res => {
 		if (!res.data.result) {
