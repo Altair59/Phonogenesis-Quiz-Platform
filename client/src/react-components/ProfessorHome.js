@@ -1,4 +1,4 @@
-                                            import React from "react";
+import React from "react";
 import {withRouter} from "react-router-dom"
 import TopBar from "./TopBar.js"
 import Avatar from '@material-ui/core/Avatar';
@@ -26,6 +26,7 @@ class ProfessorHome extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.props.history.push("/professor");
 	}
 	render() {
 		let { app } = this.props;

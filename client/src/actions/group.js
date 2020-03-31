@@ -8,7 +8,6 @@ export const getGroupUserList = (page, user) => {
 		user: user
 	}).then(res => {
 		const groupToUser = res.data;
-		console.log(groupToUser);
 
 		if (groupToUser){
 			page.setState({g2u: groupToUser});

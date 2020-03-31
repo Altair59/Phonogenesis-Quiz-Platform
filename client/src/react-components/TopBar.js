@@ -69,7 +69,8 @@ class TopBar extends React.Component {
 					break;
 
 				case "Log Out":
-					logout(this.props.app);
+					logout();
+					this.props.app.setState({currentUser: null});
 					destPath = "/login";
 					break;
 
