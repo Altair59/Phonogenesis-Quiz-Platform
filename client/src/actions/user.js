@@ -29,10 +29,10 @@ export const login = (loginPage, loginProps) => {
 
 };
 
-export const logout = (app) => {
+export const logout = () => {
 	const url = "http://127.0.0.1:9000/users/logout";
 	axios.get(url,).then(res => {
-		app.setState({currentUser: null})
+
 	}).catch(error => {
 		console.log(error)
 	})

@@ -27,7 +27,6 @@ router.post("/objectify", (req, res) => {
 						groupCt++;
 
 						if (groupCt >= Object.keys(groups).length) {
-							console.log(groupToUsers);
 							res.send(groupToUsers);
 							res.end();
 						}

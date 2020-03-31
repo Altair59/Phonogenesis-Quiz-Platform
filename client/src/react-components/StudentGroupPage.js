@@ -17,7 +17,9 @@ import {getGroupUserList} from "../actions/group";
 class StudentGroupPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			g2u: {}
+		};
 		getGroupUserList(this, this.props.app.state.currentUser);
 	}
 
@@ -33,7 +35,7 @@ class StudentGroupPage extends React.Component {
 				<div id="groupsList">
 					<Grid container spacing={3} justify="flex-start" alignItems="flex-start">{
 						student.groups.map(group => {
-							if (this.state[group]) {
+							if (this.state.g2u[group]) {
 								return <Grid item key={group}>
 									<Paper className="groupItem">
 										<TableContainer component={Paper}><Table aria-label={group}>
@@ -44,7 +46,7 @@ class StudentGroupPage extends React.Component {
 												</TableRow>
 											</TableHead>
 											<TableBody>{
-												this.state[group].map((userObj, index) => {
+												this.state.g2u[group].map((userObj, index) => {
 													if (index === 0) {
 														return <TableRow key={userObj.username}>
 															<TableCell><span
