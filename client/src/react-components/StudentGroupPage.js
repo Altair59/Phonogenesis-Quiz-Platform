@@ -20,12 +20,10 @@ class StudentGroupPage extends React.Component {
 		this.state = {
 			g2u: {}
 		};
-		getGroupUserList(this, this.props.app.state.currentUser);
+		getGroupUserList(this, this.props.app.state.currentUser.username);
 	}
 
 	render() {
-		const student = this.props.app.state.currentUser;
-
 		return (
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
@@ -34,10 +32,12 @@ class StudentGroupPage extends React.Component {
 				<Divider/>
 				<div id="groupsList">
 					<Grid container spacing={3} justify="flex-start" alignItems="flex-start">{
-						student.groups.map(group => {
+						Object.keys(this.state.g2u).sort().map(group => {
 							if (this.state.g2u[group]) {
 								return <Grid item key={group}>
 									<Paper className="groupItem">
+										<h3 id={"groupName"}>{group}</h3>
+										<br/>
 										<TableContainer component={Paper}><Table aria-label={group}>
 											<TableHead>
 												<TableRow>
