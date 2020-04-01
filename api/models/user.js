@@ -152,6 +152,5 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 };
 
 const User = mongoose.model('User', UserSchema);
-const Quiz = mongoose.model('Quiz', QuizSchema);
 
-module.exports = {User, Quiz};
+module.exports = {User};
