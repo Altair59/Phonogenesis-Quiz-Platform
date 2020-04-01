@@ -48,11 +48,3 @@ export const distributeQuiz = (page, groupName, quizObj) => {
 		console.log(error);
 	});
 };
-
-export const getRule = (page, ruleText) => {
-	axios.get(`http://127.0.0.1:9000/quiz/rule/getRule/${ruleText}`).then(res => {
-		page.setState({currentRule: res.data});
-	}).catch(error => {
-		console.log(error);
-	})
-};
