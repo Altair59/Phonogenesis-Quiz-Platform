@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {getGroupUserList} from "../actions/group";
-import {getRuleList, checkQuizExist, getRule, distributeQuiz} from "../actions/quiz";
+import {getRuleList, distributeQuiz} from "../actions/quiz";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -58,9 +58,8 @@ class QuizGenerator extends React.Component {
 			const canPhoneme = document.getElementById("phoneme-check-".concat(i.toString())).checked;
 			const maxCADT = document.getElementById("max-cadt-sel-".concat(i.toString())).value;
 			const ruleTxt = document.getElementById("rule-sel-".concat(i.toString())).value;
-			getRule(this, ruleTxt);
 			const newQuestion = {
-				rule: this.state.currentRule,
+				rule: ruleTxt,
 				size: 20,
 				canUR: canUR,
 				canPhoneme: canPhoneme,
