@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);
-const {User, Quiz} = require('../models/user');
+const {User} = require('../models/user');
 const {Rule} = require('../models/rule');
 const {Group} = require('../models/group');
 
@@ -24,60 +24,45 @@ router.get('/rule/getRule/:text', (req, res) => {
 	});
 });
 
-router.get('/getQuiz/:name', (req,res) => {
-	Quiz.findOne({name: req.params.name}).then(quiz => {
-		if (quiz){
-			res.send(quiz);
-		} else {
-			res.send(null);
-		}
-	}).catch(error => {
-		console.log(error);
-	})
-});
-
-router.post('/makeQuiz', (req, res) =>{
-	const newQuiz = new Quiz({
+router.post('/makeQuiz', (req, res) => {
+	const newQuiz = {
 		timeLim: req.body.timeLim,
 		name: req.body.name,
 		pastResult: req.body.pastResult,
 		questions: req.body.questions
-	});
+	};
 	const groupName = req.body.groupName;
-	newQuiz.save().then(savedQuiz => {
-		Group.findOne({name: groupName}).then(group => {
-			if (!group) {
-				res.status(404).send({result: false});
-			} else {
-				User.findOne({username: group.owner}).then(prof => {
-					prof.quizzes.push(newQuiz);
-					prof.save().then(savedProf => {
-							if (group.students.length === 0) {
-								res.send({result: true});
-							} else {
-								let studentCt = 0;
-								group.students.map(student => {
-									User.findOne({username: student}).then(stuObj => {
-										studentCt++;
-										stuObj.quizzes.push(newQuiz);
-										stuObj.save();
-										if (studentCt >= group.students.length) {
-											res.send({result: true});
-										}
-									})
+	Group.findOne({name: groupName}).then(group => {
+		if (!group) {
+			res.status(404).send({result: false});
+		} else {
+			User.findOne({username: group.owner}).then(prof => {
+				prof.quizzes.push(newQuiz);
+				prof.save().then(savedProf => {
+						if (group.students.length === 0) {
+							res.send({result: true});
+						} else {
+							let studentCt = 0;
+							group.students.map(student => {
+								User.findOne({username: student}).then(stuObj => {
+									studentCt++;
+									stuObj.quizzes.push(newQuiz);
+									stuObj.save();
+									if (studentCt >= group.students.length) {
+										res.send({result: true});
+									}
 								})
-							}
+							})
 						}
-					)
-				}).catch(error => {
-					console.log(error)
-				});
-			}
-		}).catch(error => {
-			res.status(502).send({result: false});
-		});
+					}
+				)
+			}).catch(error => {
+				console.log(error);
+				res.send({result: false});
+			});
+		}
 	}).catch(error => {
-		console.log(error);
+		res.status(502).send({result: false});
 	});
 });
 

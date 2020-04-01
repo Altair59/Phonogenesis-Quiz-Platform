@@ -18,7 +18,6 @@ class QuizGenerator extends React.Component {
 		super(props);
 		this.state = {
 			timeErr: "",
-			nameErr: "",
 			qCount: 0,
 			g2u: {},
 			rules: []
@@ -51,14 +50,6 @@ class QuizGenerator extends React.Component {
 		}
 
 		const quizName = document.getElementById("quiz-name").value;
-		checkQuizExist(this, quizName);
-		if (this.state.duplicateName) {
-			alert("Quiz name must be unique! Current quiz name already exists!");
-			this.setState({nameErr: "name not unique"});
-			return;
-		} else {
-			this.setState({nameErr: ""});
-		}
 
 		const qList = [];
 
@@ -108,8 +99,7 @@ class QuizGenerator extends React.Component {
 						<Grid container direction="row" justify="center" alignItems="center" className="qgblock"
 						      spacing={4}>
 							<Grid item>
-								<TextField id="quiz-name" label="Quiz Name" variant="outlined"
-								           error={this.state.nameErr !== ""} helperText={this.state.nameErr}/>
+								<TextField id="quiz-name" label="Quiz Name" variant="outlined"/>
 							</Grid>
 							<Grid item>
 								<TextField id="quiz-time" type="number" variant="outlined"
