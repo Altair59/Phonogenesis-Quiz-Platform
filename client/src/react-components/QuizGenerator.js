@@ -81,7 +81,6 @@ class QuizGenerator extends React.Component {
 		document.getElementById("quiz-name").value = "";
 		document.getElementById("quiz-time").value = 0;
 		this.forceUpdate();
-		alert("Quiz created and sent to all group members!");
 	};
 
 	createQuestionBlock = () => {

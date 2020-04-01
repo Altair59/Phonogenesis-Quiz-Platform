@@ -43,6 +43,8 @@ export const distributeQuiz = (page, groupName, quizObj) => {
 	}).then(res => {
 		if (res.data.result !== true){
 			alert("Failed to distribute quiz");
+		} else {
+			alert("Quiz created and sent to all group members!");
 		}
 	}).catch(error => {
 		console.log(error);

@@ -3,7 +3,7 @@ const {User} = require("../models/user");
 const {Rule} = require('../models/rule');
 const {Group} = require("../models/group");
 const log = console.log;
-const {ruleList} = require('../../client/src/react-components/QuizData');
+const {ruleList} = require('./default_rule');
 
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/PhonogenesisDB';
 mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
