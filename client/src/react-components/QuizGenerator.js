@@ -7,8 +7,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {ruleList, Question, Quiz, quizList, getRuleByName, getQuizByName} from "./QuizData";
-import {groups} from "./User";
+import {getGroupUserList} from "../actions/group";
+import {getRuleList, checkQuizExist, getRule, distributeQuiz} from "../actions/quiz";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -19,8 +19,12 @@ class QuizGenerator extends React.Component {
 		this.state = {
 			timeErr: "",
 			nameErr: "",
-			qCount: 0
+			qCount: 0,
+			g2u: {},
+			rules: []
 		};
+		getGroupUserList(this, this.props.app.state.currentUser.username);
+		getRuleList(this);
 	};
 
 	makeQuiz = () => {
@@ -47,8 +51,8 @@ class QuizGenerator extends React.Component {
 		}
 
 		const quizName = document.getElementById("quiz-name").value;
-
-		if (getQuizByName(quizName)) {
+		checkQuizExist(this, quizName);
+		if (this.state.duplicateName) {
 			alert("Quiz name must be unique! Current quiz name already exists!");
 			this.setState({nameErr: "name not unique"});
 			return;
@@ -63,18 +67,24 @@ class QuizGenerator extends React.Component {
 			const canPhoneme = document.getElementById("phoneme-check-".concat(i.toString())).checked;
 			const maxCADT = document.getElementById("max-cadt-sel-".concat(i.toString())).value;
 			const ruleTxt = document.getElementById("rule-sel-".concat(i.toString())).value;
-
-			qList.push(new Question(getRuleByName(ruleTxt), canUR, canPhoneme, maxCADT));
+			getRule(this, ruleTxt);
+			const newQuestion = {
+				rule: this.state.currentRule,
+				size: 20,
+				canUR: canUR,
+				canPhoneme: canPhoneme,
+				maxCADT: maxCADT
+			};
+			qList.push(newQuestion);
 		}
 
-		const new_quiz = new Quiz(qList, quizTime, targetGroup, quizName);
-		quizList.push(new_quiz);
+		distributeQuiz(this, targetGroup, {
+			timeLim: quizTime,
+			name: quizName,
+			pastResult: null,
+			questions: qList
+		});
 
-		const targetUsers = groups[targetGroup];
-
-		for (let i = 0; i < targetUsers.length; i++) {
-			targetUsers[i].quizzes.push(new_quiz);
-		}
 
 		this.setState({qCount: 0});
 		document.getElementById("quiz-name").value = "";
@@ -109,7 +119,7 @@ class QuizGenerator extends React.Component {
 							<Grid item>
 								<h4>Target Group: &nbsp;</h4>
 								<NativeSelect id="group-sel" label={"ddd"}>
-									{Object.keys(groups).map((group) => (
+									{Object.keys(this.state.g2u).map((group) => (
 										<option key={group} value={group}>{group}</option>
 									))}
 								</NativeSelect>
@@ -145,7 +155,7 @@ class QuizGenerator extends React.Component {
 									</Grid>
 									<Grid item>
 										<NativeSelect id={"rule-sel-".concat(i.toString())}>
-											{ruleList.map((rule, j) => (
+											{this.state.rules.map((rule, j) => (
 												<option key={j} value={rule.ruleTxt}>{rule.ruleTxt}</option>
 											))}
 										</NativeSelect>
@@ -158,7 +168,7 @@ class QuizGenerator extends React.Component {
 						<hr/>
 					</Grid>
 					<Grid item>
-						<Button variant="contained" color="primary" onClick={this.makeQuiz}>Send Quiz</Button>
+						<Button variant="contained" color="primary" onClick={this.makeQuiz.bind(this)}>Send Quiz</Button>
 					</Grid>
 				</Grid>
 			</div>

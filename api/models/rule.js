@@ -30,7 +30,8 @@ const RuleSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 1,
-		trim: true
+		trim: true,
+		unique: true
 	},
 	gloss: {
 		type: [String],
@@ -50,4 +51,4 @@ const RuleSchema = new mongoose.Schema({
 });
 
 const Rule = mongoose.model("Rule", RuleSchema);
-module.exports = {Rule};
+module.exports = {RuleSchema, Rule};

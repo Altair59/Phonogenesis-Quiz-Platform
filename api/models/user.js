@@ -1,47 +1,9 @@
 'use strict';
-
+const {RuleSchema} = require('./rule');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
-const RuleSchema = new mongoose.Schema({
-	templates: {
-		type: [String],
-		required: true
-	},
-	poi: {
-		type: String,
-		required: true,
-		minlength: 1
-	},
-	ruleType: {
-		type: String,
-		required: true,
-		minlength: 1
-	},
-	phoneme: {
-		type: String,
-		required: true,
-		minlength: 1
-	},
-	ruleTxt: {
-		type: String,
-		required: true,
-		minlength: 1
-	},
-	gloss: {
-		type: [String],
-		required: true
-	},
-	SR: {
-		type: [String],
-		required: true
-	},
-	UR: {
-		type: [String],
-		required: true
-	},
-});
 
 const PastResultSchema = new mongoose.Schema({
 	score: {
@@ -190,5 +152,6 @@ UserSchema.statics.findByUsernamePassword = function(username, password) {
 };
 
 const User = mongoose.model('User', UserSchema);
+const Quiz = mongoose.model('Quiz', QuizSchema);
 
-module.exports = {User};
+module.exports = {User, Quiz};

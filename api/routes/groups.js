@@ -106,7 +106,6 @@ router.post("/", (req, res) => {
 /// Route to remove a group by their name
 router.delete("/:name", (req, res) => {
 	const groupName = req.params.name;
-	console.log(groupName)
 	Group.findOneAndDelete({name: groupName}).then(group => {
 		if (!group) {
 			res.status(404).send({result: false});
