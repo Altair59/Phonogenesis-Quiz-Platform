@@ -61,9 +61,11 @@ class QuizTaker extends React.Component {
 	onSubmitAnswer = (e) => {
 		const quiz = this.state.quiz;
 		const choice = this.state.choices[e.currentTarget.id];
+		let realTimeScore = this.state.score;
 
 		if (choice === quiz.questions[this.state.questionIndex].rule.ruleTxt) {
 			this.setState({score: this.state.score + 1});
+			realTimeScore++;
 		}
 
 		const newIndex = this.state.questionIndex + 1;
@@ -76,7 +78,7 @@ class QuizTaker extends React.Component {
 
 		if (newIndex >= quiz.questions.length){
 			const quizResult = {
-				score: this.state.score,
+				score: realTimeScore,
 				answers: this.state.studentAnswers.concat(choice),
 				timeStamp: this.getTimeStamp()
 			};
@@ -110,7 +112,6 @@ class QuizTaker extends React.Component {
 		const quiz = this.state.quiz;
 		const size = quiz.questions.length;
 		const index = this.state.questionIndex;
-		const score = this.state.score;
 		const choices = this.state.choices;
 		const qKey = this.state.qKey;
 		const currQuestion = quiz.questions[index];
@@ -152,6 +153,13 @@ class QuizTaker extends React.Component {
 				</div>
 			);
 		} else {
+			let score;
+			if (isActive){
+				score = this.state.score;
+			} else {
+				score = this.state.quizResult.score;
+			}
+
 			const displayAns = this.state.quizResult.answers;
 
 			return (

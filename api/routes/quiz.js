@@ -1,5 +1,3 @@
-import {ruleList} from "../../client/src/react-components/QuizData";
-
 const express = require('express');
 const router = express.Router();
 
@@ -8,6 +6,7 @@ mongoose.set('useFindAndModify', false);
 const {User} = require('../models/user');
 const {Rule} = require('../models/rule');
 const {Group} = require('../models/group');
+const {Quiz} = require('../models/quiz');
 
 router.get('/rule', (req, res) => {
 	Rule.find().then(result => {
@@ -31,47 +30,50 @@ router.post('/makeQuiz', (req, res) => {
 	let questionCt = 0;
 	questions.map(question => {
 		Rule.find({ruleTxt: question.rule}).then(rules => {
-			question.rule = rules[Math.random() * rules.length];
+			question.rule = rules[Math.floor(Math.random() * rules.length)];
+
 			questionCt++;
-			if (questionCt >= questions.length){
+			if (questionCt >= questions.length) {
 				const newQuiz = {
 					timeLim: req.body.timeLim,
 					name: req.body.name,
 					pastResult: req.body.pastResult,
 					questions: questions
 				};
-				const groupName = req.body.groupName;
-				Group.findOne({name: groupName}).then(group => {
-					if (!group) {
-						res.status(404).send({result: false});
-					} else {
-						User.findOne({username: group.owner}).then(prof => {
-							prof.quizzes.push(newQuiz);
-							prof.save().then(savedProf => {
-									if (group.students.length === 0) {
-										res.send({result: true});
-									} else {
-										let studentCt = 0;
-										group.students.map(student => {
-											User.findOne({username: student}).then(stuObj => {
-												studentCt++;
-												stuObj.quizzes.push(newQuiz);
-												stuObj.save();
-												if (studentCt >= group.students.length) {
-													res.send({result: true});
-												}
-											})
+
+				const quizModel = new Quiz(newQuiz);
+				quizModel.save().then(rr => {
+					const groupName = req.body.groupName;
+					Group.findOne({name: groupName}).then(group => {
+						if (!group) {
+							res.status(404).send({result: false});
+						} else {
+							User.findOne({username: group.owner}).then(prof => {
+								prof.quizzes.push(newQuiz);
+								prof.save();
+								if (group.students.length === 0) {
+									res.send({result: true});
+								} else {
+									let studentCt = 0;
+									group.students.map(student => {
+										User.findOne({username: student}).then(stuObj => {
+											studentCt++;
+											stuObj.quizzes.push(newQuiz);
+											stuObj.save();
+											if (studentCt >= group.students.length) {
+												res.send({result: true});
+											}
 										})
-									}
+									})
 								}
-							)
-						}).catch(error => {
-							console.log(error);
-							res.send({result: false});
-						});
-					}
-				}).catch(error => {
-					res.status(502).send({result: false});
+							});
+						}
+					}).catch(error => {
+						res.status(502).send({result: false});
+					});
+				}).catch(err => {
+					console.log(err);
+					res.send({result: false});
 				});
 			}
 		});
@@ -84,12 +86,17 @@ router.post('/register', (req, res) => {
 	const pastResult = req.body.pastResult;
 
 	User.findOne({"username": username, "quizzes.name": quizName}).then(user => {
-		user.quizzes[0].pastResult = pastResult;
+		user.quizzes.map((quiz, index) => {
+			if (quiz.name === quizName){
+				user.quizzes[index].pastResult = pastResult;
+			}
+		});
+
 		user.save().then(result => {
 			res.send(user);
 		}).catch(err => {
 			console.log("Save failed");
-		})
+		});
 	}).catch(err => {
 		console.log("User not found");
 	})

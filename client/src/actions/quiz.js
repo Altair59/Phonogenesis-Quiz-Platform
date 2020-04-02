@@ -42,7 +42,7 @@ export const distributeQuiz = (page, groupName, quizObj) => {
 		groupName: groupName
 	}).then(res => {
 		if (res.data.result !== true){
-			alert("Failed to distribute quiz");
+			alert("Failed to distribute quiz. Quiz must have unique name.");
 		} else {
 			alert("Quiz created and sent to all group members!");
 		}
