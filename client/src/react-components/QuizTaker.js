@@ -22,7 +22,7 @@ class QuizTaker extends React.Component {
 		if (!quiz) {
 			this.state = {};
 			alert("No active/selected quiz! Redirecting back to your main page.");
-			this.props.history.push("/student");
+			this.props.history.push("/");
 		} else {
 			this.state = {
 				quiz: quiz,
@@ -96,9 +96,9 @@ class QuizTaker extends React.Component {
 		this.setState({questionIndex: this.state.quiz.questions.length});
 	};
 
-	onBackToMain = (e) => {
+	onBack = (e) => {
 		localStorage.clear();
-		this.props.history.push("/student");
+		this.props.history.goBack();
 	};
 
 	render() {
@@ -165,7 +165,7 @@ class QuizTaker extends React.Component {
 					<Grid container direction="column" justify="flex-start" alignItems="center">
 						<Grid item>
 							<h2>You've Completed the Quiz!<br/> Score: {score}/{size}</h2><br/>
-							<Button variant="contained" onClick={this.onBackToMain}>Back to Main Page</Button>
+							<Button variant="contained" onClick={this.onBack.bind(this)}>Back</Button>
 							<br/>
 						</Grid>
 

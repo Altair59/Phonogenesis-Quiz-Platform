@@ -7,36 +7,44 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import TextField from "@material-ui/core/TextField";
 import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
-import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
 
-//import "./ProfGroupPage.css";
+import {getUserQuizzes, getStudentQuizObj} from "../actions/quiz";
+import NativeSelect from "@material-ui/core/NativeSelect";
 
 class ProfessorCheckQuiz extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.props.history.push("/professor/quizresult");
 		this.state = {
 			showResult: false,
+			studentQuizObj: [],
 			currentQuizName: "",
-			pastQuizzes: {}
+			quizzes: []
 		};
+		getUserQuizzes(this, this.props.app.state.currentUser.username);
 	}
 
-	handleQuizSelect = (event) => {
-		this.setState({currentQuizName: event.target.value});
+	showDetails = (quiz) => {
+		localStorage.setItem("quiz", JSON.stringify(quiz));
+		localStorage.setItem("isActive", "0");
+		this.props.history.push("/quiztaker");
+	};
+
+	getStudentQuiz = () => {
+		const currentQuizName = document.getElementById("quiz-sel").value;
+		this.setState({currentQuizName: currentQuizName});
+		let groupName = "";
+		this.state.quizzes.map((quiz) => {
+			if (quiz.name === currentQuizName){
+				groupName = quiz.group;
+			}
+		});
+		getStudentQuizObj(this, groupName, currentQuizName);
 	};
 
 	render() {
@@ -45,78 +53,64 @@ class ProfessorCheckQuiz extends React.Component {
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 
-				<Grid container direction="column" spacing={4} justify="center" alignItems="center">
+				<Grid container direction="column" spacing={2} justify="center" alignItems="center">
 					<Grid item>
 						<Grid container direction="row" justify="center" alignItems="center" spacing={4}>
 							<Grid item>
 								<h4>Target Quiz: &nbsp;</h4>
-								<Select id="quiz-sel" label={"ddd"} onChange={this.handleQuizSelect}>
+								<NativeSelect id="quiz-sel">
 									{this.state.quizzes.map((quiz) => (
-										<MenuItem key={quiz.name} value={quiz.name}>{quiz.name}</MenuItem>
+										<option key={quiz.name} value={quiz.name}>{quiz.name}</option>
 									))}
-								</Select>
+								</NativeSelect>
 							</Grid>
 							<Grid item>
-								<Button variant="outlined" color="secondary" onClick={this.checkQuiz}>Check
+								<Button variant="outlined" color="secondary" onClick={this.getStudentQuiz.bind(this)}>Check
 									Results</Button>
 							</Grid>
 						</Grid>
 					</Grid>
 
-					{
-						Object.keys(this.state.pastQuizzes).sort().map((student) => {
-							if (this.state.g2u[student]) {
-								return <Grid item key={group}>
-									<Grid container spacing={2} direction="row" justify="flex-start"
-									      alignItems="center">
-										<Grid item><h2>{group}</h2></Grid>
-										<Grid item>
-											<IconButton onClick={this.removeGroup.bind(this, group)}>
-												<DeleteIcon>Remove</DeleteIcon></IconButton>
-										</Grid>
-									</Grid>
-									<TableContainer component={Paper}>
-										<Table aria-label="student table">
-											<TableHead>
-												<TableRow>
-													<TableCell>Name</TableCell>
-													<TableCell>Email</TableCell>
-													<TableCell>Username</TableCell>
-													<TableCell>Remove Student</TableCell>
-												</TableRow>
-											</TableHead>
-											<TableBody>
-												{
-													this.state.g2u[group].map((stuObj, index) => {
-														if (index > 0) {
-															return <TableRow key={stuObj.username}>
-																<TableCell>{stuObj.name}</TableCell>
-																<TableCell>{stuObj.email}</TableCell>
-																<TableCell>{stuObj.username}</TableCell>
-																<TableCell>
-																	<IconButton
-																		onClick={this.removeStudent.bind(this, group, stuObj.username)}><DeleteIcon>Remove</DeleteIcon></IconButton>
-																</TableCell>
-															</TableRow>
-														}
-													})
-												}
-											</TableBody>
-										</Table>
+					<Grid item>
+						<Grid container direction="row" justify="flex-start"
+						      alignItems="center">
+							<Grid item><h2>{this.state.currentQuizName}</h2></Grid>
+						</Grid>
 
-										<form>
-											<TextField id={"add-input-".concat(group)}
-											           label="Name">Name</TextField>
-											<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
-												Student</AddIcon></IconButton>
-										</form>
-									</TableContainer>
-								</Grid>
-							} else {
-								return null;
-							}
-						})
-					}
+						<TableContainer component={Paper}>
+							<Table aria-label="student-quiz table">
+								<TableHead>
+									<TableRow>
+										<TableCell>Name</TableCell>
+										<TableCell>Email</TableCell>
+										<TableCell>Username</TableCell>
+										<TableCell>Group</TableCell>
+										<TableCell>Score</TableCell>
+										<TableCell>Time Completed</TableCell>
+										<TableCell>Detailed Answer</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{
+										this.state.studentQuizObj.map((sqObj) => (
+											<TableRow key={sqObj.username}>
+												<TableCell>{sqObj.name}</TableCell>
+												<TableCell>{sqObj.email}</TableCell>
+												<TableCell>{sqObj.username}</TableCell>
+												<TableCell>{sqObj.group}</TableCell>
+												<TableCell>{sqObj.score}</TableCell>
+												<TableCell>{sqObj.timeStamp}</TableCell>
+												<TableCell>
+													<Button disabled={!sqObj.quiz}
+														onClick={this.showDetails.bind(this, sqObj.quiz)}>Detail</Button>
+												</TableCell>
+											</TableRow>
+										))
+									}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Grid>
 				</Grid>
 			</div>
 		)

@@ -108,7 +108,7 @@ class QuizGenerator extends React.Component {
 							</Grid>
 							<Grid item>
 								<h4>Target Group: &nbsp;</h4>
-								<NativeSelect id="group-sel" label={"ddd"}>
+								<NativeSelect id="group-sel">
 									{Object.keys(this.state.g2u).map((group) => (
 										<option key={group} value={group}>{group}</option>
 									))}

@@ -232,4 +232,25 @@ router.post("/message", (req, res) => {
 	});
 });
 
+router.get("/get/:name", (req,res) => {
+	const groupName = req.params.name;
+	Group.findOne({name: groupName}).then(group => {
+		const stuObjs = [];
+		let stuObjCt = 0;
+		group.students.map(studentName => {
+			User.findOne({username: studentName}).then(stuObj => {
+				stuObjs.push(stuObj);
+				stuObjCt++;
+				if (stuObjCt >= group.students.length){
+					res.send(stuObjs);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+		});
+	}).catch(error => {
+		console.log(error);
+	});
+});
+
 module.exports = router;

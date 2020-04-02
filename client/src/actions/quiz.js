@@ -53,3 +53,43 @@ export const distributeQuiz = (page, quizObj) => {
 		console.log(error);
 	});
 };
+
+export const getStudentQuizObj = (page, groupName, quizName) => {
+	axios.get(`http://127.0.0.1:9000/groups//get/${groupName}`).then(res => {
+		const studentQuizObjs = [];
+		const students = res.data;
+		students.map(student => {
+			student.quizzes.map(quiz => {
+				if (quiz.name === quizName){
+					if (quiz.pastResult){
+						const newStudentQuizObj = {
+							name: student.name,
+							email: student.email,
+							username: student.username,
+							group: groupName,
+							score: `${quiz.pastResult.score}/${quiz.questions.length}`,
+							timeStamp: quiz.pastResult.timeStamp,
+							quiz: quiz
+						};
+						studentQuizObjs.push(newStudentQuizObj);
+					} else {
+						const newStudentQuizObj = {
+							name: student.name,
+							email: student.email,
+							username: student.username,
+							group: groupName,
+							score: "Not Completed",
+							timeStamp: "Not Completed",
+							quiz: null
+						};
+						studentQuizObjs.push(newStudentQuizObj);
+					}
+				}
+			})
+		});
+		page.setState({studentQuizObj: studentQuizObjs});
+	}).catch(error => {
+		console.log(error);
+	})
+};
+
