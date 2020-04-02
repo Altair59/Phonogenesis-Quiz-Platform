@@ -15,6 +15,7 @@ import StudentGroupPage from "./react-components/StudentGroupPage"
 import SignUp from "./react-components/SignUp"
 import {readCookie} from "./actions/user";
 import StudentQuizzes from "./react-components/StudentQuizzes";
+import ProfessorCheckQuiz from "./react-components/ProfessorCheckQuiz";
 
 class App extends React.Component {
 	constructor(props) {
@@ -79,6 +80,8 @@ class App extends React.Component {
 													<GroupsPage history={history} app={this}/>)}/>
 												<Route exact path='/professor/makequiz' render={({history}) => (
 													<QuizGenerator history={history} app={this}/>)}/>
+												<Route exact path='/professor/quizresult' render={({history}) => (
+													<ProfessorCheckQuiz history={history} app={this}/>)}/>
 												<Route exact path='/quiztaker' render={({history}) => (
 													<QuizTaker history={history} app={this}/>)}/>
 												<Route render={({history}) => {
