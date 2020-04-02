@@ -4,29 +4,31 @@ import Grid from "@material-ui/core/Grid"
 import TopBar from "./TopBar.js"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
-import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Typography from "@material-ui/core/Typography";
+import {deleteMessage, findUser} from "../actions/user";
 
 class StudentMain extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.history.push("/student");
-		this.state = {};
+		this.state = {currentUser: null};
+		findUser(this, this.props.app.state.currentUser.username);
 	}
 
-	onReview(quiz) {
-		localStorage.setItem("quiz", JSON.stringify(quiz));
-		localStorage.setItem("isActive", "0");
-		this.props.history.push("/quiztaker");
-	};
-
-	takeQuiz(quiz) {
-		localStorage.setItem("quiz", JSON.stringify(quiz));
-		localStorage.setItem("isActive", "1");
-		this.props.history.push("/quiztaker");
+	onDeleteMessage = (msg) => {
+		deleteMessage(this, this.state.currentUser.username, msg._id);
 	};
 
 	render() {
-		const student = this.props.app.state.currentUser;
+		if (this.state.currentUser === null){
+			return <div/>
+		}
+
+		const student = this.state.currentUser;
 
 		return (
 			<div>
@@ -38,49 +40,23 @@ class StudentMain extends React.Component {
 						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
 					</h3>
 					<br/>
-					<hr/>
+					<Divider/>
 					<br/>
-					<h2>Activity History</h2>
-					<div className="tileContainer">
-						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-							{student.quizzes.map((quiz, i) => {
-								if (quiz.pastResult) {
-									return (
-										<Grid item key={i}>
-											<Paper elevation={3}>
-												<h4>Quiz: {quiz.name}</h4>
-												<h4>Completed at {quiz.pastResult.timeStamp}</h4>
-												<h4>Last Score: {quiz.pastResult.score}/
-													{quiz.questions.length}</h4>
-												<Button onClick={this.onReview.bind(this, quiz)}>Review</Button>
-											</Paper>
-										</Grid>
-									);
-								} else {
-									return null;
-								}
-							})}
-						</Grid>
-					</div>
+					<h2>Income Messages</h2>
+					<br/>
+					<Grid container direction="column" justify="flex-start" alignItems="flex-start">
+						{student.messages.map((msg, index) => (
+							<Card key={index}>
+								<CardContent>
+									<h4>{msg.content}</h4>
+								</CardContent>
 
-					<br/>
-					<hr/>
-					<br/>
-					<h2>Pending Quizzes</h2>
-					<div className="tileContainer">
-						<Grid container spacing={3} justify="flex-start" alignItems="flex-start">
-							{student.quizzes.map((quiz, i) => {
-								if (!quiz.pastResult) {
-									return (<Grid item key={i}>
-										<Button onClick={this.takeQuiz.bind(this, quiz)}>Take
-											Quiz: {quiz.name}</Button>
-									</Grid>);
-								} else {
-									return null;
-								}
-							})}
-						</Grid>
-					</div>
+								<CardActions>
+									<Button onClick={this.onDeleteMessage.bind(this, msg)} size="small">remove</Button>
+								</CardActions>
+							</Card>
+						))}
+					</Grid>
 				</div>
 			</div>
 		);

@@ -32,24 +32,24 @@ class ProfGroupPage extends React.Component {
 		getGroupUserList(this, this.props.app.state.currentUser.username);
 	}
 
-	addToGroup = (group) => {
+	onAddToGroup = (group) => {
 		const username = document.getElementById("add-input-".concat(group)).value;
 		addToGroup(this, username, group);
 		this.forceUpdate();
 	};
 
-	removeStudent = (group, user) => {
+	onRemoveStudent = (group, user) => {
 		removeFromGroup(this, user, group);
 		this.forceUpdate();
 	};
 
 
-	createGroup = () => {
+	onCreateGroup = () => {
 		const name = document.getElementById("new-group-name-field").value;
 		addGroup(this, name);
 	};
 
-	removeGroup = (group) => {
+	onRemoveGroup = (group) => {
 		removeGroup(this, group);
 		this.forceUpdate();
 	};
@@ -64,7 +64,7 @@ class ProfGroupPage extends React.Component {
 						<TextField id="new-group-name-field" label="Name" error={this.state.err}
 						           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
 
-						<IconButton onClick={this.createGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
+						<IconButton onClick={this.onCreateGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
 					</Grid>
 					{
 						Object.keys(this.state.g2u).sort().map((group) => {
@@ -74,7 +74,7 @@ class ProfGroupPage extends React.Component {
 									      alignItems="center">
 										<Grid item><h2>{group}</h2></Grid>
 										<Grid item>
-											<IconButton onClick={this.removeGroup.bind(this, group)}>
+											<IconButton onClick={this.onRemoveGroup.bind(this, group)}>
 												<DeleteIcon>Remove</DeleteIcon></IconButton>
 										</Grid>
 									</Grid>
@@ -98,7 +98,7 @@ class ProfGroupPage extends React.Component {
 																<TableCell>{stuObj.username}</TableCell>
 																<TableCell>
 																	<IconButton
-																		onClick={this.removeStudent.bind(this, group, stuObj.username)}><DeleteIcon>Remove</DeleteIcon></IconButton>
+																		onClick={this.onRemoveStudent.bind(this, group, stuObj.username)}><DeleteIcon>Remove</DeleteIcon></IconButton>
 																</TableCell>
 															</TableRow>
 														}
@@ -110,7 +110,7 @@ class ProfGroupPage extends React.Component {
 										<form>
 											<TextField id={"add-input-".concat(group)}
 											           label="Name">Name</TextField>
-											<IconButton onClick={this.addToGroup.bind(this, group)}><AddIcon>Add
+											<IconButton onClick={this.onAddToGroup.bind(this, group)}><AddIcon>Add
 												Student</AddIcon></IconButton>
 										</form>
 									</TableContainer>

@@ -34,6 +34,7 @@ db.once('open', function () {
 		username: "stu",
 		password: "stu",
 		groups: ["CSC309"],
+		messages: [],
 		quizzes: []
 	});
 	defaultStudent.save().then(function (result) {
@@ -49,6 +50,7 @@ db.once('open', function () {
 		username: "prof",
 		password: "prof",
 		groups: ["CSC309"],
+		messages: [],
 		quizzes: []
 	});
 	defaultProf.save().then(function (result) {

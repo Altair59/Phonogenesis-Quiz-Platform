@@ -16,7 +16,8 @@
     "jade": "^1.11.0",
     "mongodb": "latest",
     "mongoose": "^5.9.6",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "date-and-time": "^0.13.1"
   },
   "devDependencies": {
     "bcrypt": "^4.0.1"

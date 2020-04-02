@@ -7,6 +7,8 @@ import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
 import {registerPastResult} from "../actions/quiz";
+const datetime = require('date-and-time');
+
 
 // Get answers from server
 // Code below requires server call
@@ -80,7 +82,7 @@ class QuizTaker extends React.Component {
 			const quizResult = {
 				score: realTimeScore,
 				answers: this.state.studentAnswers.concat(choice),
-				timeStamp: this.getTimeStamp()
+				timeStamp: datetime.format(new Date(), "YYYY-MM-DD HH:mm:ss")
 			};
 			this.setState({quizResult: quizResult});
 			registerPastResult(quizResult, this.props.app.state.currentUser.username, quiz.name, this.props.app);
@@ -97,11 +99,6 @@ class QuizTaker extends React.Component {
 	onBackToMain = (e) => {
 		localStorage.clear();
 		this.props.history.push("/student");
-	};
-
-	getTimeStamp = () => {
-		const today = new Date();
-		return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}:${today.getMilliseconds()}`;
 	};
 
 	render() {

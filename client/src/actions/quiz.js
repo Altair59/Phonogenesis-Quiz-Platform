@@ -1,3 +1,6 @@
+import {sendMessage} from "./user";
+import {broadcastMessage} from "./group";
+
 const axios = require('axios');
 axios.defaults.withCredentials = true;
 
@@ -38,10 +41,13 @@ export const distributeQuiz = (page, quizObj) => {
 		questions: quizObj.questions,
 		group: quizObj.group
 	}).then(res => {
-		if (res.data.result !== true){
+		if (res.data.result !== true) {
 			alert("Failed to distribute quiz. Quiz must have unique name.");
 		} else {
-			alert("Quiz created and sent to all group members!");
+			alert("Quiz created and sent to all students in the group!");
+			broadcastMessage(quizObj.group, `Professor ${page.props.app.state.currentUser.name}
+			(${page.props.app.state.currentUser.username}) from group ${quizObj.group} 
+			has created a quiz named ${quizObj.name}`);
 		}
 	}).catch(error => {
 		console.log(error);

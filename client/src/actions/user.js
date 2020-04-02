@@ -40,15 +40,15 @@ export const logout = () => {
 
 export const signUp = (signUpPage, signUpProps) => {
 	axios.post("http://127.0.0.1:9000/users", signUpProps)
-	.then(res => {
-		if (res.status === 200) {
-			console.log('Sign up successful');
-			signUpPage.props.history.push('/login');
-		}
-	})
-	.catch(err => {
-		console.log(err)
-	});
+		.then(res => {
+			if (res.status === 200) {
+				console.log('Sign up successful');
+				signUpPage.props.history.push('/login');
+			}
+		})
+		.catch(err => {
+			console.log(err)
+		});
 };
 
 export const handleTextFieldChange = (e, props) => {
@@ -89,9 +89,33 @@ export const addUser = (app) => {
 	});
 };
 
+export const deleteMessage = (page, username, msgid) => {
+	axios.delete(`http://127.0.0.1:9000/users/message/${username}/${msgid}`).then(res => {
+		if (!res.data.user){
+			console.log("FAILED TO DELETE MESSAGE");
+		} else {
+			page.setState({currentUser: res.data.user});
+		}
+	}).catch(err => {
+		console.log(err);
+	})
+};
+
+export const sendMessage = (username, message) => {
+	axios.post("http://127.0.0.1:9000/users/message", {message: message, username: username}).then(res => {
+		if (!res.data.result){
+			console.log("FAILED TO SEND MESSAGE TO USER");
+		}
+	}).catch(err => {
+		console.log(err);
+	});
+};
+
+
 export const editUser = (page, username, info) => {
 	axios.patch(`http://127.0.0.1:9000/users/${username}`, info).then(res => {
 		getUsers(page);
+		sendMessage(username, "Your account information has been edited by an admin.");
 	}).catch(err => {
 		console.log(err);
 	});

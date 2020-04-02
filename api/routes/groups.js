@@ -1,4 +1,5 @@
 const express = require('express');
+const datetime = require("date-and-time");
 const router = express.Router();
 
 const {mongoose} = require("../db/mongoose");
@@ -200,6 +201,34 @@ router.patch("/remove", (req, res) => {
 		}
 	}).catch(error => {
 		console.log(error);
+	});
+});
+
+router.post("/message", (req, res) => {
+	const message = req.body.message;
+	const groupName = req.body.groupName;
+
+	Group.findOne({name: groupName}).then(group => {
+		let messageCt = 0;
+		group.students.map(username => {
+			User.findOne({username: username}).then(user => {
+				user.messages.push({
+					content: message,
+					timeStamp: datetime.format(new Date(), "YYYY-MM-DD HH:mm:ss")
+				});
+				user.save().then(saved => {
+					messageCt++;
+
+					if (messageCt >= group.students.length){
+						res.send({result: true});
+					}
+				});
+			});
+		});
+
+	}).catch(err => {
+		console.log("BROADCAST FAILED OR INCOMPLETE");
+		console.log(err);
 	});
 });
 

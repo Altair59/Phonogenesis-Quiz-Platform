@@ -5,6 +5,21 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const {QuizSchema} = require('./quiz.js');
 
+const MessageSchema = new mongoose.Schema({
+	content: {
+		type: String,
+		required: true,
+		minlength: 1,
+		trim: true
+	},
+	timeStamp: {
+		type: String,
+		required: true,
+		minlength: 1,
+		trim: true
+	}
+});
+
 
 const UserSchema = new mongoose.Schema({
 	type: {
@@ -23,7 +38,6 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 1,
-		unique: true,
 		trim: true
 	},
 	username: {
@@ -38,6 +52,10 @@ const UserSchema = new mongoose.Schema({
 		required: true,
 		minlength: 1,
 		trim: true
+	},
+	messages: {
+		type: [MessageSchema],
+		default: []
 	},
 	groups: {
 		type: [String],

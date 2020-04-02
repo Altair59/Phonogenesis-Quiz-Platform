@@ -1,4 +1,4 @@
-import {findUser, editUser, readCookie} from "./user";
+import {findUser, editUser, readCookie, sendMessage} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
@@ -7,7 +7,7 @@ export const getGroupUserList = (page, username) => {
 	axios.get(`http://127.0.0.1:9000/groups/objectify/${username}`).then(res => {
 		const groupToUser = res.data;
 
-		if (groupToUser){
+		if (groupToUser) {
 			page.setState({g2u: groupToUser});
 		} else {
 			console.log("NO G2U RESPONDED");
@@ -63,6 +63,8 @@ export const addToGroup = (page, username, groupName) => {
 			alert("Student must be present and not enrolled in this group yet");
 		} else {
 			alert(`Student ${username} Added to group ${groupName}!`);
+			sendMessage(username, `You have been added to group ${groupName} by professor 
+			${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
 		}
 		getGroupUserList(page, page.props.app.state.currentUser.username);
 	}).catch(err => {
@@ -79,8 +81,20 @@ export const removeFromGroup = (page, username, groupName) => {
 			alert("Student must be present and enrolled in this group yet");
 		} else {
 			alert(`Student ${username} Removed from group ${groupName}!`);
+			sendMessage(username, `You have been removed from group ${groupName} by professor 
+			${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
 		}
 		getGroupUserList(page, page.props.app.state.currentUser.username);
+	}).catch(err => {
+		console.log(err);
+	});
+};
+
+export const broadcastMessage = (groupName, message) => {
+	axios.post("http://127.0.0.1:9000/groups/message", {groupName: groupName, message: message}).then(res => {
+		if (!res.data.result) {
+			console.log("FAILED TO BROADCAST MESSAGE");
+		}
 	}).catch(err => {
 		console.log(err);
 	});

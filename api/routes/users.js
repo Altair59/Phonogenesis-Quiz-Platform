@@ -5,6 +5,8 @@ const {mongoose} = require("../db/mongoose");
 mongoose.set('useFindAndModify', false);
 const {User} = require("../models/user");
 const {ObjectID} = require("mongodb");
+const datetime = require('date-and-time');
+
 
 const parseClientUser = (user) => {
 	return {
@@ -13,9 +15,44 @@ const parseClientUser = (user) => {
 		email: user.email,
 		type: user.type,
 		groups: user.groups,
-		quizzes: user.quizzes
+		quizzes: user.quizzes,
+		messages: user.messages
 	}
 };
+
+router.delete("/message/:username/:id", (req, res) => {
+	const username = req.params.username;
+	const id = req.params.id;
+
+	User.findOne({username: username}).then(user => {
+		user.messages.id(ObjectID(id)).remove();
+		user.save().then(saved => {
+			res.send({user: parseClientUser(saved)});
+		})
+	}).catch(err => {
+		console.log(err);
+		console.log("USER NOT FOUND");
+	})
+});
+
+router.post("/message", (req, res) => {
+	const message = req.body.message;
+	const username = req.body.username;
+
+	User.findOne({username: username}).then(user => {
+		user.messages.push({
+			content: message,
+			timeStamp: datetime.format(new Date(), "YYYY-MM-DD HH:mm:ss")
+		});
+		user.save().then(saved => {
+			res.send({result: true});
+		}).catch(err => {
+			console.log(err);
+			console.log("USER NOT FOUND");
+			res.send({result: false});
+		})
+	})
+});
 
 // Route to login and create a session
 router.post("/login", (req, res) => {
@@ -64,11 +101,9 @@ router.post("/", (req, res) => {
 		groups: [],
 		quizzes: []
 	});
-	user.save().then(
-		result => {
-			res.send({result: true});
-		}
-	).catch(err => {
+	user.save().then(result => {
+		res.send({result: true});
+	}).catch(err => {
 		console.log(err);
 	});
 });
