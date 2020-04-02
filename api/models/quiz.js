@@ -57,12 +57,6 @@ const QuizSchema = new mongoose.Schema({
 		trim: true,
 		minlength: 1
 	},
-	group: {
-		type: String,
-		required: true,
-		trim: true,
-		minlength: 1
-	},
 	pastResult: {
 		type: PastResultSchema,
 		default: null

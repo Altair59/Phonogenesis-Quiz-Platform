@@ -50,8 +50,7 @@ router.post('/makeQuiz', (req, res) => {
 					owner: req.body.owner,
 					group: req.body.group,
 					pastResult: req.body.pastResult,
-					questions: questions,
-					group: req.body.groupName
+					questions: questions
 				};
 
 				const quizModel = new Quiz(newQuiz);
