@@ -38,7 +38,8 @@ router.post('/makeQuiz', (req, res) => {
 					timeLim: req.body.timeLim,
 					name: req.body.name,
 					pastResult: req.body.pastResult,
-					questions: questions
+					questions: questions,
+					group: req.body.groupName
 				};
 
 				const quizModel = new Quiz(newQuiz);
