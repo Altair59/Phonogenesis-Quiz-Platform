@@ -13,8 +13,8 @@ import Divider from '@material-ui/core/Divider'
 import {withRouter} from "react-router-dom"
 import {readCookie, logout} from "../actions/user";
 
-const studentNav = ['Home', 'Groups', 'Practice', 'Log Out'];
-const profNav = ['Home', 'Make Quiz', 'Groups', 'Log Out'];
+const studentNav = ['Home', 'Groups', 'Quiz', 'Practice', 'Log Out'];
+const profNav = ['Home', 'Make Quiz', 'Quiz Results', 'Groups', 'Log Out'];
 
 class TopBar extends React.Component {
 	constructor(props) {
@@ -64,8 +64,16 @@ class TopBar extends React.Component {
 					destPath = "/student/gen";
 					break;
 
+				case "Quiz":
+					destPath = "/student/checkquiz";
+					break;
+
+				case "Quiz Results":
+					destPath = "/professor/quizresult";
+					break;
+
 				case "Make Quiz":
-					destPath = "/professor/quiz";
+					destPath = "/professor/makequiz";
 					break;
 
 				case "Log Out":

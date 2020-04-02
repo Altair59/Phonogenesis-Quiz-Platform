@@ -13,6 +13,14 @@ export const registerPastResult = (pastResult, username, quizName, app) => {
 	});
 };
 
+export const getUserQuizzes = (page, username) => {
+	axios.get(`http://127.0.0.1:9000/quiz/user/${username}`).then(res => {
+		page.setState({quizzes: res.data});
+	}).catch(err => {
+		console.log(err);
+	});
+};
+
 export const getRuleList = (page) => {
 	axios.get("http://127.0.0.1:9000/quiz/rule").then(res => {
 		page.setState({rules: res.data});
@@ -21,25 +29,14 @@ export const getRuleList = (page) => {
 	});
 };
 
-export const checkQuizExist = (page, quizName) => {
-	axios.get(`http://127.0.0.1:9000/quiz/getQuiz/${quizName}`).then(res => {
-		if (res.data){
-			page.setState({duplicateName: true});
-		} else {
-			page.setState({duplicateName: false});
-		}
-	}).catch(error => {
-		console.log(error)
-	});
-};
-
-export const distributeQuiz = (page, groupName, quizObj) => {
+export const distributeQuiz = (page, quizObj) => {
 	axios.post("http://127.0.0.1:9000/quiz/makeQuiz", {
 		timeLim: quizObj.timeLim,
 		name: quizObj.name,
+		owner: quizObj.owner,
 		pastResult: quizObj.pastResult,
 		questions: quizObj.questions,
-		groupName: groupName
+		group: quizObj.group
 	}).then(res => {
 		if (res.data.result !== true){
 			alert("Failed to distribute quiz. Quiz must have unique name.");

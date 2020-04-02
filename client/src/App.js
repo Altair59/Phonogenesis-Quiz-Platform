@@ -14,6 +14,7 @@ import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
 import SignUp from "./react-components/SignUp"
 import {readCookie} from "./actions/user";
+import StudentQuizzes from "./react-components/StudentQuizzes";
 
 class App extends React.Component {
 	constructor(props) {
@@ -41,7 +42,7 @@ class App extends React.Component {
 								<SignUp history={history} app={this}/>)}/>
 							<Route render={({history}) => {
 								alert("Access Denied! Redirected back to login page.");
-								history.push('/login')
+								history.push('/login');
 								return <LoginPage history={history} app={this}/>
 							}}/></Switch>) :
 						(currentUser.type === 'admin' ?
@@ -58,8 +59,10 @@ class App extends React.Component {
 												<StudentMain history={history} app={this}/>)}/>
 											<Route exact path='/student/gen' render={({history}) => (
 												<SimpleGenerator history={history} app={this}/>)}/>
-											<Route exact path='/student/quiz' render={({history}) => (
+											<Route exact path='/quiztaker' render={({history}) => (
 												<QuizTaker history={history} app={this}/>)}/>
+											<Route exact path='/student/checkquiz' render={({history}) => (
+												<StudentQuizzes history={history} app={this}/>)}/>
 											<Route exact path='/student/groups' render={({history}) => (
 												<StudentGroupPage history={history} app={this}/>)}/>
 											<Route render={({history}) => {
@@ -74,8 +77,10 @@ class App extends React.Component {
 													       <ProfessorHome history={history} app={this}/>)}/>
 												<Route exact path='/professor/groups' render={({history}) => (
 													<GroupsPage history={history} app={this}/>)}/>
-												<Route exact path='/professor/quiz' render={({history}) => (
+												<Route exact path='/professor/makequiz' render={({history}) => (
 													<QuizGenerator history={history} app={this}/>)}/>
+												<Route exact path='/quiztaker' render={({history}) => (
+													<QuizTaker history={history} app={this}/>)}/>
 												<Route render={({history}) => {
 													alert("Access Denied! Redirected back to professor main page.");
 													return <ProfessorHome history={history} app={this}/>

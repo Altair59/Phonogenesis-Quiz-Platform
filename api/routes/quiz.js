@@ -17,6 +17,16 @@ router.get('/rule', (req, res) => {
 
 });
 
+router.get('/user/:username', (req, res) => {
+	const username = req.params.username;
+
+	User.findOne({username: username}).then(user => {
+		res.send(user.quizzes);
+	}).catch(err => {
+		console.log("USER NOT FOUND");
+	});
+});
+
 router.get('/rule/getRule/:text', (req, res) => {
 	Rule.findOne({ruleTxt: req.params.text}).then(result => {
 		res.send(result);
@@ -37,14 +47,15 @@ router.post('/makeQuiz', (req, res) => {
 				const newQuiz = {
 					timeLim: req.body.timeLim,
 					name: req.body.name,
+					owner: req.body.owner,
+					group: req.body.group,
 					pastResult: req.body.pastResult,
 					questions: questions
 				};
 
 				const quizModel = new Quiz(newQuiz);
 				quizModel.save().then(rr => {
-					const groupName = req.body.groupName;
-					Group.findOne({name: groupName}).then(group => {
+					Group.findOne({name: req.body.group}).then(group => {
 						if (!group) {
 							res.status(404).send({result: false});
 						} else {

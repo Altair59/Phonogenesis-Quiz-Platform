@@ -16,13 +16,13 @@ class StudentMain extends React.Component {
 	onReview(quiz) {
 		localStorage.setItem("quiz", JSON.stringify(quiz));
 		localStorage.setItem("isActive", "0");
-		this.props.history.push("/student/quiz");
+		this.props.history.push("/quiztaker");
 	};
 
 	takeQuiz(quiz) {
 		localStorage.setItem("quiz", JSON.stringify(quiz));
 		localStorage.setItem("isActive", "1");
-		this.props.history.push("/student/quiz");
+		this.props.history.push("/quiztaker");
 	};
 
 	render() {

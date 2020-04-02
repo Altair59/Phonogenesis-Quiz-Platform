@@ -68,9 +68,11 @@ class QuizGenerator extends React.Component {
 			qList.push(newQuestion);
 		}
 
-		distributeQuiz(this, targetGroup, {
+		distributeQuiz(this, {
 			timeLim: quizTime,
 			name: quizName,
+			group: targetGroup,
+			owner: this.props.app.state.currentUser.username,
 			pastResult: null,
 			questions: qList
 		});
