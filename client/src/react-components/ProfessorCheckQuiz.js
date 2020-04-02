@@ -8,67 +8,64 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
-import {removeGroup, addGroup, getGroupUserList, addToGroup, removeFromGroup} from "../actions/group";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import Button from "@material-ui/core/Button";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
 
+//import "./ProfGroupPage.css";
 
-import "./ProfGroupPage.css";
-
-class ProfGroupPage extends React.Component {
+class ProfessorCheckQuiz extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			newGroupName: '',
-			err: false,
-			g2u: {}
+			showResult: false,
+			currentQuizName: "",
+			pastQuizzes: {}
 		};
-		getGroupUserList(this, this.props.app.state.currentUser.username);
 	}
 
-	addToGroup = (group) => {
-		const username = document.getElementById("add-input-".concat(group)).value;
-		addToGroup(this, username, group);
-		this.forceUpdate();
-	};
-
-	removeStudent = (group, user) => {
-		removeFromGroup(this, user, group);
-		this.forceUpdate();
-	};
-
-
-	createGroup = () => {
-		const name = document.getElementById("new-group-name-field").value;
-		addGroup(this, name);
-	};
-
-	removeGroup = (group) => {
-		removeGroup(this, group);
-		this.forceUpdate();
+	handleQuizSelect = (event) => {
+		this.setState({currentQuizName: event.target.value});
 	};
 
 	render() {
 		return (
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
-				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
-					<Grid item>
-						<h2>Create Group</h2>
-						<TextField id="new-group-name-field" label="Name" error={this.state.err}
-						           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
+				<br/><br/>
 
-						<IconButton onClick={this.createGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
+				<Grid container direction="column" spacing={4} justify="center" alignItems="center">
+					<Grid item>
+						<Grid container direction="row" justify="center" alignItems="center" spacing={4}>
+							<Grid item>
+								<h4>Target Quiz: &nbsp;</h4>
+								<Select id="quiz-sel" label={"ddd"} onChange={this.handleQuizSelect}>
+									{this.state.quizzes.map((quiz) => (
+										<MenuItem key={quiz.name} value={quiz.name}>{quiz.name}</MenuItem>
+									))}
+								</Select>
+							</Grid>
+							<Grid item>
+								<Button variant="outlined" color="secondary" onClick={this.checkQuiz}>Check
+									Results</Button>
+							</Grid>
+						</Grid>
 					</Grid>
+
 					{
-						Object.keys(this.state.g2u).sort().map((group) => {
-							if (this.state.g2u[group]) {
+						Object.keys(this.state.pastQuizzes).sort().map((student) => {
+							if (this.state.g2u[student]) {
 								return <Grid item key={group}>
 									<Grid container spacing={2} direction="row" justify="flex-start"
 									      alignItems="center">
@@ -123,8 +120,7 @@ class ProfGroupPage extends React.Component {
 				</Grid>
 			</div>
 		)
-
 	}
 }
 
-export default withRouter(ProfGroupPage);
+export default withRouter(ProfessorCheckQuiz);

@@ -70,6 +70,12 @@ const QuizSchema = new mongoose.Schema({
 	questions: {
 		type: [QuestionSchema],
 		default: []
+	},
+	group: {
+		type: String,
+		required: true,
+		trim: true,
+		minlength: 1
 	}
 });
 
