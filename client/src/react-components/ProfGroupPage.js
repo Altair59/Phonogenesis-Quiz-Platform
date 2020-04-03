@@ -20,7 +20,6 @@ import {removeGroup, addGroup, getGroupUserList, addToGroup, removeFromGroup} fr
 
 import "./ProfGroupPage.css";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 
 class ProfGroupPage extends React.Component {
 

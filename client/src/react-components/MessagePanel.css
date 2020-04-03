@@ -1,12 +1,5 @@
 #message-textfield {
     width: 600px;
-    overflow: scroll;
-}
-
-#msg-inbound-panel {
-    margin-right: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .message-tile {
@@ -15,4 +8,5 @@
 
 #msg-panel-container {
     margin-bottom: 70px;
+    overflow: hidden;
 }

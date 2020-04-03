@@ -79,9 +79,16 @@ export const removeFromGroup = (page, username, groupName) => {
 		if (!res.data.result) {
 			alert("Student must be present and enrolled in this group yet");
 		} else {
-			alert(`Student ${username} Removed from group ${groupName}!`);
-			sendMessage(username, `You have been removed from group ${groupName} by professor 
-			${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
+			if (page.props.app.state.currentUser.type === "student") {
+				alert(`You have dropped from group ${groupName}!`);
+				console.log(page.state.g2u[groupName]);
+				sendMessage(page.state.g2u[groupName][0].username, `Student ${username} has dropped from group 
+				${groupName}!`);
+			} else {
+				alert(`Student ${username} Removed from group ${groupName}!`);
+				sendMessage(username, `You have been removed from group ${groupName} by professor 
+				${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
+			}
 		}
 		getGroupUserList(page, page.props.app.state.currentUser.username);
 	}).catch(err => {

@@ -9,6 +9,10 @@
 	margin: 12px;
 }
 
+.render-container {
+	overflow: hidden;
+}
+
 #add-question-button {
 	margin-top: 12px;
 }
