@@ -1,0 +1,9 @@
+#msg-inbound-panel {
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.message-tile {
+    max-width: 30%;
+}

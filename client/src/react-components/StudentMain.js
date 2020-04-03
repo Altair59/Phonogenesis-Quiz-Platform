@@ -10,6 +10,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import {deleteMessage, findUser} from "../actions/user";
+import MessageOutboundPanel from "./MessageOutboundPanel";
+import MessageInboundPanel from "./MessageInboundPanel";
 
 class StudentMain extends React.Component {
 	constructor(props) {
@@ -19,12 +21,8 @@ class StudentMain extends React.Component {
 		findUser(this, this.props.app.state.currentUser.username);
 	}
 
-	onDeleteMessage = (msg) => {
-		deleteMessage(this, this.state.currentUser.username, msg._id);
-	};
-
 	render() {
-		if (this.state.currentUser === null){
+		if (this.state.currentUser === null) {
 			return <div/>
 		}
 
@@ -39,24 +37,15 @@ class StudentMain extends React.Component {
 					<h3>Enrolled: <span
 						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
 					</h3>
+					<br/><Divider/><br/>
+					<h2>Send Message</h2>
 					<br/>
-					<Divider/>
-					<br/>
+					<MessageOutboundPanel page={this} currentUser={student}/>
+					<br/><Divider/><br/>
 					<h2>Income Messages</h2>
 					<br/>
-					<Grid container direction="column" justify="flex-start" alignItems="flex-start">
-						{student.messages.map((msg, index) => (
-							<Card key={index}>
-								<CardContent>
-									<h4>{msg.content}</h4>
-								</CardContent>
+					<MessageInboundPanel page={this} currentUser={student}/>
 
-								<CardActions>
-									<Button onClick={this.onDeleteMessage.bind(this, msg)} size="small">remove</Button>
-								</CardActions>
-							</Card>
-						))}
-					</Grid>
 				</div>
 			</div>
 		);
