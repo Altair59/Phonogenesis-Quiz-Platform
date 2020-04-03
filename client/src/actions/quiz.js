@@ -24,9 +24,15 @@ export const getUserQuizzes = (page, username) => {
 	});
 };
 
-export const getRuleList = (page) => {
+export const getDistinctRuleTxtList = (page) => {
 	axios.get("http://127.0.0.1:9000/quiz/rule").then(res => {
-		page.setState({rules: res.data});
+		const ruleTxtList = [];
+		res.data.map(ruleObj => {
+			if (!ruleTxtList.includes(ruleObj.ruleTxt)){
+				ruleTxtList.push(ruleObj.ruleTxt);
+			}
+		});
+		page.setState({rules: ruleTxtList});
 	}).catch(error => {
 		console.log(error);
 	});

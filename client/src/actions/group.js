@@ -6,11 +6,10 @@ axios.defaults.withCredentials = true;
 export const getGroupUserList = (page, username) => {
 	axios.get(`http://127.0.0.1:9000/groups/objectify/${username}`).then(res => {
 		const groupToUser = res.data;
-
-		if (groupToUser) {
-			page.setState({g2u: groupToUser});
-		} else {
+		if (groupToUser === null || groupToUser === undefined) {
 			console.log("NO G2U RESPONDED");
+		} else {
+			page.setState({g2u: groupToUser});
 		}
 	}).catch(err => {
 		console.log(err);

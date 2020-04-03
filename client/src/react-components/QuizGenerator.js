@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {getGroupUserList} from "../actions/group";
-import {getRuleList, distributeQuiz} from "../actions/quiz";
+import {distributeQuiz, getDistinctRuleTxtList} from "../actions/quiz";
 import "./QuizGenerator.css";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -23,7 +23,7 @@ class QuizGenerator extends React.Component {
 			rules: []
 		};
 		getGroupUserList(this, this.props.app.state.currentUser.username);
-		getRuleList(this);
+		getDistinctRuleTxtList(this);
 	};
 
 	makeQuiz = () => {
@@ -41,7 +41,7 @@ class QuizGenerator extends React.Component {
 
 		const quizTime = Number(document.getElementById("quiz-time").value);
 
-		if (quizTime <= 10) {
+		if (quizTime < 10) {
 			alert("Time must be positive integer >= 10!");
 			this.setState({timeErr: "must be >= 10"});
 			return;
@@ -95,8 +95,8 @@ class QuizGenerator extends React.Component {
 				<br/><br/>
 
 				<Grid container direction="column" spacing={4} justify="center" alignItems="center">
-					<Grid item>
-						<Grid container direction="row" justify="center" alignItems="center" className="qgblock"
+					<Grid item id="add-question-header">
+						<Grid container direction="row"
 						      spacing={4}>
 							<Grid item>
 								<TextField id="quiz-name" label="Quiz Name" variant="outlined"/>
@@ -115,7 +115,7 @@ class QuizGenerator extends React.Component {
 								</NativeSelect>
 							</Grid>
 
-							<Grid item>
+							<Grid item id="add-question-button">
 								<Button variant="outlined" color="secondary" onClick={this.createQuestionBlock}>Add
 									Question</Button>
 							</Grid>
@@ -126,7 +126,7 @@ class QuizGenerator extends React.Component {
 						<br/>
 						{
 							Array.from(Array(this.state.qCount).keys()).map((i) => (
-								<Grid container spacing={4} direction="row" id="q" key={i} justify="center"
+								<Grid container spacing={4} direction="row" id="add-question-body" key={i} justify="center"
 								      alignItems="center">
 									<Grid item><FormControlLabel
 										control={<Switch id={"ur-check-".concat(i.toString())}/>}
@@ -145,8 +145,8 @@ class QuizGenerator extends React.Component {
 									</Grid>
 									<Grid item>
 										<NativeSelect id={"rule-sel-".concat(i.toString())}>
-											{this.state.rules.map((rule, j) => (
-												<option key={j} value={rule.ruleTxt}>{rule.ruleTxt}</option>
+											{this.state.rules.sort().map((rule, j) => (
+												<option key={j} value={rule}>{rule}</option>
 											))}
 										</NativeSelect>
 										<FormHelperText>Rule</FormHelperText>

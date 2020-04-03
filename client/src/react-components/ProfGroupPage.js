@@ -59,20 +59,21 @@ class ProfGroupPage extends React.Component {
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
-					<Grid item>
+					<Grid item id={"prof-group-header"}>
 						<h2>Create Group</h2>
 						<TextField id="new-group-name-field" label="Name" error={this.state.err}
 						           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
 
 						<IconButton onClick={this.onCreateGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
+						<br/>
 					</Grid>
 					{
 						Object.keys(this.state.g2u).sort().map((group) => {
 							if (this.state.g2u[group]) {
-								return <Grid item key={group}>
+								return <Grid item key={group} id="prof-group-body">
 									<Grid container spacing={2} direction="row" justify="flex-start"
 									      alignItems="center">
-										<Grid item><h2>{group}</h2></Grid>
+										<Grid item><h3>{group}</h3></Grid>
 										<Grid item>
 											<IconButton onClick={this.onRemoveGroup.bind(this, group)}>
 												<DeleteIcon>Remove</DeleteIcon></IconButton>
@@ -82,10 +83,10 @@ class ProfGroupPage extends React.Component {
 										<Table aria-label="student table">
 											<TableHead>
 												<TableRow>
-													<TableCell>Name</TableCell>
-													<TableCell>Email</TableCell>
-													<TableCell>Username</TableCell>
-													<TableCell>Remove Student</TableCell>
+													<TableCell><b>Name</b></TableCell>
+													<TableCell><b>Email</b></TableCell>
+													<TableCell><b>Username</b></TableCell>
+													<TableCell><b>Remove Student</b></TableCell>
 												</TableRow>
 											</TableHead>
 											<TableBody>
@@ -107,7 +108,7 @@ class ProfGroupPage extends React.Component {
 											</TableBody>
 										</Table>
 
-										<form>
+										<form id="add-student-form">
 											<TextField id={"add-input-".concat(group)}
 											           label="Name">Name</TextField>
 											<IconButton onClick={this.onAddToGroup.bind(this, group)}><AddIcon>Add

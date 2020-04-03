@@ -2,3 +2,17 @@
 	align-items: flex-start;
 	align-content: center;
 }
+
+#prof-group-header {
+	margin-top: 30px;
+}
+
+#prof-group-body {
+	margin-top: 20px;
+}
+
+#add-student-form {
+	align-content: center;
+	align-items: flex-start;
+	margin: 12px;
+}

@@ -1,5 +1,15 @@
-#qgblock{
-	align-content: center;
+#add-question-body {
+	margin: 12px;
 	align-items: center;
+
+	align-content: center;
+}
+
+#add-question-header {
+	margin: 12px;
+}
+
+#add-question-button {
+	margin-top: 12px;
 }
 
