@@ -59,7 +59,7 @@ class ProfGroupPage extends React.Component {
 
 	render() {
 		return (
-			<div className="render-container">
+			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item id={"prof-group-header"}>
