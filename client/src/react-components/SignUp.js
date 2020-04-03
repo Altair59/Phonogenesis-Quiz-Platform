@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
+import "./mainstyle.css"
 import Menu from '@material-ui/core/Menu';
 import {signUp, handleTextFieldChange} from '../actions/user'
 import {withRouter} from "react-router-dom"
@@ -20,7 +21,7 @@ class SignUp extends React.Component {
 		type: "",
 		isOpen: false,
 		anchorEl: null,
-	}
+	};
 
 
 	changeSelected(event) {
@@ -35,7 +36,7 @@ class SignUp extends React.Component {
 		const state = this.state;
 
 		return (
-			<div>
+			<div className="render-container">
 				<div className="signUpForm">
 					<div className="formList">
 						<div className="form">

@@ -22,7 +22,7 @@ class StudentHome extends React.Component {
 		const student = this.state.currentUser;
 
 		return (
-			<div>
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<div className="main-area">
 					<h1>{student.name ? student.name : "Anonymous"}</h1>

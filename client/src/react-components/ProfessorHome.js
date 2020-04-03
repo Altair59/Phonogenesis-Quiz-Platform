@@ -39,7 +39,7 @@ class ProfessorHome extends React.Component {
 		const prof = this.state.currentUser;
 
 		return (
-			<div>
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<div className="main-area">
 					<Avatar alt={prof.name} src={mark} className={this.classes.large}/>

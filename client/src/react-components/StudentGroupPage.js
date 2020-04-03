@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import {withRouter} from "react-router-dom";
 import TopBar from "./TopBar.js";
+import "./mainstyle.css"
 
 import "./StudentGroupPage.css";
 import Table from "@material-ui/core/Table";
@@ -25,7 +26,7 @@ class StudentGroupPage extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 
 				<h1 className="title">Enrolled Groups</h1>

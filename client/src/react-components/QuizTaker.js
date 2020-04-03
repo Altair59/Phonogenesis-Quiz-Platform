@@ -2,6 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import "./QuizTaker.css";
+import "./mainstyle.css"
 import QuestionBlock from "./QuestionBlock";
 import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
@@ -116,7 +117,7 @@ class QuizTaker extends React.Component {
 
 		if (index < size && currQuestion && isActive) {
 			return (
-				<div>
+				<div className="render-container">
 					<TopBar history={this.props.history} app={this.props.app}/>
 					<br/>
 					<h3 id="quiz-title">Quiz: {quiz.name}</h3>
@@ -160,7 +161,7 @@ class QuizTaker extends React.Component {
 			const displayAns = this.state.quizResult.answers;
 
 			return (
-				<div>
+				<div id="render-container">
 					<TopBar history={this.props.history} app={this.props.app}/>
 					<Grid container direction="column" justify="flex-start" alignItems="center">
 						<Grid item>

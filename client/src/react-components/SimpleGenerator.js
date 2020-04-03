@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import "./SimpleGenerator.css"
+import "./mainstyle.css"
 
 
 const QUESTION_SIZE_MIN = 15;
@@ -120,7 +121,7 @@ class SimpleGenerator extends React.Component {
 		const isValidSize = this.state.sizeSelectWarn !== "";
 		const {app} = this.props;
 		return (
-			<div>
+			<div className="render-container">
 				<TopBar app={app}/>
 				<Grid container direction="row" justify="center" alignItems="flex-start" spacing={4} id={"gen-form"}>
 					<Grid item>

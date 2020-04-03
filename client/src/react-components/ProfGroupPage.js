@@ -14,10 +14,13 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
+import "./mainstyle.css"
 import {removeGroup, addGroup, getGroupUserList, addToGroup, removeFromGroup} from "../actions/group";
 
 
 import "./ProfGroupPage.css";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 class ProfGroupPage extends React.Component {
 
@@ -56,16 +59,21 @@ class ProfGroupPage extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item id={"prof-group-header"}>
-						<h2>Create Group</h2>
-						<TextField id="new-group-name-field" label="Name" error={this.state.err}
-						           helperText={this.state.err ? "invalid group name" : ''}>Group Name</TextField>
-
-						<IconButton onClick={this.onCreateGroup.bind(this)}><AddIcon>Create Group</AddIcon></IconButton>
-						<br/>
+						<Grid container direction="row" justify="flex-start" alignItems="flex-end" spacing={3}>
+							<Grid item>
+								<TextField id="new-group-name-field" label="Group Name" error={this.state.err}
+								           helperText={this.state.err ? "invalid group name" : ''}>
+									Group Name</TextField>
+							</Grid>
+							<Grid item>
+								<Button variant="contained" color="primary" onClick={this.onCreateGroup.bind(this)}>Create
+									Group</Button>
+							</Grid>
+						</Grid>
 					</Grid>
 					{
 						Object.keys(this.state.g2u).sort().map((group) => {
@@ -110,7 +118,7 @@ class ProfGroupPage extends React.Component {
 
 										<form id="add-student-form">
 											<TextField id={"add-input-".concat(group)}
-											           label="Name">Name</TextField>
+											           label="student username">Name</TextField>
 											<IconButton onClick={this.onAddToGroup.bind(this, group)}><AddIcon>Add
 												Student</AddIcon></IconButton>
 										</form>

@@ -49,7 +49,7 @@ class ProfessorCheckQuiz extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div id="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 

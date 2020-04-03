@@ -13,8 +13,8 @@ import {withRouter} from "react-router-dom";
 import {getUsers, removeUser, addUser, editUser, findUser} from "../actions/user";
 
 import "./AdminPage.css";
+import "./mainstyle.css";
 import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
 import {Select} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -76,7 +76,7 @@ class AdminPage extends React.Component {
 		}
 
 		return (
-			<div id={"ddd"}>
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 
 				<div className="main-area">

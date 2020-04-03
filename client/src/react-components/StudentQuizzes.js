@@ -36,7 +36,7 @@ class StudentQuizzes extends React.Component {
 
 	render() {
 
-		return (<div>
+		return (<div className="render-container">
 			<TopBar history={this.props.history} app={this.props.app}/>
 			<Grid container direction="column" spacing={4} justify="center" alignItems="center">
 				<Grid item id="check-quiz">

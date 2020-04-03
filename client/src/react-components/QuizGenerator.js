@@ -10,6 +10,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import {getGroupUserList} from "../actions/group";
 import {distributeQuiz, getDistinctRuleTxtList} from "../actions/quiz";
 import "./QuizGenerator.css";
+import "./mainstyle.css"
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
@@ -90,7 +91,7 @@ class QuizGenerator extends React.Component {
 
 	render() {
 		return (
-			<div id="main">
+			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 
