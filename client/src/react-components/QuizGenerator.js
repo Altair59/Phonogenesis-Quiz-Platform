@@ -13,6 +13,10 @@ import "./QuizGenerator.css";
 import "./mainstyle.css"
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import {Select} from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 class QuizGenerator extends React.Component {
 	constructor(props) {
@@ -21,7 +25,8 @@ class QuizGenerator extends React.Component {
 			timeErr: "",
 			qCount: 0,
 			g2u: {},
-			rules: []
+			rules: [],
+			selectedGroup: ""
 		};
 		getGroupUserList(this, this.props.app.state.currentUser.username);
 		getDistinctRuleTxtList(this);
@@ -33,8 +38,7 @@ class QuizGenerator extends React.Component {
 			return;
 		}
 
-		const targetGroup = document.getElementById("group-sel").value;
-
+		const targetGroup = this.state.selectedGroup;
 		if (!targetGroup || targetGroup === '') {
 			alert("Must have a destination group!");
 			return;
@@ -89,6 +93,10 @@ class QuizGenerator extends React.Component {
 		this.setState({qCount: this.state.qCount + 1});
 	};
 
+	onGroupSelectChange = (event) => {
+		this.setState({selectedGroup: event.target.value});
+	};
+
 	render() {
 		return (
 			<div>
@@ -107,13 +115,16 @@ class QuizGenerator extends React.Component {
 								           label="Time Limit (in seconds)"
 								           error={this.state.timeErr !== ""} helperText={this.state.timeErr}/>
 							</Grid>
-							<Grid item id="select-group">
-								<NativeSelect id="group-sel">
-									<option aria-label="group" value="group" />
-									{Object.keys(this.state.g2u).map((group) => (
-										<option key={group} value={group}>{group}</option>
-									))}
-								</NativeSelect>
+							<Grid item>
+								<FormControl variant="outlined">
+									<InputLabel id="group-sel-label">Group</InputLabel>
+									<Select value={this.state.selectedGroup} label="group" id="group-sel"
+									        labelId={"group-sel-label"} onChange={this.onGroupSelectChange}>
+										{Object.keys(this.state.g2u).sort().map((group) => (
+											<MenuItem value={group} key={group}>{group}</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 							</Grid>
 
 							<Grid item id="add-question-button">

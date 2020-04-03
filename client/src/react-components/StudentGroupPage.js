@@ -46,13 +46,13 @@ class StudentGroupPage extends React.Component {
 						{
 							Object.keys(this.state.g2u).sort().map(group => (
 								<Grid item key={group}>
-									<Grid container direction="row" justify="flex-start" alignItems="flex-end"
+									<Grid container direction="row" justify="flex-start" alignItems="center"
 									      spacing={2}>
 										<Grid item>
 											<h2>{group}</h2>
 										</Grid>
 										<Grid item>
-											<Button variant="contained"
+											<Button variant="contained" size="small"
 											        onClick={this.onDrop.bind(this, group)}>Drop</Button>
 										</Grid>
 									</Grid>
