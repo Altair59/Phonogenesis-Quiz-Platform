@@ -81,13 +81,13 @@ class ProfessorCheckQuiz extends React.Component {
 							<Table aria-label="student-quiz table">
 								<TableHead>
 									<TableRow>
-										<TableCell>Name</TableCell>
-										<TableCell>Email</TableCell>
-										<TableCell>Username</TableCell>
-										<TableCell>Group</TableCell>
-										<TableCell>Score</TableCell>
-										<TableCell>Time Completed</TableCell>
-										<TableCell>Detailed Answer</TableCell>
+										<TableCell><b>Name</b></TableCell>
+										<TableCell><b>Email</b></TableCell>
+										<TableCell><b>Username</b></TableCell>
+										<TableCell><b>Group</b></TableCell>
+										<TableCell><b>Score</b></TableCell>
+										<TableCell><b>Time Completed</b></TableCell>
+										<TableCell><b>Detailed Answer</b></TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>

@@ -158,7 +158,7 @@ class QuizGenerator extends React.Component {
 						<br/>
 						<hr/>
 					</Grid>
-					<Grid item>
+					<Grid item id="send-quiz-button">
 						<Button variant="contained" color="primary" onClick={this.makeQuiz.bind(this)}>Send Quiz</Button>
 					</Grid>
 				</Grid>
