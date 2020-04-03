@@ -132,13 +132,13 @@ class MessagePanel extends React.Component {
 					this.props.currentUser.messages.length === 0 ? (
 						<h3>You have no incoming message.</h3>
 					) : (
-						<div id={"msg-inbound-panel"}>
-							<GridList cols={3}>
+						<div>
+							<GridList cols={3} cellHeight="auto">
 								{this.props.currentUser.messages.map((msg, index) => (
 									<GridListTile key={index} className={"message-tile"}>
 										<Card variant="outlined">
 											<CardContent>
-												<h5 className={"message-timestamp"}>{msg.timeStamp}</h5>
+												<h5>{msg.timeStamp}</h5>
 											</CardContent>
 
 											<CardContent>

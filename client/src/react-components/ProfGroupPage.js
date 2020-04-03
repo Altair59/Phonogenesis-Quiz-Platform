@@ -20,7 +20,6 @@ import {removeGroup, addGroup, getGroupUserList, addToGroup, removeFromGroup} fr
 
 import "./ProfGroupPage.css";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 
 class ProfGroupPage extends React.Component {
 
@@ -59,7 +58,7 @@ class ProfGroupPage extends React.Component {
 
 	render() {
 		return (
-			<div className="render-container">
+			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item id={"prof-group-header"}>

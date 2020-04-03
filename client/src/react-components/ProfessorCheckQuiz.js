@@ -11,9 +11,12 @@ import Grid from '@material-ui/core/Grid';
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-
+import "./ProfessorCheckQuiz.css"
 import {getUserQuizzes, getStudentQuizObj} from "../actions/quiz";
-import NativeSelect from "@material-ui/core/NativeSelect";
+import {Select} from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 class ProfessorCheckQuiz extends React.Component {
 
@@ -24,7 +27,8 @@ class ProfessorCheckQuiz extends React.Component {
 			showResult: false,
 			studentQuizObj: [],
 			currentQuizName: "",
-			quizzes: []
+			quizzes: [],
+			selectedQuiz: ""
 		};
 		getUserQuizzes(this, this.props.app.state.currentUser.username);
 	}
@@ -36,20 +40,24 @@ class ProfessorCheckQuiz extends React.Component {
 	};
 
 	getStudentQuiz = () => {
-		const currentQuizName = document.getElementById("quiz-sel").value;
+		const currentQuizName = this.state.selectedQuiz;
 		this.setState({currentQuizName: currentQuizName});
 		let groupName = "";
 		this.state.quizzes.map((quiz) => {
-			if (quiz.name === currentQuizName){
+			if (quiz.name === currentQuizName) {
 				groupName = quiz.group;
 			}
 		});
 		getStudentQuizObj(this, groupName, currentQuizName);
 	};
 
+	onQuizSelectChange = (event) => {
+		this.setState({selectedQuiz: event.target.value});
+	};
+
 	render() {
 		return (
-			<div id="render-container">
+			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 
@@ -57,12 +65,15 @@ class ProfessorCheckQuiz extends React.Component {
 					<Grid item>
 						<Grid container direction="row" justify="center" alignItems="center" spacing={4}>
 							<Grid item>
-								<h4>Target Quiz: &nbsp;</h4>
-								<NativeSelect id="quiz-sel">
-									{this.state.quizzes.map((quiz) => (
-										<option key={quiz.name} value={quiz.name}>{quiz.name}</option>
-									))}
-								</NativeSelect>
+								<FormControl variant="outlined">
+									<InputLabel id="quiz-sel-label">Quiz</InputLabel>
+									<Select value={this.state.selectedQuiz} label="quiz" id="quiz-sel"
+									        labelId={"quiz-sel-label"} onChange={this.onQuizSelectChange}>
+										{this.state.quizzes.map((quiz) => (
+											<MenuItem key={quiz.name} value={quiz.name}>{quiz.name}</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 							</Grid>
 							<Grid item>
 								<Button variant="outlined" color="secondary" onClick={this.getStudentQuiz.bind(this)}>Check
@@ -81,13 +92,13 @@ class ProfessorCheckQuiz extends React.Component {
 							<Table aria-label="student-quiz table">
 								<TableHead>
 									<TableRow>
-										<TableCell>Name</TableCell>
-										<TableCell>Email</TableCell>
-										<TableCell>Username</TableCell>
-										<TableCell>Group</TableCell>
-										<TableCell>Score</TableCell>
-										<TableCell>Time Completed</TableCell>
-										<TableCell>Detailed Answer</TableCell>
+										<TableCell><b>Name</b></TableCell>
+										<TableCell><b>Email</b></TableCell>
+										<TableCell><b>Username</b></TableCell>
+										<TableCell><b>Group</b></TableCell>
+										<TableCell><b>Score</b></TableCell>
+										<TableCell><b>Time Completed</b></TableCell>
+										<TableCell><b>Detailed Answer</b></TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -102,7 +113,7 @@ class ProfessorCheckQuiz extends React.Component {
 												<TableCell>{sqObj.timeStamp}</TableCell>
 												<TableCell>
 													<Button disabled={!sqObj.quiz}
-														onClick={this.showDetails.bind(this, sqObj.quiz)}>Detail</Button>
+													        onClick={this.showDetails.bind(this, sqObj.quiz)}>Detail</Button>
 												</TableCell>
 											</TableRow>
 										))
