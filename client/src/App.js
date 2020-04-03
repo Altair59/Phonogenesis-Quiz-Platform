@@ -8,7 +8,7 @@ import AdminPage from './react-components/AdminPage';
 import GroupsPage from './react-components/ProfGroupPage';
 import SimpleGenerator from './react-components/SimpleGenerator';
 import QuizGenerator from './react-components/QuizGenerator';
-import StudentMain from './react-components/StudentMain';
+import StudentHome from './react-components/StudentHome';
 import QuizTaker from './react-components/QuizTaker';
 import ProfessorHome from "./react-components/ProfessorHome";
 import StudentGroupPage from "./react-components/StudentGroupPage"
@@ -57,7 +57,7 @@ class App extends React.Component {
 								(currentUser.type === 'student' ?
 										(<Switch>
 											<Route exact path={['/student', '/', '/login']} render={({history}) => (
-												<StudentMain history={history} app={this}/>)}/>
+												<StudentHome history={history} app={this}/>)}/>
 											<Route exact path='/student/gen' render={({history}) => (
 												<SimpleGenerator history={history} app={this}/>)}/>
 											<Route exact path='/quiztaker' render={({history}) => (
@@ -68,7 +68,7 @@ class App extends React.Component {
 												<StudentGroupPage history={history} app={this}/>)}/>
 											<Route render={({history}) => {
 												alert("Access Denied! Redirected back to student main page.");
-												return <StudentMain history={history} app={this}/>
+												return <StudentHome history={history} app={this}/>
 											}}/>
 										</Switch>)
 										:

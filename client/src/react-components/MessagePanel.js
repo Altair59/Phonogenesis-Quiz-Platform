@@ -2,16 +2,22 @@ import React from "react";
 import {withRouter} from "react-router-dom"
 import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
-import "./MessageOutboundPanel.css"
+import "./MessagePanel.css"
 import {TextField} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import {findUser, getUsers, sendMessage} from "../actions/user";
+import {deleteMessage, findUser, getUsers, sendMessage} from "../actions/user";
 import {broadcastMessage} from "../actions/group";
 import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 
 
-class MessageOutboundPanel extends React.Component {
+class MessagePanel extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,6 +39,10 @@ class MessageOutboundPanel extends React.Component {
 
 	onGroupChange = (event) => {
 		this.setState({targetGroup: event.target.value});
+	};
+
+	onDeleteMessage = (msg) => {
+		deleteMessage(this.props.page, this.props.currentUser.username, msg._id);
 	};
 
 	onSend = (event) => {
@@ -76,7 +86,9 @@ class MessageOutboundPanel extends React.Component {
 		}
 
 		return (
-			<div>
+			<div id="msg-panel-container">
+				<h2>Send Message</h2>
+				<br/>
 				<Grid container justify="flex-start" alignItems="flex-end" spacing={3}>
 					<Grid item>
 						<TextField multiline required label={"message"} id={"message-textfield"}/>
@@ -113,9 +125,40 @@ class MessageOutboundPanel extends React.Component {
 						<Button variant="contained" color="primary" onClick={this.onSend}>Send</Button>
 					</Grid>
 				</Grid>
+				<br/><Divider/><br/>
+				<h2>Incoming Messages</h2>
+				<br/>
+				{
+					this.props.currentUser.messages.length === 0 ? (
+						<h3>You have no incoming message.</h3>
+					) : (
+						<div id={"msg-inbound-panel"}>
+							<GridList cols={3}>
+								{this.props.currentUser.messages.map((msg, index) => (
+									<GridListTile key={index} className={"message-tile"}>
+										<Card variant="outlined">
+											<CardContent>
+												<h5 className={"message-timestamp"}>{msg.timeStamp}</h5>
+											</CardContent>
+
+											<CardContent>
+												<h3>{msg.content}</h3>
+											</CardContent>
+
+											<CardActions>
+												<Button onClick={this.onDeleteMessage.bind(this, msg)}
+												        size="small">remove</Button>
+											</CardActions>
+										</Card>
+									</GridListTile>
+								))}
+							</GridList>
+						</div>
+					)
+				}
 			</div>
 		);
 	}
 }
 
-export default withRouter(MessageOutboundPanel);
+export default withRouter(MessagePanel);

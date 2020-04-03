@@ -2,7 +2,15 @@
     margin-top: 30px;
 }
 
+#ddd {
+    overflow: hidden;
+}
+
 .text-field-label-off {
     margin-top: -7px;
     margin-left: -12px;
+}
+
+#user-table-container {
+    margin-bottom: 30px;
 }

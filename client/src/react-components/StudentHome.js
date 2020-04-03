@@ -1,19 +1,12 @@
 import React from "react";
 import {withRouter} from "react-router-dom"
-import Grid from "@material-ui/core/Grid"
 import TopBar from "./TopBar.js"
-import Button from "@material-ui/core/Button"
 import "./mainstyle.css"
 import Divider from "@material-ui/core/Divider";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-import {deleteMessage, findUser} from "../actions/user";
-import MessageOutboundPanel from "./MessageOutboundPanel";
-import MessageInboundPanel from "./MessageInboundPanel";
+import {findUser} from "../actions/user";
+import MessagePanel from "./MessagePanel";
 
-class StudentMain extends React.Component {
+class StudentHome extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.history.push("/student");
@@ -38,14 +31,7 @@ class StudentMain extends React.Component {
 						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
 					</h3>
 					<br/><Divider/><br/>
-					<h2>Send Message</h2>
-					<br/>
-					<MessageOutboundPanel page={this} currentUser={student}/>
-					<br/><Divider/><br/>
-					<h2>Income Messages</h2>
-					<br/>
-					<MessageInboundPanel page={this} currentUser={student}/>
-
+					<MessagePanel page={this} currentUser={student}/>
 				</div>
 			</div>
 		);
@@ -53,4 +39,4 @@ class StudentMain extends React.Component {
 
 }
 
-export default withRouter(StudentMain);
+export default withRouter(StudentHome);

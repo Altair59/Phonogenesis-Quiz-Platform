@@ -5,7 +5,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import "./mainstyle.css"
 import mark from "./avatars/mark_avatar.jpg";
-import {readCookie, findUser} from "../actions/user";
+import {findUser} from "../actions/user";
+import Divider from "@material-ui/core/Divider";
+import MessagePanel from "./MessagePanel";
 
 class ProfessorHome extends React.Component {
 	classes = makeStyles(theme => ({
@@ -45,6 +47,8 @@ class ProfessorHome extends React.Component {
 					<h2>Email: <span className="text">{prof.email ? prof.email : "Undefined"}</span></h2>
 					<h2>Instructing: <span
 						className="text">{prof.groups.length > 0 ? prof.groups.join(", ") : "None"}</span></h2>
+					<br/><Divider/><br/>
+					<MessagePanel page={this} currentUser={prof}/>
 				</div>
 			</div>
 		);
