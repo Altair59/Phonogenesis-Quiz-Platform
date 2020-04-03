@@ -91,7 +91,7 @@ class QuizGenerator extends React.Component {
 
 	render() {
 		return (
-			<div className="render-container">
+			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<br/><br/>
 
@@ -107,9 +107,9 @@ class QuizGenerator extends React.Component {
 								           label="Time Limit (in seconds)"
 								           error={this.state.timeErr !== ""} helperText={this.state.timeErr}/>
 							</Grid>
-							<Grid item>
-								<h4>Target Group: &nbsp;</h4>
+							<Grid item id="select-group">
 								<NativeSelect id="group-sel">
+									<option aria-label="group" value="group" />
 									{Object.keys(this.state.g2u).map((group) => (
 										<option key={group} value={group}>{group}</option>
 									))}
