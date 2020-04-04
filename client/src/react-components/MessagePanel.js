@@ -100,6 +100,7 @@ class MessagePanel extends React.Component {
 		return (
 			<div id="msg-panel-container">
 				<h2>Send Message</h2>
+				<Divider/>
 				<br/>
 				<Grid container justify="flex-start" alignItems="flex-end" spacing={3}>
 					<Grid item>
@@ -137,8 +138,9 @@ class MessagePanel extends React.Component {
 						<Button variant="contained" color="primary" onClick={this.onSend}>Send</Button>
 					</Grid>
 				</Grid>
-				<br/><Divider/><br/>
+				<br/>
 				<h2>Incoming Messages</h2>
+				<Divider/>
 				<br/>
 				{
 					this.props.app.state.currentUser.messages.length === 0 ? (
