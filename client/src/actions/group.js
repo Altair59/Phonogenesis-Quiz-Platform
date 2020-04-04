@@ -1,4 +1,4 @@
-import {findUser, editUser, readCookie, sendMessage} from "./user";
+import {sendMessage} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
