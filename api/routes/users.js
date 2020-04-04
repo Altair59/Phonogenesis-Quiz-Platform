@@ -61,11 +61,11 @@ router.post("/login", (req, res) => {
 
 	User.findByUsernamePassword(username, password).then(user => {
 		req.session.username = user.username;
-		res.send({currentUser: parseClientUser(user)});
+		res.send({result: true, currentUser: parseClientUser(user)});
 		res.end();
 	}).catch(error => {
-		console.log(error);
-		res.status(400).send();
+		res.send({result: false});
+		res.end();
 	});
 });
 

@@ -46,7 +46,7 @@ class Login extends React.Component {
 										label="Username"
 										onChange={this.handleTextFieldChange}
 										error={this.state.err}
-										helperText={this.state.err ? "Incorrect username or password" : ''}
+										helperText={this.state.err ? "incorrect username or password" : ''}
 									/>
 								</Grid>
 							</Grid>
@@ -59,7 +59,7 @@ class Login extends React.Component {
 								onChange={this.handleTextFieldChange}
 								error={this.state.err}
 								type={this.state.showPassword ? 'text' : 'password'}
-								helperText={this.state.err ? "Incorrect username or password" : ''}
+								helperText={this.state.err ? "incorrect username or password" : ''}
 								InputProps={{
 									endAdornment:
 										<InputAdornment>
@@ -74,8 +74,8 @@ class Login extends React.Component {
 
 						<Grid item>
 							<Button variant="contained" color="primary" className="grid-item" id="submit-button"
-							        onClick={() => login(this.props.app, this.state.username, this.state.password)}>Login</Button>
-						</Grid>
+							        onClick={() => login(this, this.state.username, this.state.password)}>Login</Button>
+				</Grid>
 
 						<Grid item>
 							<p className="grid-item">Don't have an account? Sign up <a href="/signup">here</a>.</p>

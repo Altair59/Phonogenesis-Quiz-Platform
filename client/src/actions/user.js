@@ -13,16 +13,16 @@ export const readCookie = (app) => {
 	});
 };
 
-export const login = (app, username, password) => {
+export const login = (page, username, password) => {
 	axios.post("http://127.0.0.1:9000/users/login", {
 		username: username,
 		password: password
 	}).then(function (res) {
-		const user = res.data.currentUser;
-		if (user) {
-			readCookie(app);
+		if (res.data.result) {
+			readCookie(page.props.app);
+			page.setState({err: false});
 		} else {
-			alert("Login Failed");
+			page.setState({err: true});
 		}
 	}).catch(err => {
 		console.log(err);

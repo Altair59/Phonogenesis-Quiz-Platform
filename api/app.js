@@ -33,13 +33,11 @@ app.use(
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const groupRouter = require('./routes/groups');
 const quizRouter = require('./routes/quiz');
 
 app.use('/users', usersRouter);
-app.use('/', indexRouter);
 app.use('/groups', groupRouter);
 app.use('/quiz', quizRouter);
 

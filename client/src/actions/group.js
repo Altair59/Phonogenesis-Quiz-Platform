@@ -93,7 +93,6 @@ export const removeFromGroup = (page, username, groupName) => {
 		} else {
 			if (page.props.app.state.currentUser.type === "student") {
 				alert(`You have dropped from group ${groupName}!`);
-				console.log(page.state.g2u[groupName]);
 				sendMessage(page.props.app, page.state.g2u[groupName][0].username,
 					`Student ${username} has dropped from group ${groupName}!`);
 			} else {

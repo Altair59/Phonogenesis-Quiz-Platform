@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcrypt');
 const {QuizSchema} = require('./quiz.js');
 

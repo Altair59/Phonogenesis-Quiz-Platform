@@ -1,4 +1,5 @@
 import {broadcastMessage} from "./group";
+import {readCookie} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
@@ -55,6 +56,7 @@ export const distributeQuiz = (page, quizObj) => {
 			broadcastMessage(page.props.app, quizObj.group, `Professor ${page.props.app.state.currentUser.name}
 			(${page.props.app.state.currentUser.username}) from group ${quizObj.group} 
 			has created a quiz named ${quizObj.name}`);
+			readCookie(page.props.app);
 		}
 	}).catch(error => {
 		console.log(error);
