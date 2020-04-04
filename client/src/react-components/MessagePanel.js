@@ -97,6 +97,13 @@ class MessagePanel extends React.Component {
 			users = this.state.users;
 		}
 
+		let groups;
+		if (this.props.groups){
+			groups = this.props.groups;
+		} else {
+			groups = this.props.app.state.currentUser.groups;
+		}
+
 		return (
 			<div id="msg-panel-container">
 				<h2>Send Message</h2>
@@ -126,7 +133,7 @@ class MessagePanel extends React.Component {
 							) : (
 								<Select value={this.state.targetGroup} onChange={this.onGroupChange} id={"group-sel"}>
 									{
-										this.props.app.state.currentUser.groups.map(group => (
+										groups.map(group => (
 											<MenuItem key={group} value={group}>{group}</MenuItem>
 										))
 									}

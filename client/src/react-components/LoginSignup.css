@@ -1,4 +1,4 @@
-#signup-container {
+#outer-container {
     display: table;
     position: absolute;
     top: 0;
@@ -13,7 +13,7 @@
     align-items: center;
 }
 
-#signup-grid {
+#input-grid {
     margin-top: -150px;
     width: 300px;
     margin-left: 42%;
@@ -22,7 +22,16 @@
     padding: 20px;
 }
 
-.signup-grid-item {
+.grid-item {
     width: 200px;
     padding: 2px;
+}
+
+.login-grid .grid-item{
+    margin-right: 5px;
+}
+
+#submit-button {
+    margin-top: 30px;
+    margin-bottom: -15px;
 }

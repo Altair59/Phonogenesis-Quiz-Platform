@@ -17,6 +17,18 @@ export const getGroupUserList = (page, username) => {
 
 };
 
+export const getGroupNames = (page) => {
+	axios.get("http://127.0.0.1:9000/groups").then(res => {
+		if (res.data){
+			page.setState({groups: res.data.map(group => group.name)});
+		} else {
+			console.log("NO GROUP DATA");
+		}
+	}).catch(err => {
+		console.log(err);
+	})
+};
+
 export const removeGroup = (page, name) => {
 	axios.delete(`http://127.0.0.1:9000/groups/${name}`).then(res => {
 		getGroupUserList(page, page.props.app.state.currentUser.username);

@@ -41,7 +41,7 @@ class StudentQuizzes extends React.Component {
 			<Grid container direction="column" spacing={4} justify="center" alignItems="center">
 				<Grid item id="check-quiz">
 					<TableContainer component={Paper}>
-						<Table aria-label="student table">
+						<Table aria-label="student table" id="stu-quiz-table">
 							<TableHead>
 								<TableRow>
 									<TableCell><b>Quiz Name</b></TableCell>
@@ -64,13 +64,15 @@ class StudentQuizzes extends React.Component {
 												<TableCell>{quiz.pastResult.timeStamp}</TableCell>
 												<TableCell>{`${quiz.pastResult.score}/${quiz.questions.length}`}</TableCell>
 												<TableCell><Button
-													onClick={this.onReview.bind(this, quiz)} variant="contained">Review</Button></TableCell>
+													onClick={this.onReview.bind(this, quiz)}
+													variant="contained">Review</Button></TableCell>
 											</React.Fragment>
 										) : (
 											<React.Fragment>
 												<TableCell>NOT COMPLETED</TableCell>
 												<TableCell>NOT COMPLETED</TableCell>
-												<TableCell><Button onClick={this.onTakeQuiz.bind(this, quiz)} variant="contained">Take
+												<TableCell><Button onClick={this.onTakeQuiz.bind(this, quiz)}
+												                   variant="contained" size="small">Take
 													Quiz</Button></TableCell>
 											</React.Fragment>
 										)}

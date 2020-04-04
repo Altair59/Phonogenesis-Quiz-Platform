@@ -3,11 +3,18 @@
     margin-bottom: 20px;
 }
 
-#gen-switches {
-    margin-top: -10px;
+.question-block-container {
+    font-family: "Times New Roman", serif;
+    font-size: 1.1em;
+    letter-spacing: 0.03em;
 }
 
-.text-field-label-off {
-    margin-top: -7px;
-    margin-left: -12px;
+.ipa-font-sensitive {
+    font-family: "Times New Roman", serif;
+    font-size: 1.3em;
+    letter-spacing: 0.03em;
+}
+
+#helper-button-panel {
+    margin-top: 25px;
 }

@@ -4,10 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import "./mainstyle.css"
 import {addUser} from '../actions/user'
 import {withRouter} from "react-router-dom"
-import "./SignUp.css";
+import "./LoginSignup.css";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 
@@ -38,30 +37,30 @@ class SignUp extends React.Component {
 
 	render() {
 		return (
-			<div className="render-container" id={"signup-container"}>
+			<div id={"outer-container"}>
 				<div id={"grid-container"}>
 					<Grid container justify="center" alignItems="center" direction="column" spacing={2}
-					      id="signup-grid">
+					      id="input-grid">
 						<Grid item>
-							<TextField id="username" className="signup-grid-item" label="Username"
-							           error={this.state.usernameError !== ""}
+							<TextField id="username" className="grid-item" label="Username"
+							           error={this.state.usernameError !== ""} required
 							           helperText={this.state.usernameError} variant="outlined"
 							           onChange={this.handleTextFieldChange}/>
 						</Grid>
 						<Grid item>
-							<TextField id="password" className="signup-grid-item" label="Password" variant="outlined"
+							<TextField required id="password" className="grid-item" label="Password" variant="outlined"
 							           onChange={this.handleTextFieldChange}/>
 						</Grid>
 						<Grid item>
-							<TextField id="name" className="signup-grid-item" label="Name" variant="outlined"
+							<TextField required id="name" className="grid-item" label="Name" variant="outlined"
 							           onChange={this.handleTextFieldChange}/>
 						</Grid>
 						<Grid item>
-							<TextField id="email" className="signup-grid-item" label="Email" variant="outlined"
+							<TextField required id="email" className="grid-item" label="Email" variant="outlined"
 							           onChange={this.handleTextFieldChange}/>
 						</Grid>
 						<Grid item>
-							<FormControl variant="outlined" className="signup-grid-item">
+							<FormControl variant="outlined" className="grid-item">
 								<InputLabel id="type-sel-label">account type</InputLabel>
 								<Select value={this.state.type} labelId="type-sel-label" label={"account type"}
 								        id={"type-sel"}
@@ -72,7 +71,7 @@ class SignUp extends React.Component {
 							</FormControl>
 						</Grid>
 						<Grid item>
-							<Button variant="contained" color="primary" className="signup-grid-item"
+							<Button variant="contained" color="primary" className="grid-item" id="submit-button"
 							        onClick={this.onSignUp}>Sign Up</Button>
 						</Grid>
 						<Grid item>

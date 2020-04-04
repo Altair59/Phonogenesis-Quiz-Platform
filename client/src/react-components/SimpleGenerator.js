@@ -79,11 +79,17 @@ class SimpleGenerator extends React.Component {
 				rule.UR[i] = rule.UR[i].replace(/g/, "ɡ");
 				rule.SR[i] = rule.SR[i].replace(/g/, "ɡ");
 			}
+			rule.poi = rule.poi.replace(/g/, "ɡ");
+			rule.phoneme = rule.phoneme.replace(/g/, "ɡ");
+			rule.ruleTxt = rule.ruleTxt.replace(/g/, "ɡ");
 		} else {
 			for (let i = 0; i < rule.UR.length; i++) {
 				rule.UR[i] = rule.UR[i].replace(/ɡ/, "g");
 				rule.SR[i] = rule.SR[i].replace(/ɡ/, "g");
 			}
+			rule.poi = rule.poi.replace(/ɡ/, "g");
+			rule.phoneme = rule.phoneme.replace(/ɡ/, "g");
+			rule.ruleTxt = rule.ruleTxt.replace(/ɡ/, "g");
 		}
 
 		this.setState({question: rule, genKey: this.state.genKey + 1});
@@ -128,7 +134,7 @@ class SimpleGenerator extends React.Component {
 	};
 
 	render() {
-		if (this.state.rules === null){
+		if (this.state.rules === null) {
 			return <div/>
 		}
 
@@ -140,13 +146,14 @@ class SimpleGenerator extends React.Component {
 				<Grid container direction="row" justify="center" alignItems="flex-start" spacing={4} id={"gen-form"}>
 					<Grid item>
 						<FormControl variant="outlined">
-							<InputLabel className="text-field-label-off">Rule</InputLabel>
-							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
+							<InputLabel id={"rule-sel-label"}>Rule</InputLabel>
+							<Select value={this.state.selectedRule} labelId={"rule-sel-label"} label={"Rule"}
+							        onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
 								{this.state.rules.sort((e1, e2) => {
-									if (e1.ruleTxt > e2.ruleTxt){
+									if (e1.ruleTxt > e2.ruleTxt) {
 										return 1;
-									} else if (e1.ruleTxt < e2.ruleTxt){
+									} else if (e1.ruleTxt < e2.ruleTxt) {
 										return -1;
 									}
 									return 0;
@@ -172,9 +179,9 @@ class SimpleGenerator extends React.Component {
 					/></Grid>
 
 					<Grid item><FormControl variant="outlined" disabled={!this.state.canChangeType}>
-						<InputLabel className="text-field-label-off">QuizData
-							Type</InputLabel>
-						<Select labelId="typeLabel" value={this.state.selectedType} onChange={this.onTypeChange}>
+						<InputLabel id="type-sel-label">Rule Type</InputLabel>
+						<Select labelId="type-sel-label" id={"type-sel"} label={"Rule Type"}
+						        value={this.state.selectedType} onChange={this.onTypeChange}>
 							<MenuItem value={"Random"}>Random</MenuItem>
 							<MenuItem value={"Alternating"}>Alternating</MenuItem>
 							<MenuItem value={"Neutralizing"}>Neutralizing</MenuItem>

@@ -98,7 +98,7 @@ router.post('/register', (req, res) => {
 
 	User.findOne({"username": username, "quizzes.name": quizName}).then(user => {
 		user.quizzes.map((quiz, index) => {
-			if (quiz.name === quizName){
+			if (quiz.name === quizName) {
 				user.quizzes[index].pastResult = pastResult;
 			}
 		});

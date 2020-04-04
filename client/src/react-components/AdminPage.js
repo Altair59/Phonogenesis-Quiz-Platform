@@ -20,6 +20,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Divider from "@material-ui/core/Divider";
 import MessagePanel from "./MessagePanel";
+import {getGroupNames} from "../actions/group";
 
 class AdminPage extends React.Component {
 	constructor(props) {
@@ -29,10 +30,12 @@ class AdminPage extends React.Component {
 			type: "student",
 			currEdit: -1,
 			usernameError: "",
-			users: null
+			users: null,
+			groups: null
 		};
 
 		getUsers(this);
+		getGroupNames(this);
 	}
 
 	onEditUser = i => {
@@ -78,7 +81,7 @@ class AdminPage extends React.Component {
 	};
 
 	render() {
-		if (this.state.users === null) {
+		if (this.state.users === null || this.state.groups === null) {
 			return <div/>
 		}
 
@@ -194,7 +197,7 @@ class AdminPage extends React.Component {
 					</Grid>
 
 					<br/><Divider/><br/>
-					<MessagePanel users={this.state.users} app={this.props.app}/>
+					<MessagePanel users={this.state.users} groups={this.state.groups} app={this.props.app}/>
 				</div>
 			</div>
 		);

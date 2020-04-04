@@ -65,6 +65,14 @@ router.get("/objectify/:username", (req, res) => {
 	})
 });
 
+router.get("/", (req, res) => {
+	Group.find().then(groups => {
+		res.send(groups);
+	}).catch(err => {
+		console.log(err);
+	});
+});
+
 // Route to add a new group
 router.post("/", (req, res) => {
 	const group = new Group({
