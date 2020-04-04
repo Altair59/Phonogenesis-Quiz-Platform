@@ -20,7 +20,7 @@ import ProfessorCheckQuiz from "./react-components/ProfessorCheckQuiz";
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {currentUser: null};
+		this.state = {};
 	}
 
 	componentDidMount() {

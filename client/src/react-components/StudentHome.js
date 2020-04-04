@@ -3,23 +3,21 @@ import {withRouter} from "react-router-dom"
 import TopBar from "./TopBar.js"
 import "./mainstyle.css"
 import Divider from "@material-ui/core/Divider";
-import {findUser} from "../actions/user";
 import MessagePanel from "./MessagePanel";
 
 class StudentHome extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props.history.push("/student");
-		this.state = {currentUser: null};
-		findUser(this, this.props.app.state.currentUser.username);
+		this.state = {};
 	}
 
 	render() {
-		if (this.state.currentUser === null) {
+		const student = this.props.app.state.currentUser;
+
+		if (!student) {
 			return <div/>
 		}
-
-		const student = this.state.currentUser;
 
 		return (
 			<div className="render-container">
@@ -31,7 +29,7 @@ class StudentHome extends React.Component {
 						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
 					</h3>
 					<br/><Divider/><br/>
-					<MessagePanel page={this} currentUser={student}/>
+					<MessagePanel app={this.props.app}/>
 				</div>
 			</div>
 		);

@@ -1,4 +1,4 @@
-import {sendMessage} from "./user";
+import {readCookie, sendMessage} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
@@ -62,7 +62,7 @@ export const addToGroup = (page, username, groupName) => {
 			alert("Student must be present and not enrolled in this group yet");
 		} else {
 			alert(`Student ${username} Added to group ${groupName}!`);
-			sendMessage(username, `You have been added to group ${groupName} by professor 
+			sendMessage(page.props.app, username, `You have been added to group ${groupName} by professor 
 			${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
 		}
 		getGroupUserList(page, page.props.app.state.currentUser.username);
@@ -82,12 +82,12 @@ export const removeFromGroup = (page, username, groupName) => {
 			if (page.props.app.state.currentUser.type === "student") {
 				alert(`You have dropped from group ${groupName}!`);
 				console.log(page.state.g2u[groupName]);
-				sendMessage(page.state.g2u[groupName][0].username, `Student ${username} has dropped from group 
-				${groupName}!`);
+				sendMessage(page.props.app, page.state.g2u[groupName][0].username,
+					`Student ${username} has dropped from group ${groupName}!`);
 			} else {
 				alert(`Student ${username} Removed from group ${groupName}!`);
-				sendMessage(username, `You have been removed from group ${groupName} by professor 
-				${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
+				sendMessage(page.props.app, username, `You have been removed from group ${groupName} 
+				by professor ${page.props.app.state.currentUser.name}(${page.props.app.state.currentUser.username})`);
 			}
 		}
 		getGroupUserList(page, page.props.app.state.currentUser.username);
@@ -96,10 +96,12 @@ export const removeFromGroup = (page, username, groupName) => {
 	});
 };
 
-export const broadcastMessage = (groupName, message) => {
+export const broadcastMessage = (app, groupName, message) => {
 	axios.post("http://127.0.0.1:9000/groups/message", {groupName: groupName, message: message}).then(res => {
 		if (!res.data.result) {
 			console.log("FAILED TO BROADCAST MESSAGE");
+		} else {
+			readCookie(app);
 		}
 	}).catch(err => {
 		console.log(err);

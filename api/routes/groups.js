@@ -65,21 +65,6 @@ router.get("/objectify/:username", (req, res) => {
 	})
 });
 
-/// Route to get a group by their name
-router.get("/group/:name", (req, res) => {
-	const name = req.params.name;
-
-	Group.findOne({name: name}).then(group => {
-		if (!group) {
-			res.status(404).send(null);
-		} else {
-			res.send(group);
-		}
-	}).catch(error => {
-		res.status(500).send(null);
-	});
-});
-
 // Route to add a new group
 router.post("/", (req, res) => {
 	const group = new Group({

@@ -60,10 +60,9 @@ router.post("/login", (req, res) => {
 	const password = req.body.password;
 
 	User.findByUsernamePassword(username, password).then(user => {
-		req.session.user = parseClientUser(user);
-		req.session.save(err => {
-			res.send({currentUser: req.session.user});
-		});
+		req.session.username = user.username;
+		res.send({currentUser: parseClientUser(user)});
+		res.end();
 	}).catch(error => {
 		console.log(error);
 		res.status(400).send();
@@ -83,8 +82,19 @@ router.get("/logout", (req, res) => {
 
 // Route to check if a user is already logged in
 router.get("/check-session", (req, res) => {
-	if (req.session.user) {
-		res.send({currentUser: req.session.user});
+	if (req.session.username) {
+		User.findOne({username: req.session.username}).then(user => {
+			if (user){
+				res.send({currentUser: parseClientUser(user)});
+			} else {
+				console.log("USER NOT FOUND IN DATABASE");
+				res.send({currentUser: null});
+			}
+		}).catch(err => {
+			console.log(err);
+			console.log('USER NOT FOUND IN DATABASE');
+			res.send({currentUser: null});
+		});
 	} else {
 		res.send({currentUser: null});
 	}
@@ -104,7 +114,7 @@ router.post("/", (req, res) => {
 	user.save().then(result => {
 		res.send({result: true});
 	}).catch(err => {
-		console.log(err);
+		res.send({result: false});
 	});
 });
 

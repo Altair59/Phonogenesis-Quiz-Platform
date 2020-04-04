@@ -45,7 +45,6 @@ class ProfGroupPage extends React.Component {
 		this.forceUpdate();
 	};
 
-
 	onCreateGroup = () => {
 		const name = document.getElementById("new-group-name-field").value;
 		addGroup(this, name);
@@ -62,7 +61,8 @@ class ProfGroupPage extends React.Component {
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container id="prof-group-lst" direction="column" justify="flex-start" alignItems="flex-start">
 					<Grid item id={"prof-group-header"}>
-						<Grid container direction="row" justify="flex-start" alignItems="flex-end" spacing={3}>
+						<Grid id={"add-group-grid"} container direction="row" justify="flex-start" alignItems="center"
+						      spacing={3}>
 							<Grid item>
 								<TextField id="new-group-name-field" label="Group Name" error={this.state.err}
 								           helperText={this.state.err ? "invalid group name" : ''}>
@@ -117,7 +117,7 @@ class ProfGroupPage extends React.Component {
 											</TableBody>
 										</Table>
 
-										<form id="add-student-form">
+										<form className="add-student-form">
 											<TextField id={"add-input-".concat(group)}
 											           label="student username">Name</TextField>
 											<IconButton onClick={this.onAddToGroup.bind(this, group)}><AddIcon>Add

@@ -8,6 +8,7 @@ import TopBar from "./TopBar.js"
 import Countdown from 'react-countdown-now';
 import {withRouter} from "react-router-dom";
 import {registerPastResult} from "../actions/quiz";
+import Divider from "@material-ui/core/Divider";
 const datetime = require('date-and-time');
 
 
@@ -148,6 +149,8 @@ class QuizTaker extends React.Component {
 							</Grid>
 						</Grid>
 					</Grid>
+
+					<br/><Divider/>
 				</div>
 			);
 		} else {

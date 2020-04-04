@@ -10,7 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import "./LoginPage.css";
 
-import {login, handleTextFieldChange} from "../actions/user";
+import {login} from "../actions/user";
 
 class Login extends React.Component {
 
@@ -23,6 +23,12 @@ class Login extends React.Component {
 			showPassword: false
 		};
 	}
+
+	handleTextFieldChange = (e) => {
+		this.setState({
+			[e.target.id]: e.target.value
+		});
+	};
 
 	render() {
 		return (
@@ -37,7 +43,7 @@ class Login extends React.Component {
 								<TextField
 									id="username"
 									label="Username"
-									onChange={(e) => handleTextFieldChange(e, this)}
+									onChange={this.handleTextFieldChange}
 									error={this.state.err}
 									helperText={this.state.err ? "Incorrect username or password" : ''}
 								/>
@@ -49,24 +55,24 @@ class Login extends React.Component {
 						<TextField
 							id="password"
 							label="Password"
-							onChange={(e) => handleTextFieldChange(e, this)}
+							onChange={this.handleTextFieldChange}
 							error={this.state.err}
 							type={this.state.showPassword ? 'text' : 'password'}
 							helperText={this.state.err ? "Incorrect username or password" : ''}
 							InputProps={{
 								endAdornment:
-								<InputAdornment>
-	                <IconButton
-	                  onClick={() => this.setState({showPassword: !this.state.showPassword})}
-	                >
-	                  {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-	                </IconButton>
-	              </InputAdornment>,
+									<InputAdornment>
+										<IconButton onClick={
+											() => this.setState({showPassword: !this.state.showPassword})}>
+											{this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+										</IconButton>
+									</InputAdornment>,
 							}}
 						/>
 					</div>
 					<div className="formItem">
-						<Button variant="contained" color="primary" onClick={() => login(this, this.props)}>Login</Button>
+						<Button variant="contained" color="primary"
+						        onClick={() => login(this.props.app, this.state.username, this.state.password)}>Login</Button>
 					</div>
 				</div>
 

@@ -13,15 +13,16 @@ export const readCookie = (app) => {
 	});
 };
 
-export const login = (loginPage, loginProps) => {
+export const login = (app, username, password) => {
 	axios.post("http://127.0.0.1:9000/users/login", {
-		username: loginPage.state.username,
-		password: loginPage.state.password
+		username: username,
+		password: password
 	}).then(function (res) {
 		const user = res.data.currentUser;
 		if (user) {
-			console.log(`Logged in as ${user.username}`);
-			loginProps.app.setState({currentUser: user});
+			readCookie(app);
+		} else {
+			alert("Login Failed");
 		}
 	}).catch(err => {
 		console.log(err);
@@ -38,25 +39,6 @@ export const logout = () => {
 	})
 };
 
-export const signUp = (signUpPage, signUpProps) => {
-	axios.post("http://127.0.0.1:9000/users", signUpProps)
-		.then(res => {
-			if (res.status === 200) {
-				console.log('Sign up successful');
-				signUpPage.props.history.push('/login');
-			}
-		})
-		.catch(err => {
-			console.log(err)
-		});
-};
-
-export const handleTextFieldChange = (e, props) => {
-	props.setState({
-		[e.target.id]: e.target.value
-	});
-};
-
 export const getUsers = (page) => {
 	axios.get("http://127.0.0.1:9000/users").then(res => {
 		page.setState({users: res.data.users});
@@ -71,40 +53,57 @@ export const removeUser = (page, username) => {
 	});
 };
 
-export const addUser = (app) => {
+export const addUser = (page) => {
+	if (!page.state.name || page.state.name.length < 1 ||
+		!page.state.email || page.state.email.length < 1 ||
+		!page.state.username || page.state.username.length < 1 ||
+		!page.state.password || page.state.password.length < 1
+	) {
+		alert("All information must be completed!");
+		return;
+	}
+
 	axios.post("http://127.0.0.1:9000/users/", {
-			name: app.state.name,
-			type: app.state.type,
-			email: app.state.email,
-			username: app.state.username,
-			password: app.state.password,
+			name: page.state.name,
+			type: page.state.type,
+			email: page.state.email,
+			username: page.state.username,
+			password: page.state.password,
 			groups: [],
 			quizzes: []
 		}
 	).then(res => {
-		getUsers(app);
-		app.setState({currEdit: -1});
+		if (res.data.result) {
+			getUsers(page);
+			page.setState({currEdit: -1, usernameError: ""});
+			alert(`User ${page.state.username} successfully created.`);
+		} else {
+			alert("Failed to add user (username must be unique)!");
+			page.setState({usernameError: "must be unique"});
+		}
 	}).catch(error => {
 		console.log(error)
 	});
 };
 
-export const deleteMessage = (page, username, msgid) => {
+export const deleteMessage = (app, username, msgid) => {
 	axios.delete(`http://127.0.0.1:9000/users/message/${username}/${msgid}`).then(res => {
-		if (!res.data.user){
+		if (!res.data.user) {
 			console.log("FAILED TO DELETE MESSAGE");
 		} else {
-			page.setState({currentUser: res.data.user});
+			readCookie(app);
 		}
 	}).catch(err => {
 		console.log(err);
 	})
 };
 
-export const sendMessage = (username, message) => {
+export const sendMessage = (app, username, message) => {
 	axios.post("http://127.0.0.1:9000/users/message", {message: message, username: username}).then(res => {
-		if (!res.data.result){
+		if (!res.data.result) {
 			console.log("FAILED TO SEND MESSAGE TO USER");
+		} else {
+			readCookie(app);
 		}
 	}).catch(err => {
 		console.log(err);
@@ -115,14 +114,8 @@ export const sendMessage = (username, message) => {
 export const editUser = (page, username, info) => {
 	axios.patch(`http://127.0.0.1:9000/users/${username}`, info).then(res => {
 		getUsers(page);
-		sendMessage(username, "Your account information has been edited by an admin.");
+		sendMessage(page.props.app, username, "Your account information has been edited by an admin.");
 	}).catch(err => {
 		console.log(err);
 	});
-};
-
-export const findUser = (page, username) => {
-	axios.get(`http://127.0.0.1:9000/users/${username}`).then(res => {
-		page.setState({currentUser: res.data.result})
-	}).catch(err => console.log(err))
 };

@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import TopBar from "./TopBar.js";
 import {withRouter} from "react-router-dom";
-import {getUsers, removeUser, addUser, editUser, findUser} from "../actions/user";
+import {getUsers, removeUser, addUser, editUser} from "../actions/user";
 
 import "./AdminPage.css";
 import "./mainstyle.css";
@@ -29,12 +29,10 @@ class AdminPage extends React.Component {
 			type: "student",
 			currEdit: -1,
 			usernameError: "",
-			users: null,
-			currentUser: null
+			users: null
 		};
 
 		getUsers(this);
-		findUser(this, this.props.app.state.currentUser.username);
 	}
 
 	onEditUser = i => {
@@ -70,8 +68,17 @@ class AdminPage extends React.Component {
 		this.setState({type: e.target.value});
 	};
 
+	onRemoveUser = (username) => {
+		removeUser(this, username);
+		this.forceUpdate();
+	};
+
+	onAddUser = () => {
+		addUser(this);
+	};
+
 	render() {
-		if (this.state.currentUser === null || this.state.users === null) {
+		if (this.state.users === null) {
 			return <div/>
 		}
 
@@ -80,7 +87,7 @@ class AdminPage extends React.Component {
 				<TopBar history={this.props.history} app={this.props.app}/>
 
 				<div className="main-area">
-					<Grid container id="admin-add-user" direction="row" alignItems="center" justify="flex-start"
+					<Grid container id="admin-add-user" direction="row" alignItems="flex-start" justify="flex-start"
 					      spacing={3}>
 						<Grid item><h3>Total User Count: <span id="userCount">{this.state.users.length}</span></h3>
 						</Grid>
@@ -111,7 +118,7 @@ class AdminPage extends React.Component {
 							label="Password"
 							onChange={this.handleTextFieldChange}
 						/></Grid>
-						<Grid item><Button variant="contained" color="primary" onClick={addUser.bind(this, this)}>Add
+						<Grid item><Button variant="contained" color="primary" onClick={this.onAddUser.bind(this)}>Add
 							User</Button></Grid>
 					</Grid>
 					<br/><Divider/><br/>
@@ -174,7 +181,7 @@ class AdminPage extends React.Component {
 												</TableCell>
 												<TableCell align="center">
 													<Button variant="contained" disabled={user.type === "admin"}
-													        onClick={removeUser.bind(this, this, user.username)}>
+													        onClick={this.onRemoveUser.bind(this, user.username)}>
 														Remove
 													</Button>
 												</TableCell>
@@ -187,7 +194,7 @@ class AdminPage extends React.Component {
 					</Grid>
 
 					<br/><Divider/><br/>
-					<MessagePanel currentUser={this.state.currentUser} page={this}/>
+					<MessagePanel users={this.state.users} app={this.props.app}/>
 				</div>
 			</div>
 		);

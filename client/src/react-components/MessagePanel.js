@@ -6,7 +6,7 @@ import "./MessagePanel.css"
 import {TextField} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import {deleteMessage, findUser, getUsers, sendMessage} from "../actions/user";
+import {deleteMessage, getUsers, sendMessage} from "../actions/user";
 import {broadcastMessage} from "../actions/group";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -20,11 +20,19 @@ import CardActions from "@material-ui/core/CardActions";
 class MessagePanel extends React.Component {
 	constructor(props) {
 		super(props);
+
+		let defaultGroup;
+		if (this.props.app.state.currentUser.groups.length > 0) {
+			defaultGroup = this.props.app.state.currentUser.groups[0];
+		} else {
+			defaultGroup = "";
+		}
+
 		this.state = {
 			mode: "p2p",
 			users: null,
-			targetUser: this.props.currentUser.username,
-			targetGroup: this.props.currentUser.groups[0]
+			targetUser: this.props.app.state.currentUser.username,
+			targetGroup: defaultGroup
 		};
 		getUsers(this);
 	}
@@ -42,7 +50,7 @@ class MessagePanel extends React.Component {
 	};
 
 	onDeleteMessage = (msg) => {
-		deleteMessage(this.props.page, this.props.currentUser.username, msg._id);
+		deleteMessage(this.props.app, this.props.app.state.currentUser.username, msg._id);
 	};
 
 	onSend = (event) => {
@@ -53,14 +61,14 @@ class MessagePanel extends React.Component {
 			return;
 		}
 
-		const message = `From ${this.props.currentUser.username}: ${rawMessage}`;
+		const message = `From ${this.props.app.state.currentUser.username}: ${rawMessage}`;
 		switch (this.state.mode) {
 			case "p2p":
 				if (!this.state.targetUser) {
 					alert("Must select target user!");
 					return;
 				}
-				sendMessage(this.state.targetUser, message);
+				sendMessage(this.props.app, this.state.targetUser, message);
 				alert("Message Sent");
 				break;
 
@@ -69,7 +77,7 @@ class MessagePanel extends React.Component {
 					alert("Must select target group!");
 					return;
 				}
-				broadcastMessage(this.state.targetGroup, message);
+				broadcastMessage(this.props.app, this.state.targetGroup, message);
 				alert("Message Sent");
 				break;
 
@@ -77,12 +85,16 @@ class MessagePanel extends React.Component {
 				console.log("FATAL ERROR UNKNOWN MODE");
 				break;
 		}
-		findUser(this.props.page, this.props.currentUser.username);
 	};
 
 	render() {
-		if (this.state.users === null) {
+		let users;
+		if (this.props.users) {
+			users = this.props.users;
+		} else if (this.state.users === null) {
 			return <div/>
+		} else {
+			users = this.state.users;
 		}
 
 		return (
@@ -104,7 +116,7 @@ class MessagePanel extends React.Component {
 							this.state.mode === "p2p" ? (
 								<Select value={this.state.targetUser} onChange={this.onUserChange} id={"user-sel"}>
 									{
-										this.state.users.map(user => (
+										users.map(user => (
 											<MenuItem key={user.username}
 											          value={user.username}>{user.username}</MenuItem>
 										))
@@ -113,7 +125,7 @@ class MessagePanel extends React.Component {
 							) : (
 								<Select value={this.state.targetGroup} onChange={this.onGroupChange} id={"group-sel"}>
 									{
-										this.props.currentUser.groups.map(group => (
+										this.props.app.state.currentUser.groups.map(group => (
 											<MenuItem key={group} value={group}>{group}</MenuItem>
 										))
 									}
@@ -129,12 +141,12 @@ class MessagePanel extends React.Component {
 				<h2>Incoming Messages</h2>
 				<br/>
 				{
-					this.props.currentUser.messages.length === 0 ? (
+					this.props.app.state.currentUser.messages.length === 0 ? (
 						<h3>You have no incoming message.</h3>
 					) : (
 						<div>
 							<GridList cols={3} cellHeight="auto">
-								{this.props.currentUser.messages.map((msg, index) => (
+								{this.props.app.state.currentUser.messages.map((msg, index) => (
 									<GridListTile key={index} className={"message-tile"}>
 										<Card variant="outlined">
 											<CardContent>

@@ -52,7 +52,7 @@ export const distributeQuiz = (page, quizObj) => {
 			alert("Failed to distribute quiz. Quiz must have unique name.");
 		} else {
 			alert("Quiz created and sent to all students in the group!");
-			broadcastMessage(quizObj.group, `Professor ${page.props.app.state.currentUser.name}
+			broadcastMessage(page.props.app, quizObj.group, `Professor ${page.props.app.state.currentUser.name}
 			(${page.props.app.state.currentUser.username}) from group ${quizObj.group} 
 			has created a quiz named ${quizObj.name}`);
 		}
