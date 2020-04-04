@@ -1,15 +1,19 @@
+body {
+  min-width:300px;
+}
+
 .signUpForm {
   display: block;
-  position: absolute;
-  top: 10%;
-  bottom: 40%;
-  left: 40%;
-  height: 80%;
-  width: 20%;
-  max-width: 50vw;
+  position: relative;
+  height: 800px;
+  min-height: 500px;
+  width: 300px;
+  min-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
   border: 2px solid lightgrey;
-  border-radius: 5%;
-  min-width:300px;
+  border-radius: 25px;
 }
 
 .form {
@@ -43,4 +47,8 @@
   text-align: center;
   margin-left: 5%;
   margin-right: 5%;
+}
+
+.select-button {
+  margin-top: 10px;
 }

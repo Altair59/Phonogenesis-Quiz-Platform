@@ -28,22 +28,24 @@ class Login extends React.Component {
 		return (
 			<div id="render-container">
 				<div className="loginForm">
-					<Grid container spacing={1} alignItems="flex-end">
-						<Grid item>
-							<AccountCircle/>
+					<div className="formItem">
+						<Grid container spacing={1} justify="center" alignItems="flex-end">
+							<Grid item>
+								<AccountCircle/>
+							</Grid>
+							<Grid item>
+								<TextField
+									id="username"
+									label="Username"
+									onChange={(e) => handleTextFieldChange(e, this)}
+									error={this.state.err}
+									helperText={this.state.err ? "Incorrect username or password" : ''}
+								/>
+							</Grid>
 						</Grid>
-						<Grid item>
-							<TextField
-								id="username"
-								label="Username"
-								onChange={(e) => handleTextFieldChange(e, this)}
-								error={this.state.err}
-								helperText={this.state.err ? "Incorrect username or password" : ''}
-							/>
-						</Grid>
-					</Grid>
+					</div>
 
-					<div className="passwordForm">
+					<div className="formItem" id="passwordBox">
 						<TextField
 							id="password"
 							label="Password"
@@ -62,15 +64,14 @@ class Login extends React.Component {
 	              </InputAdornment>,
 							}}
 						/>
-
 					</div>
-					<div className="loginButton">
-						<Button onClick={() => login(this, this.props)}>Login</Button>
+					<div className="formItem">
+						<Button variant="contained" color="primary" onClick={() => login(this, this.props)}>Login</Button>
 					</div>
 				</div>
 
 				<div className="makeAccountButton">
-					<Button onClick={() => this.props.history.push("/signup")}>Don't have an account? Sign up here.</Button>
+					<p>Don't have an account? Sign up<a href="/signup"> here</a>.</p>
 				</div>
 			</div>
 		);

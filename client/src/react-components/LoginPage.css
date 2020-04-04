@@ -1,35 +1,33 @@
 .loginForm {
-  display: block;
-  position: absolute;
-  top: 30%;
-  bottom: 30%;
-  left: 40%;
-  height: 25%;
-  padding: 15px 25px 10px;
-  border: 2px solid lightgrey;
-  border-radius: 10%;
-}
-
-.passwordForm {
-  margin-bottom: 30px;
-  padding-left: 30px;
-  width: 200px;
-}
-
-.loginButton {
-  position: absolute;
-  left: 30%;
-  width: 30%;
-  padding-right: 6px;
-  padding-left: 19px;
-  border: 2px solid darkgrey;
-  border-radius: 10%;
+  display: relative;
   margin-top: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: 300px;
+  border: 2px solid lightgrey;
+  border-radius: 25px;
+  padding-top: 10px;
+}
+
+.formItem {
+  display: flex;
+  width: auto;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .makeAccountButton {
   display: block;
-  position: absolute;
-  top: 60%;
-  left: 39%;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#passwordBox {
+  padding-left: 70px;
+  padding-right: 35px;
+
 }

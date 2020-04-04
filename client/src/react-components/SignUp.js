@@ -1,9 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -75,24 +72,26 @@ class SignUp extends React.Component {
 						</div>
 
 						<div className="form">
-							<InputLabel id="type-label">Account Type</InputLabel>
-							<Select fullWidth={true}
-											value={state.type}
-											onChange={(e) => this.changeSelected(e)}
-											id={"type-sel"}>
+							<div className="select-button">
+								<InputLabel id="type-label">Account Type</InputLabel>
+								<Select fullWidth={true}
+												value={state.type}
+												onChange={(e) => this.changeSelected(e)}
+												id={"type-sel"}>
 
-									<MenuItem
-										value={"student"}
-									>
-										Student
-									</MenuItem>
-									<MenuItem
-										value={"professor"}
-									>
-										Professor
-									</MenuItem>
-								}
-							</Select>
+										<MenuItem
+											value={"student"}
+										>
+											Student
+										</MenuItem>
+										<MenuItem
+											value={"professor"}
+										>
+											Professor
+										</MenuItem>
+									}
+								</Select>
+							</div>
 						</div>
 					</div>
 
