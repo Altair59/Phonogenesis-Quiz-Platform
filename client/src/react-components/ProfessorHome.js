@@ -2,7 +2,7 @@ import React from "react";
 import {withRouter} from "react-router-dom"
 import TopBar from "./TopBar.js"
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import "./mainstyle.css"
 import mark from "./avatars/mark_avatar.jpg";
 import Divider from "@material-ui/core/Divider";
@@ -43,11 +43,11 @@ class ProfessorHome extends React.Component {
 					<Divider/><br/>
 					<Avatar alt={prof.name} src={mark} className={this.classes.large}/>
 
-					<div><span className="bold">Name: </span><span className="text">{prof.name ? prof.name : "Anonymous"}</span></div>
-					<div><span className="bold">Email: </span><span className="text">{prof.email ? prof.email : "Undefined"}</span></div>
-					<div><span onClick={() => this.props.history.push("/professor/groups")} className="bold" id="link-button">Instructing:</span><span
-						className="text"> {prof.groups.length > 0 ? prof.groups.join(", ") : "None"}</span>
-					</div>
+					<p><span className="bold">Name: {prof.name ? prof.name : "Anonymous"}</span></p>
+					<p><span className="bold">Email: {prof.email ? prof.email : "Undefined"}</span></p>
+					<p><span onClick={() => this.props.history.push("/professor/groups")} className="bold"
+					         id="link-button">Instructing: {prof.groups.length > 0 ? prof.groups.join(", ") : "None"}</span>
+					</p>
 					<br/>
 					<MessagePanel app={this.props.app}/>
 				</div>

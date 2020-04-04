@@ -26,11 +26,11 @@ class StudentHome extends React.Component {
 				<div className="main-area">
 					<h2>Account Information</h2>
 					<Divider/><br/>
-					<div><span className="bold">Name: </span><span className="text">{student.name ? student.name : "Anonymous"}</span></div>
-					<div><span className="bold">Email: </span><span className="text">{student.email ? student.email : "Undefined"}</span></div>
-					<div><span onClick={() => this.props.history.push("/student/groups")} className="bold" id="link-button">Enrolled:</span><span
-						className="text"> {student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
-					</div>
+					<p><span className="bold">Name: {student.name ? student.name : "Anonymous"}</span></p>
+					<p><span className="bold">Email: {student.email ? student.email : "Undefined"}</span></p>
+					<p><span onClick={() => this.props.history.push("/student/groups")} className="bold"
+					         id="link-button">Enrolled: {student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
+					</p>
 					<br/>
 					<MessagePanel app={this.props.app}/>
 				</div>

@@ -152,11 +152,8 @@ class MessagePanel extends React.Component {
 									<GridListTile key={index} className={"message-tile"}>
 										<Card variant="outlined">
 											<CardContent>
-												<h5>{msg.timeStamp}</h5>
-											</CardContent>
-
-											<CardContent>
-												<h3>{msg.content}</h3>
+												<p className={"message-timestamp-text"}>{msg.timeStamp}</p>
+												<p className={"message-content-text"}>{msg.content}</p>
 											</CardContent>
 
 											<CardActions>
