@@ -24,8 +24,7 @@ class SignUp extends React.Component {
 	changeSelected(event) {
 		this.setState({
 			type: event.currentTarget.textContent.toLowerCase()
-		})
-		console.log(this.state.type)
+		});
 	}
 
 	render() {
@@ -36,20 +35,14 @@ class SignUp extends React.Component {
 				<div className="signUpForm">
 					<div className="formList">
 						<div className="form">
-							<TextField
-								id="username"
-								label="Username"
-								fullWidth={true}
-								onChange={(e) => handleTextFieldChange(e, this)}
+							<TextField id="username" label="Username" fullWidth={true}
+							           onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
 
 						<div className="form">
-							<TextField
-								id="password"
-								label="Password"
-								fullWidth={true}
-								onChange={(e) => handleTextFieldChange(e, this)}
+							<TextField id="password" label="Password" fullWidth={true}
+							           onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
 
@@ -63,40 +56,26 @@ class SignUp extends React.Component {
 						</div>
 
 						<div className="form">
-							<TextField
-								id="email"
-								label="Email"
-								fullWidth={true}
-								onChange={(e) => handleTextFieldChange(e, this)}
+							<TextField id="email" label="Email" fullWidth={true}
+							           onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
 
 						<div className="form">
 							<div className="select-button">
 								<InputLabel id="type-label">Account Type</InputLabel>
-								<Select fullWidth={true}
-												value={state.type}
-												onChange={(e) => this.changeSelected(e)}
-												id={"type-sel"}>
+								<Select fullWidth={true} value={state.type} id={"type-sel"}
+								        onChange={(e) => this.changeSelected(e)}>
 
-										<MenuItem
-											value={"student"}
-										>
-											Student
-										</MenuItem>
-										<MenuItem
-											value={"professor"}
-										>
-											Professor
-										</MenuItem>
-									}
+									<MenuItem value={"student"}>Student</MenuItem>
+									<MenuItem value={"professor"}>Professor</MenuItem>
 								</Select>
 							</div>
 						</div>
 					</div>
 
 					<div className="signUpButton">
-						<Button  variant="contained" color="primary" onClick={() => signUp(this, state)}>Sign Up</Button>
+						<Button variant="contained" color="primary" onClick={() => signUp(this, state)}>Sign Up</Button>
 					</div>
 
 				</div>
