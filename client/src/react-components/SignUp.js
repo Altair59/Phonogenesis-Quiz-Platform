@@ -5,8 +5,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 import "./mainstyle.css"
-import Menu from '@material-ui/core/Menu';
+
 import {signUp, handleTextFieldChange} from '../actions/user'
 import {withRouter} from "react-router-dom"
 
@@ -19,17 +21,14 @@ class SignUp extends React.Component {
 		name: "",
 		email: "",
 		type: "",
-		isOpen: false,
-		anchorEl: null,
 	};
 
 
 	changeSelected(event) {
 		this.setState({
-			type: event.currentTarget.textContent.toLowerCase(),
-			isOpen: false,
-			anchorEl: null
+			type: event.currentTarget.textContent.toLowerCase()
 		})
+		console.log(this.state.type)
 	}
 
 	render() {
@@ -43,6 +42,7 @@ class SignUp extends React.Component {
 							<TextField
 								id="username"
 								label="Username"
+								fullWidth={true}
 								onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
@@ -51,6 +51,7 @@ class SignUp extends React.Component {
 							<TextField
 								id="password"
 								label="Password"
+								fullWidth={true}
 								onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
@@ -59,6 +60,7 @@ class SignUp extends React.Component {
 							<TextField
 								id="name"
 								label="Name"
+								fullWidth={true}
 								onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
@@ -67,55 +69,37 @@ class SignUp extends React.Component {
 							<TextField
 								id="email"
 								label="Email"
+								fullWidth={true}
 								onChange={(e) => handleTextFieldChange(e, this)}
 							/>
 						</div>
 
 						<div className="form">
-							<div className="typeButton">
-								<List component="nav">
-									<ListItem
-										button
-										onClick={(e) => {
-											this.setState({anchorEl: e.currentTarget})
-										}}
-									>
-										<ListItemText
-											primary={state.type === "student" ? "Student" : (state.type === "professor" ? "Professor" : "Account Type")}/>
-									</ListItem>
-								</List>
-							</div>
-							<div className="menu">
-								<Menu
-									id="lock-menu"
-									keepMounted
-									open={Boolean(state.anchorEl)}
-									anchorEl={state.anchorEl}
-									onClose={() => this.setState({anchorEl: null})}
-								>
+							<InputLabel id="type-label">Account Type</InputLabel>
+							<Select fullWidth={true}
+											value={state.type}
+											onChange={(e) => this.changeSelected(e)}
+											id={"type-sel"}>
+
 									<MenuItem
-										key={"student"}
-										selected={"student" === state.type}
-										onClick={(e) => this.changeSelected(e)}
+										value={"student"}
 									>
 										Student
 									</MenuItem>
 									<MenuItem
-										key={"professor"}
-										selected={"professor" === state.type}
-										onClick={(e) => this.changeSelected(e)}
+										value={"professor"}
 									>
 										Professor
 									</MenuItem>
-								</Menu>
-							</div>
-
+								}
+							</Select>
 						</div>
 					</div>
 
 					<div className="signUpButton">
-						<Button onClick={() => signUp(this, state)}>Sign Up</Button>
+						<Button  variant="contained" color="primary" onClick={() => signUp(this, state)}>Sign Up</Button>
 					</div>
+
 				</div>
 			</div>
 		)
