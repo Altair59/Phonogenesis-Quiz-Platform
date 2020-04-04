@@ -29,10 +29,10 @@ db.once('open', function () {
 
 	const defaultStudent = new User({
 		type: "student",
-		name: "stu_name",
+		name: "student_user",
 		email: "stu@pg.com",
-		username: "stu",
-		password: "stu",
+		username: "user",
+		password: "user",
 		groups: ["CSC309"],
 		messages: [],
 		quizzes: []
@@ -45,10 +45,10 @@ db.once('open', function () {
 
 	const defaultProf = new User({
 		type: "professor",
-		name: "prof_name",
+		name: "professor_user",
 		email: "prof@pg.com",
-		username: "prof",
-		password: "prof",
+		username: "user2",
+		password: "user2",
 		groups: ["CSC309"],
 		messages: [],
 		quizzes: []
