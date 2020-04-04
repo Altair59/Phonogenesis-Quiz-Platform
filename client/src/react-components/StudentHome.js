@@ -25,12 +25,14 @@ class StudentHome extends React.Component {
 			<div className="render-container">
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<div className="main-area">
-					<h1>{student.name ? student.name : "Anonymous"}</h1>
-					<h3>Email: <span className="text">{student.email ? student.email : "Undefined"}</span></h3>
-					<h3>Enrolled: <span
-						className="text">{student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
-					</h3>
-					<br/><Divider/><br/>
+					<h2>Account Information</h2>
+					<Divider/><br/>
+					<div><span className="bold">Name: </span><span className="text">{student.name ? student.name : "Anonymous"}</span></div>
+					<div><span className="bold">Email: </span><span className="text">{student.email ? student.email : "Undefined"}</span></div>
+					<div><span onClick={() => this.props.history.push("/student/groups")} className="bold" id="link-button">Enrolled:</span><span
+						className="text"> {student.groups.length > 0 ? student.groups.join(", ") : "None"}</span>
+					</div>
+					<br/>
 					<MessagePanel page={this} currentUser={student}/>
 				</div>
 			</div>
