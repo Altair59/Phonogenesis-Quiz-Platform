@@ -1,4 +1,3 @@
-import {sendMessage} from "./user";
 import {broadcastMessage} from "./group";
 
 const axios = require('axios');
@@ -24,15 +23,17 @@ export const getUserQuizzes = (page, username) => {
 	});
 };
 
-export const getDistinctRuleTxtList = (page) => {
+export const getDistinctRuleList = (page) => {
 	axios.get("http://127.0.0.1:9000/quiz/rule").then(res => {
 		const ruleTxtList = [];
-		res.data.map(ruleObj => {
+		const ruleList = [];
+		res.data.forEach(ruleObj => {
 			if (!ruleTxtList.includes(ruleObj.ruleTxt)){
 				ruleTxtList.push(ruleObj.ruleTxt);
+				ruleList.push(ruleObj);
 			}
 		});
-		page.setState({rules: ruleTxtList});
+		page.setState({rules: ruleList});
 	}).catch(error => {
 		console.log(error);
 	});
@@ -64,8 +65,8 @@ export const getStudentQuizObj = (page, groupName, quizName) => {
 	axios.get(`http://127.0.0.1:9000/groups//get/${groupName}`).then(res => {
 		const studentQuizObjs = [];
 		const students = res.data;
-		students.map(student => {
-			student.quizzes.map(quiz => {
+		students.forEach(student => {
+			student.quizzes.forEach(quiz => {
 				if (quiz.name === quizName){
 					if (quiz.pastResult){
 						const newStudentQuizObj = {

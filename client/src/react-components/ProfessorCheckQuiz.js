@@ -43,11 +43,18 @@ class ProfessorCheckQuiz extends React.Component {
 		const currentQuizName = this.state.selectedQuiz;
 		this.setState({currentQuizName: currentQuizName});
 		let groupName = "";
-		this.state.quizzes.map((quiz) => {
-			if (quiz.name === currentQuizName) {
+
+		this.state.quizzes.forEach(quiz => {
+			if (quiz.name === currentQuizName){
 				groupName = quiz.group;
 			}
 		});
+
+		if (groupName === ""){
+			alert("The rule is not associated with a group, or failed to fetch group from quiz!");
+			return;
+		}
+
 		getStudentQuizObj(this, groupName, currentQuizName);
 	};
 

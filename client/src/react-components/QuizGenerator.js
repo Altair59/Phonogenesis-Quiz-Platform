@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {getGroupUserList} from "../actions/group";
-import {distributeQuiz, getDistinctRuleTxtList} from "../actions/quiz";
+import {distributeQuiz, getDistinctRuleList} from "../actions/quiz";
 import "./QuizGenerator.css";
 import "./mainstyle.css"
 import Grid from "@material-ui/core/Grid";
@@ -24,12 +24,12 @@ class QuizGenerator extends React.Component {
 		this.state = {
 			timeErr: "",
 			qCount: 0,
-			g2u: {},
-			rules: [],
+			g2u: null,
+			rules: null,
 			selectedGroup: ""
 		};
 		getGroupUserList(this, this.props.app.state.currentUser.username);
-		getDistinctRuleTxtList(this);
+		getDistinctRuleList(this);
 	};
 
 	makeQuiz = () => {
@@ -98,6 +98,10 @@ class QuizGenerator extends React.Component {
 	};
 
 	render() {
+		if (this.state.g2u === null || this.state.rules === null){
+			return <div/>
+		}
+
 		return (
 			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
@@ -157,8 +161,15 @@ class QuizGenerator extends React.Component {
 									</Grid>
 									<Grid item>
 										<NativeSelect id={"rule-sel-".concat(i.toString())}>
-											{this.state.rules.sort().map((rule, j) => (
-												<option key={j} value={rule}>{rule}</option>
+											{this.state.rules.sort((e1, e2) => {
+												if (e1.ruleTxt > e2.ruleTxt){
+													return 1;
+												} else if (e1.ruleTxt < e2.ruleTxt){
+													return -1;
+												}
+												return 0;
+											}).map(rule => (
+												<option key={rule.ruleTxt} value={rule.ruleTxt}>{rule.ruleTxt}</option>
 											))}
 										</NativeSelect>
 										<FormHelperText>Rule</FormHelperText>

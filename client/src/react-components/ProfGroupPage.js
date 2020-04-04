@@ -109,6 +109,8 @@ class ProfGroupPage extends React.Component {
 																		onClick={this.onRemoveStudent.bind(this, group, stuObj.username)}><DeleteIcon>Remove</DeleteIcon></IconButton>
 																</TableCell>
 															</TableRow>
+														} else {
+															return null;
 														}
 													})
 												}

@@ -6,7 +6,6 @@ import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import {shuffleQuestion, transIPAg, ruleList, getShuffledRuleList} from "./QuizData";
 import {FormGroup, Select} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -15,6 +14,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import "./SimpleGenerator.css"
 import "./mainstyle.css"
+import {getDistinctRuleList} from "../actions/quiz";
 
 
 const QUESTION_SIZE_MIN = 15;
@@ -32,8 +32,10 @@ class SimpleGenerator extends React.Component {
 			isShuffle: false,
 			isIPAg: false,
 			rule: null,
-			genKey: 0
-		}
+			genKey: 0,
+			rules: null
+		};
+		getDistinctRuleList(this);
 	}
 
 	onGetQuestion = (e) => {
@@ -42,41 +44,49 @@ class SimpleGenerator extends React.Component {
 			return;
 		}
 
-		const type = this.state.selectedType;
-		const rule = this.state.selectedRule;
+		const ruleType = this.state.selectedType;
+		const ruleTxt = this.state.selectedRule;
+		const rules = this.state.rules;
 
-		let curRule;
-		let shuffledRuleList = getShuffledRuleList();
-		if (rule !== "Random") {
-			for (let i = 0; i < shuffledRuleList.length; i++) {
-				if (rule === shuffledRuleList[i].ruleTxt) {
-					curRule = shuffledRuleList[i];
-					break;
+		let rule;
+		if (ruleTxt !== "Random") {
+			rules.forEach(ruleIter => {
+				if (ruleTxt === ruleIter.ruleTxt) {
+					rule = ruleIter;
 				}
-			}
-		} else if (type !== "Random") {
-			for (let i = 0; i < shuffledRuleList.length; i++) {
-				if (type === shuffledRuleList[i].ruleType) {
-					curRule = shuffledRuleList[i];
-					break;
+			});
+		} else if (ruleType !== "Random") {
+			rules.forEach(ruleIter => {
+				if (ruleType === ruleIter.ruleType) {
+					rule = ruleIter;
 				}
-			}
+			});
 		} else {
-			curRule = shuffledRuleList[0];
+			rule = rules[Math.floor(Math.random() * rules.length)];
 		}
 
-
 		if (this.state.isShuffle) {
-			shuffleQuestion(curRule);
+			for (let i = rule.UR.length - 1; i > 0; i--) {
+				let j = Math.floor(Math.random() * (i + 1));
+				[rule.UR[i], rule.UR[j]] = [rule.UR[j], rule.UR[i]];
+				[rule.SR[i], rule.SR[j]] = [rule.SR[j], rule.SR[i]];
+				[rule.gloss[i], rule.gloss[j]] = [rule.gloss[j], rule.gloss[i]];
+			}
 		}
 
 		if (this.state.isIPAg) {
-			transIPAg(curRule, true);
+			for (let i = 0; i < rule.UR.length; i++) {
+				rule.UR[i] = rule.UR[i].replace(/g/, "ɡ");
+				rule.SR[i] = rule.SR[i].replace(/g/, "ɡ");
+			}
 		} else {
-			transIPAg(curRule, false);
+			for (let i = 0; i < rule.UR.length; i++) {
+				rule.UR[i] = rule.UR[i].replace(/ɡ/, "g");
+				rule.SR[i] = rule.SR[i].replace(/ɡ/, "g");
+			}
 		}
 
-		this.setState({question: curRule, genKey: this.state.genKey + 1});
+		this.setState({question: rule, genKey: this.state.genKey + 1});
 		e.preventDefault();
 	};
 
@@ -118,10 +128,14 @@ class SimpleGenerator extends React.Component {
 	};
 
 	render() {
+		if (this.state.rules === null){
+			return <div/>
+		}
+
 		const isValidSize = this.state.sizeSelectWarn !== "";
 
 		return (
-			<div className="render-container">
+			<div>
 				<TopBar history={this.props.history} app={this.props.app}/>
 				<Grid container direction="row" justify="center" alignItems="flex-start" spacing={4} id={"gen-form"}>
 					<Grid item>
@@ -129,8 +143,15 @@ class SimpleGenerator extends React.Component {
 							<InputLabel className="text-field-label-off">Rule</InputLabel>
 							<Select value={this.state.selectedRule} onChange={this.onRuleChange}>
 								<MenuItem value={"Random"}>Random</MenuItem>
-								{ruleList.map((rule, i) => (
-									<MenuItem value={rule.ruleTxt} key={i}>{rule.ruleTxt}</MenuItem>
+								{this.state.rules.sort((e1, e2) => {
+									if (e1.ruleTxt > e2.ruleTxt){
+										return 1;
+									} else if (e1.ruleTxt < e2.ruleTxt){
+										return -1;
+									}
+									return 0;
+								}).map(rule => (
+									<MenuItem value={rule.ruleTxt} key={rule.ruleTxt}>{rule.ruleTxt}</MenuItem>
 								))}
 							</Select>
 						</FormControl>

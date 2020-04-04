@@ -11,7 +11,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider'
 
 import {withRouter} from "react-router-dom"
-import {readCookie, logout} from "../actions/user";
+import {logout} from "../actions/user";
 
 const studentNav = ['Home', 'Groups', 'Quiz', 'Practice', 'Log Out'];
 const profNav = ['Home', 'Make Quiz', 'Quiz Results', 'Groups', 'Log Out'];
