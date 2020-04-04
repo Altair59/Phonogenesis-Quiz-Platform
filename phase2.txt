@@ -159,12 +159,12 @@ CSC309 Project Phase 2 Instruction
         owner | String,
         students | []
         }
-        response: User model (who in the session) OR false
+        response: {result: User model (who in the session) OR false}
 
     3.1.3 router.delete("/:name":
         usage: given group name, delete this group from the server, return delete result
         params: name | String
-        response: true OR false
+        response: {result: Boolean}
 
     3.1.4 router.patch("/add":
         usage: given student name and group name, add this student to this group, return patch result
@@ -173,7 +173,7 @@ CSC309 Project Phase 2 Instruction
         studentName | String,
         groupName | String
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.1.5 router.patch("/remove":
         usage: given student name and group name, delete this student from this group, return patch result
@@ -182,7 +182,7 @@ CSC309 Project Phase 2 Instruction
         studentName | String,
         groupName | String
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.1.6 router.post("/message":
         usage: given group name and message, send this message to this group, return post result
@@ -191,7 +191,7 @@ CSC309 Project Phase 2 Instruction
         groupName | String,
         message | String
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.1.7 router.get("/get/:name":
         usage: given group name, fetch all student User models in this group, return list of these students
@@ -231,13 +231,13 @@ CSC309 Project Phase 2 Instruction
         	questions | [{
                        				rule | String,
                        				size | Integer,
-                       				canUR | true OR false,
-                       				canPhoneme | true OR false,
+                       				canUR | Boolean,
+                       				canPhoneme | Boolean,
                        				maxCADT | Integer
                         }],
         	group | String
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.2.5 router.post('/register':
         usage: given user name, quiz name, and past result, register this past result, return this user
@@ -290,7 +290,7 @@ CSC309 Project Phase 2 Instruction
             message | String,
             username | String
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.3.3 router.post("/login":
         usage: given user name and password, log in this user, return an object which contains user User model adter log in
@@ -308,7 +308,9 @@ CSC309 Project Phase 2 Instruction
                 groups | [String],
                 quizzes | [Quiz],
                 messages| [String]
-            }
+            },
+        result | Boolean
+
         }
 
     3.3.4 router.get("/logout":
@@ -340,7 +342,7 @@ CSC309 Project Phase 2 Instruction
             	groups | [],
             	quizzes | []
         }
-        response: true OR false
+        response: {result: Boolean}
 
     3.3.7 router.get("/":
         usage: fetch all user User models, return list of these users
@@ -349,7 +351,7 @@ CSC309 Project Phase 2 Instruction
     3.3.8 router.get("/:username":
         usage: given user name, fetch this user User model, return User OR null
         params: username | String
-        responseL null OR User
+        responseL {result: null OR User}
 
     3.3.9 router.delete("/:username":
         usage: given user name, delete this user, return deleted user User model
