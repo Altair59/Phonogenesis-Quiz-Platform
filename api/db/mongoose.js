@@ -61,8 +61,8 @@ db.once('open', function () {
 
 	const defaultGroup = new Group({
 		name: "CSC309",
-		students: ["stu"],
-		owner: "prof"
+		students: ["user"],
+		owner: "user2"
 	});
 	defaultGroup.save().then(function (result) {
 		log("added default group");
