@@ -108,7 +108,7 @@ router.delete("/:name", (req, res) => {
 				prof.groups = prof.groups.filter(group => group !== groupName);
 				prof.save().then(savedProf => {
 						if (group.students.length === 0) {
-							res.send({result: true});
+							res.send({result: true, students: []});
 						} else {
 							let studentCt = 0;
 							group.students.map(student => {
