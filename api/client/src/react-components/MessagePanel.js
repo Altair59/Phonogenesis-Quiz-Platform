@@ -31,6 +31,7 @@ class MessagePanel extends React.Component {
 		this.state = {
 			mode: "p2p",
 			users: null,
+			contentErr: false,
 			targetUser: this.props.app.state.currentUser.username,
 			targetGroup: defaultGroup
 		};
@@ -58,8 +59,10 @@ class MessagePanel extends React.Component {
 		const rawMessage = document.getElementById("message-textfield").value;
 		if (!rawMessage || rawMessage.length < 1) {
 			alert("Message cannot be empty!");
+			this.setState({contentErr: true});
 			return;
 		}
+		this.setState({contentErr: false});
 
 		const message = `From ${this.props.app.state.currentUser.username}: ${rawMessage}`;
 		switch (this.state.mode) {
@@ -98,7 +101,7 @@ class MessagePanel extends React.Component {
 		}
 
 		let groups;
-		if (this.props.groups){
+		if (this.props.groups) {
 			groups = this.props.groups;
 		} else {
 			groups = this.props.app.state.currentUser.groups;
@@ -111,7 +114,8 @@ class MessagePanel extends React.Component {
 				<br/>
 				<Grid container justify="flex-start" alignItems="flex-end" spacing={3}>
 					<Grid item>
-						<TextField multiline required label={"message"} id={"message-textfield"}/>
+						<TextField error={this.state.contentErr} multiline required label={"message"}
+						           id={"message-textfield"}/>
 					</Grid>
 					<Grid item>
 						<Select onChange={this.onModeChange} value={this.state.mode} id={"mode-sel"}>

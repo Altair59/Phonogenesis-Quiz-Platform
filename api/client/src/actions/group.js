@@ -4,7 +4,7 @@ const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export const getGroupUserList = (page, username) => {
-	axios.get(`http://127.0.0.1:9000/groups/objectify/${username}`).then(res => {
+	axios.get(`https://accelsnow.com/groups/objectify/${username}`).then(res => {
 		const groupToUser = res.data;
 		if (groupToUser === null || groupToUser === undefined) {
 			console.log("NO G2U RESPONDED");
@@ -18,8 +18,8 @@ export const getGroupUserList = (page, username) => {
 };
 
 export const getGroupNames = (page) => {
-	axios.get("http://127.0.0.1:9000/groups").then(res => {
-		if (res.data){
+	axios.get("https://accelsnow.com/groups").then(res => {
+		if (res.data) {
 			page.setState({groups: res.data.map(group => group.name)});
 		} else {
 			console.log("NO GROUP DATA");
@@ -30,8 +30,16 @@ export const getGroupNames = (page) => {
 };
 
 export const removeGroup = (page, name) => {
-	axios.delete(`http://127.0.0.1:9000/groups/${name}`).then(res => {
-		getGroupUserList(page, page.props.app.state.currentUser.username);
+	axios.delete(`https://accelsnow.com/groups/${name}`).then(res => {
+		if (res.data.result) {
+			getGroupUserList(page, page.props.app.state.currentUser.username);
+			res.data.students.forEach(stu => {
+				sendMessage(page.props.app, stu,
+					`Professor ${page.props.app.state.currentUser.username} has disassembled group ${name}.`);
+			});
+		} else {
+			console.log("GROUP DELETION FAILED");
+		}
 	}).catch(err => {
 		console.log(err);
 	});
@@ -45,7 +53,7 @@ export const addGroup = (page, name) => {
 		alert("Group must be alphanumeric strings with an optional - in the middle!");
 		page.setState({err: true});
 	} else {
-		axios.post("http://127.0.0.1:9000/groups/", {
+		axios.post("https://accelsnow.com/groups/", {
 				name: name,
 				owner: prof.username,
 				students: []
@@ -66,7 +74,7 @@ export const addGroup = (page, name) => {
 };
 
 export const addToGroup = (page, username, groupName) => {
-	axios.patch("http://127.0.0.1:9000/groups/add", {
+	axios.patch("https://accelsnow.com/groups/add", {
 		studentName: username,
 		groupName: groupName
 	}).then(res => {
@@ -84,7 +92,7 @@ export const addToGroup = (page, username, groupName) => {
 };
 
 export const removeFromGroup = (page, username, groupName) => {
-	axios.patch("http://127.0.0.1:9000/groups/remove", {
+	axios.patch("https://accelsnow.com/groups/remove", {
 		studentName: username,
 		groupName: groupName
 	}).then(res => {
@@ -93,7 +101,6 @@ export const removeFromGroup = (page, username, groupName) => {
 		} else {
 			if (page.props.app.state.currentUser.type === "student") {
 				alert(`You have dropped from group ${groupName}!`);
-				console.log(page.state.g2u[groupName]);
 				sendMessage(page.props.app, page.state.g2u[groupName][0].username,
 					`Student ${username} has dropped from group ${groupName}!`);
 			} else {
@@ -109,7 +116,7 @@ export const removeFromGroup = (page, username, groupName) => {
 };
 
 export const broadcastMessage = (app, groupName, message) => {
-	axios.post("http://127.0.0.1:9000/groups/message", {groupName: groupName, message: message}).then(res => {
+	axios.post("https://accelsnow.com/groups/message", {groupName: groupName, message: message}).then(res => {
 		if (!res.data.result) {
 			console.log("FAILED TO BROADCAST MESSAGE");
 		} else {

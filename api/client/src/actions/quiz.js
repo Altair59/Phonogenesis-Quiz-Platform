@@ -1,10 +1,11 @@
 import {broadcastMessage} from "./group";
+import {readCookie} from "./user";
 
 const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export const registerPastResult = (pastResult, username, quizName, app) => {
-	axios.post("http://127.0.0.1:9000/quiz/register", {
+	axios.post("https://accelsnow.com/quiz/register", {
 		username: username,
 		quizName: quizName,
 		pastResult: pastResult
@@ -16,7 +17,7 @@ export const registerPastResult = (pastResult, username, quizName, app) => {
 };
 
 export const getUserQuizzes = (page, username) => {
-	axios.get(`http://127.0.0.1:9000/quiz/user/${username}`).then(res => {
+	axios.get(`https://accelsnow.com/quiz/user/${username}`).then(res => {
 		page.setState({quizzes: res.data});
 	}).catch(err => {
 		console.log(err);
@@ -24,7 +25,7 @@ export const getUserQuizzes = (page, username) => {
 };
 
 export const getDistinctRuleList = (page) => {
-	axios.get("http://127.0.0.1:9000/quiz/rule").then(res => {
+	axios.get("https://accelsnow.com/quiz/rule").then(res => {
 		const ruleTxtList = [];
 		const ruleList = [];
 		res.data.forEach(ruleObj => {
@@ -40,7 +41,7 @@ export const getDistinctRuleList = (page) => {
 };
 
 export const distributeQuiz = (page, quizObj) => {
-	axios.post("http://127.0.0.1:9000/quiz/makeQuiz", {
+	axios.post("https://accelsnow.com/quiz/makeQuiz", {
 		timeLim: quizObj.timeLim,
 		name: quizObj.name,
 		owner: quizObj.owner,
@@ -55,6 +56,7 @@ export const distributeQuiz = (page, quizObj) => {
 			broadcastMessage(page.props.app, quizObj.group, `Professor ${page.props.app.state.currentUser.name}
 			(${page.props.app.state.currentUser.username}) from group ${quizObj.group} 
 			has created a quiz named ${quizObj.name}`);
+			readCookie(page.props.app);
 		}
 	}).catch(error => {
 		console.log(error);
@@ -62,7 +64,7 @@ export const distributeQuiz = (page, quizObj) => {
 };
 
 export const getStudentQuizObj = (page, groupName, quizName) => {
-	axios.get(`http://127.0.0.1:9000/groups//get/${groupName}`).then(res => {
+	axios.get(`https://accelsnow.com/groups//get/${groupName}`).then(res => {
 		const studentQuizObjs = [];
 		const students = res.data;
 		students.forEach(student => {
