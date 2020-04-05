@@ -117,7 +117,7 @@ router.delete("/:name", (req, res) => {
 									stuObj.groups = stuObj.groups.filter(group => group !== groupName);
 									stuObj.save();
 									if (studentCt >= group.students.length) {
-										res.send({result: true});
+										res.send({result: true, students: group.students});
 									}
 								})
 							})
