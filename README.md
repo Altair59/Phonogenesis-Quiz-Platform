@@ -1,5 +1,3 @@
-CSC309 Project Phase 2 Instruction
-
 ====== Deployed APP URL ======
 https://accelsnow.com
 
